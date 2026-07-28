@@ -73,6 +73,58 @@ cursor:pointer;
 <button onclick="submitOrder()">Submit Order</button>
 
 </div>
+<script type="module">
 
+import { db } from "./firebase/config.js";
+
+import {
+collection,
+addDoc,
+serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+window.submitOrder = async function(){
+
+const name = document.getElementById("name").value;
+const email = document.getElementById("email").value;
+const service = document.getElementById("service").value;
+const note = document.getElementById("note").value;
+
+if(name==="" || email===""){
+
+alert("Please fill all required fields.");
+return;
+
+}
+
+try{
+
+await addDoc(collection(db,"orders"),{
+
+customerName:name,
+customerEmail:email,
+service:service,
+note:note,
+status:"Pending",
+paymentStatus:"Unpaid",
+createdAt:serverTimestamp()
+
+});
+
+alert("Order Submitted Successfully!");
+
+document.getElementById("name").value="";
+document.getElementById("email").value="";
+document.getElementById("note").value="";
+
+}catch(error){
+
+alert(error.message);
+
+}
+
+}
+
+</script>
 </body>
 </html>
