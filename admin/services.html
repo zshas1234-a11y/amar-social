@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AMAR Admin Services</title>
+
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+
+body{
+background:#050505;
+color:white;
+padding:30px;
+}
+
+
+h1{
+color:#8b5cf6;
+margin-bottom:30px;
+}
+
+
+.container{
+
+background:#111;
+padding:25px;
+border-radius:20px;
+
+}
+
+
+input,select{
+
+width:100%;
+padding:14px;
+margin:10px 0;
+background:#222;
+border:none;
+border-radius:10px;
+color:white;
+
+}
+
+
+button{
+
+padding:14px 25px;
+background:#8b5cf6;
+border:none;
+border-radius:10px;
+color:white;
+cursor:pointer;
+
+}
+
+
+button:hover{
+
+background:#6d28d9;
+
+}
+
+
+
+.service-box{
+
+margin-top:30px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+
+}
+
+
+
+.card{
+
+background:#181818;
+padding:20px;
+border-radius:15px;
+border:1px solid #333;
+
+}
+
+
+.card h3{
+
+color:#8b5cf6;
+
+}
+
+
+.price{
+
+font-size:25px;
+margin:10px 0;
+
+}
+
+
+</style>
+
+</head>
+
+
+
+<body>
+
+
+<h1>
+Services Management
+</h1>
+
+
+
+<div class="container">
+
+
+<h2>
+Add New Service
+</h2>
+
+
+<input 
+type="text"
+placeholder="Service Name">
+
+
+<input
+type="text"
+placeholder="Price (PKR)">
+
+
+
+<select>
+
+<option>
+Select Category
+</option>
+
+<option>
+Subscriptions
+</option>
+
+<option>
+Design
+</option>
+
+<option>
+AI Tools
+</option>
+
+<option>
+Other
+</option>
+
+
+</select>
+
+
+
+<button>
+Add Service
+</button>
+
+
+</div>
+
+
+
+
+
+<div class="service-box">
+
+
+<div class="card">
+
+<h3>
+Snapchat Plus
+</h3>
+
+<p class="price">
+1750 PKR
+</p>
+
+<p>
+Yearly Subscription
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>
+Snapchat Plus
+</h3>
+
+<p class="price">
+550 PKR
+</p>
+
+<p>
+Monthly Subscription
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>
+AI Services
+</h3>
+
+<p class="price">
+Custom
+</p>
+
+<p>
+Premium AI Solutions
+</p>
+
+</div>
+
+
+</div>
+
+
+
+</body>
+
+</html>
