@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Place Order</title>
+
+<style>
+
+body{
+background:#050505;
+color:white;
+font-family:Arial;
+padding:30px;
+}
+
+.container{
+max-width:500px;
+margin:auto;
+background:#111;
+padding:25px;
+border-radius:20px;
+}
+
+input,select,textarea{
+
+width:100%;
+padding:15px;
+margin:10px 0;
+background:#222;
+color:white;
+border:none;
+border-radius:10px;
+
+}
+
+button{
+
+width:100%;
+padding:15px;
+background:#8b5cf6;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Place Your Order</h2>
+
+<input id="name" placeholder="Your Name">
+
+<input id="email" placeholder="Email">
+
+<select id="service">
+
+<option>Snapchat Plus Monthly</option>
+<option>Snapchat Plus Yearly</option>
+<option>AI Service</option>
+
+</select>
+
+<textarea id="note" placeholder="Extra Note"></textarea>
+
+<button onclick="submitOrder()">Submit Order</button>
+
+</div>
+
+</body>
+</html>
