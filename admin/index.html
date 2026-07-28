@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AMAR SOCIAL HUB Admin Login</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#050505;
+    color:white;
+}
+
+
+.login-box{
+
+    width:360px;
+    padding:35px;
+    background:#111;
+    border-radius:20px;
+    box-shadow:0 0 30px #8b5cf6;
+
+}
+
+
+.logo{
+    text-align:center;
+    font-size:25px;
+    font-weight:bold;
+    color:#8b5cf6;
+}
+
+
+h2{
+    text-align:center;
+}
+
+
+input{
+
+    width:100%;
+    padding:14px;
+    margin:10px 0;
+    border:none;
+    outline:none;
+    border-radius:10px;
+    background:#222;
+    color:white;
+
+}
+
+
+button{
+
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#8b5cf6;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+
+}
+
+
+button:hover{
+
+    background:#6d28d9;
+
+}
+
+
+#message{
+
+    text-align:center;
+    color:#ff6b6b;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="login-box">
+
+
+<div class="logo">
+AMAR SOCIAL HUB
+</div>
+
+
+<h2>
+Admin Login
+</h2>
+
+
+<input 
+type="email" 
+id="email"
+placeholder="Admin Email">
+
+
+<input 
+type="password"
+id="password"
+placeholder="Password">
+
+
+<button onclick="login()">
+Login
+</button>
+
+
+<p id="message"></p>
+
+
+</div>
+
+
+
+<script type="module">
+
+import { auth } from "../firebase/config.js";
+
+
+import { 
+signInWithEmailAndPassword 
+} 
+from 
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+
+window.login = function(){
+
+
+const email = document.getElementById("email").value;
+
+const password = document.getElementById("password").value;
+
+
+
+signInWithEmailAndPassword(auth,email,password)
+
+.then(()=>{
+
+window.location="dashboard.html";
+
+})
+
+
+.catch((error)=>{
+
+document.getElementById("message").innerHTML =
+error.message;
+
+});
+
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
