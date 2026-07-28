@@ -3,79 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="siteTitleMeta">Ammar Social - Pro SMM Platform</title>
+    <title id="siteTitleMeta">Ammar Social - Enterprise SMM Suite</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #030712; color: #f3f4f6; }
-        .glass-panel { background: rgba(17, 24, 39, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .pro-gradient { background: linear-gradient(135deg, #10b981 0%, #047857 100%); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; color: #f8fafc; overflow-x: hidden; }
+        .glass-panel { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .pro-gradient { background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%); }
+        .text-glow { text-shadow: 0 0 25px rgba(16, 185, 129, 0.5); }
+        
+        /* Intro Splash Animation */
+        #introSplash {
+            position: fixed; inset: 0; background: #020617; z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        .loader-ring {
+            width: 80px; height: 80px; border: 4px solid rgba(16, 185, 129, 0.2);
+            border-top: 4px solid #10b981; border-radius: 50%;
+            animation: spin 1s linear infinite, pulseGlow 2s ease-in-out infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 15px rgba(16, 185, 129, 0.2); } 50% { box-shadow: 0 0 35px rgba(16, 185, 129, 0.6); } }
+
+        /* Marquee Text Animation */
+        .marquee-container { overflow: hidden; white-space: nowrap; }
+        .marquee-content { display: inline-block; animation: marquee 25s linear infinite; }
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-white">
 
-    <!-- Top Pro Navbar -->
-    <header class="glass-panel sticky top-0 z-40 border-b border-slate-800/80">
-        <div class="max-w-7xl mx-auto px-4 py-3.5 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <div class="pro-gradient text-white p-2.5 rounded-2xl shadow-lg shadow-emerald-900/20">
-                    <i class="fa-solid fa-bolt-lightning text-lg"></i>
+    <!-- Cinematic Intro Splash Screen -->
+    <div id="introSplash">
+        <div class="loader-ring mb-6"></div>
+        <h1 class="text-2xl md:text-3xl font-black tracking-widest text-white uppercase mb-2">AMMAR <span class="text-emerald-400">SOCIAL</span></h1>
+        <p class="text-xs text-emerald-400 font-bold tracking-widest animate-pulse uppercase">Initializing Pro Secure Environment...</p>
+    </div>
+
+    <div>
+        <!-- Live Ticker / Feature News Banner -->
+        <div class="bg-emerald-950/80 border-b border-emerald-500/20 py-2 px-4 text-xs font-semibold text-emerald-300 flex items-center shadow-inner">
+            <div class="bg-emerald-500 text-slate-950 font-black px-2.5 py-0.5 rounded-lg text-[10px] uppercase tracking-wider mr-3 flex items-center gap-1 shrink-0 shadow-sm">
+                <i class="fa-solid fa-bullhorn"></i> Live Update
+            </div>
+            <div class="marquee-container w-full overflow-hidden">
+                <div class="marquee-content">
+                    🔥 Special Discount: Use Coupon code <span class="text-white font-bold underline">AMMAR10</span> for instant 10% OFF on all SMM services! &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; ⚡ Instant 24/7 Automated Order Processing Active &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; 🚀 Pakistan's Most Trusted & Verified Social Media Partner.
                 </div>
-                <div>
-                    <h1 id="brandHeaderName" class="text-lg font-black tracking-wider text-white uppercase">AMMAR <span class="text-emerald-400">SOCIAL</span></h1>
-                    <p class="text-[10px] text-emerald-400 font-semibold tracking-widest uppercase">Verified SMM Partner</p>
+            </div>
+        </div>
+
+        <!-- Top Pro Navbar -->
+        <header class="glass-panel sticky top-0 z-40 border-b border-slate-800/80">
+            <div class="max-w-7xl mx-auto px-4 py-3.5 flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="pro-gradient text-slate-950 p-2.5 rounded-2xl shadow-lg shadow-emerald-900/40">
+                        <i class="fa-solid fa-bolt-lightning text-lg font-black"></i>
+                    </div>
+                    <div>
+                        <h1 id="brandHeaderName" class="text-lg font-black tracking-wider text-white uppercase">AMMAR <span class="text-emerald-400 text-glow">SOCIAL</span></h1>
+                        <p class="text-[10px] text-emerald-400 font-bold tracking-widest uppercase">Enterprise SMM Node</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button onclick="openAdminLogin()" class="bg-slate-900/90 hover:bg-slate-800 text-emerald-400 border border-emerald-500/30 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm">
+                        <i class="fa-solid fa-shield-halved"></i> Admin Portal
+                    </button>
                 </div>
             </div>
-            <div class="flex items-center space-x-3">
-                <button onclick="openAdminLogin()" class="bg-slate-900/90 hover:bg-slate-800 text-emerald-400 border border-emerald-500/30 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm">
-                    <i class="fa-solid fa-shield-halved"></i> Admin Portal
-                </button>
+        </header>
+
+        <!-- Hero Section -->
+        <main class="max-w-7xl mx-auto px-4 py-10 w-full">
+            <div class="glass-panel rounded-3xl p-8 md:p-12 mb-10 text-center relative overflow-hidden border border-slate-800 shadow-2xl">
+                <div class="absolute -right-20 -top-20 w-60 h-60 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -left-20 -bottom-20 w-60 h-60 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold px-4 py-1.5 rounded-full inline-flex items-center gap-2 mb-4 shadow-sm">
+                    <i class="fa-solid fa-fire text-amber-400"></i> Balochistan & Pakistan's Elite SMM Engine
+                </span>
+                <h2 id="heroMainTitle" class="text-3xl md:text-5xl font-black text-white mb-4 tracking-tight">Supercharge Your Social Presence</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto text-sm md:text-base mb-6">High-performance Instagram, TikTok, and YouTube growth tools equipped with automated live tracking and secure EasyPaisa / JazzCash checkout.</p>
+                
+                <!-- Search Bar -->
+                <div class="max-w-xl mx-auto relative">
+                    <input type="text" id="searchService" placeholder="Search pro services (e.g., Followers, Views)..." onkeyup="filterServices()" class="w-full bg-slate-950/90 border border-slate-700/80 rounded-2xl px-5 py-3.5 pl-12 text-sm text-white focus:outline-none focus:border-emerald-500 shadow-inner">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4.5 top-4 text-slate-500 text-sm"></i>
+                </div>
             </div>
-        </div>
-    </header>
 
-    <!-- Hero Section -->
-    <main class="max-w-7xl mx-auto px-4 py-10 flex-grow w-full">
-        <div class="glass-panel rounded-3xl p-8 md:p-12 mb-10 text-center relative overflow-hidden border border-slate-800">
-            <div class="absolute -right-20 -top-20 w-60 h-60 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute -left-20 -bottom-20 w-60 h-60 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
-            
-            <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold px-3.5 py-1.5 rounded-full inline-flex items-center gap-1.5 mb-4">
-                <i class="fa-solid fa-fire text-amber-400"></i> Pakistan's #1 Instant Delivery Panel
-            </span>
-            <h2 id="heroMainTitle" class="text-3xl md:text-5xl font-black text-white mb-4 tracking-tight">Supercharge Your Social Presence</h2>
-            <p class="text-slate-400 max-w-2xl mx-auto text-sm md:text-base mb-6">High-quality Instagram, TikTok, and YouTube services with automated processing, live tracking, and secure EasyPaisa / JazzCash payments.</p>
-            
-            <!-- Search & Filter Bar -->
-            <div class="max-w-xl mx-auto relative">
-                <input type="text" id="searchService" placeholder="Search services (e.g., Followers, Likes)..." onkeyup="filterServices()" class="w-full bg-slate-950/80 border border-slate-700/80 rounded-2xl px-5 py-3.5 pl-12 text-sm text-white focus:outline-none focus:border-emerald-500 shadow-inner">
-                <i class="fa-solid fa-magnifying-glass absolute left-4.5 top-4 text-slate-500 text-sm"></i>
+            <!-- Services Grid Section -->
+            <div class="mb-6 flex justify-between items-center">
+                <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group text-emerald-400"></i> Pro Service Catalogs
+                </h3>
+                <span class="text-xs font-bold text-slate-400 bg-slate-900 px-3.5 py-1.5 rounded-xl border border-slate-800">Currency: <span class="text-emerald-400">PKR (Rs.)</span></span>
             </div>
-        </div>
 
-        <!-- Services Grid Section -->
-        <div class="mb-6 flex justify-between items-center">
-            <h3 class="text-xl font-bold text-white flex items-center gap-2">
-                <i class="fa-solid fa-layer-group text-emerald-400"></i> Available Pro Services
-            </h3>
-            <span class="text-xs font-bold text-slate-400 bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-800">Currency: <span class="text-emerald-400">PKR (Rs.)</span></span>
-        </div>
-
-        <div id="servicesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Dynamic Services Injected Here -->
-        </div>
-    </main>
+            <div id="servicesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamic Services -->
+            </div>
+        </main>
+    </div>
 
     <!-- Order Processing Modal -->
     <div id="orderModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="glass-panel rounded-3xl max-w-lg w-full p-6 md:p-8 relative border border-slate-700 my-6 shadow-2xl">
             <button onclick="closeOrderModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white w-8 h-8 rounded-full bg-slate-800/80 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
             <div class="flex items-center gap-3 mb-4">
-                <div class="pro-gradient text-white p-2.5 rounded-xl"><i class="fa-solid fa-cart-shopping"></i></div>
+                <div class="pro-gradient text-slate-950 p-2.5 rounded-xl font-bold"><i class="fa-solid fa-cart-shopping"></i></div>
                 <div>
-                    <h3 class="text-lg font-bold text-white">Secure Checkout</h3>
+                    <h3 class="text-lg font-bold text-white">Secure Checkout Gateway</h3>
                     <p id="modalServiceName" class="text-xs text-emerald-400 font-semibold"></p>
                 </div>
             </div>
@@ -84,7 +125,7 @@
                 <input type="hidden" id="selectedServiceId">
                 <div>
                     <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">Your Full Name</label>
-                    <input type="text" id="custName" required class="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 focus:outline-none" placeholder="e.g. Muhammad Ali">
+                    <input type="text" id="custName" required class="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 focus:outline-none" placeholder="e.g. Muhammad Zain">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">WhatsApp Number</label>
@@ -105,7 +146,7 @@
                     </div>
                 </div>
 
-                <!-- Dynamic Payment Instruction Box -->
+                <!-- Payment Box -->
                 <div class="bg-emerald-950/20 p-4 rounded-2xl border border-emerald-500/30 text-xs space-y-1.5">
                     <p class="font-bold text-white flex items-center gap-1.5"><i class="fa-solid fa-wallet text-emerald-400"></i> Transfer Payment To:</p>
                     <p class="text-slate-300">Method / Number: <span id="payBoxNumber" class="text-emerald-400 font-mono font-bold">0300-1234567</span></p>
@@ -117,34 +158,34 @@
                     <input type="file" id="paymentProof" accept="image/*" required class="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-slate-300 file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-emerald-600 file:text-white hover:file:bg-emerald-500 cursor-pointer">
                 </div>
 
-                <button type="submit" class="w-full pro-gradient hover:opacity-95 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-emerald-900/30 text-sm tracking-wide flex items-center justify-center gap-2">
+                <button type="submit" class="w-full pro-gradient hover:opacity-95 text-slate-950 font-black py-3.5 rounded-xl transition shadow-lg shadow-emerald-900/30 text-sm tracking-wide flex items-center justify-center gap-2">
                     Confirm & Submit Order <i class="fa-solid fa-circle-check"></i>
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- Order Success Receipt Modal -->
+    <!-- Receipt Modal -->
     <div id="receiptModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="glass-panel rounded-3xl max-w-md w-full p-6 relative border border-slate-700 shadow-2xl" id="receiptContent">
             <div class="text-center pb-4 border-b border-slate-800">
-                <div class="w-12 h-12 pro-gradient text-white rounded-2xl mx-auto flex items-center justify-center text-xl mb-2 shadow-md">
+                <div class="w-12 h-12 pro-gradient text-slate-950 font-black rounded-2xl mx-auto flex items-center justify-center text-xl mb-2 shadow-md">
                     <i class="fa-solid fa-receipt"></i>
                 </div>
                 <h3 id="recBrandTitle" class="text-xl font-black text-white">AMMAR SOCIAL</h3>
                 <p class="text-xs text-emerald-400 font-semibold">Official Verified Receipt</p>
             </div>
             <div class="py-5 space-y-3 text-xs md:text-sm">
-                <div class="flex justify-between py-1 border-b border-slate-800/60"><span class="text-slate-400">Order Reference:</span> <span id="recOrderId" class="font-mono font-bold text-white"></span></div>
+                <div class="flex justify-between py-1 border-b border-slate-800/60"><span class="text-slate-400">Order ID:</span> <span id="recOrderId" class="font-mono font-bold text-white"></span></div>
                 <div class="flex justify-between py-1 border-b border-slate-800/60"><span class="text-slate-400">Customer Name:</span> <span id="recName" class="font-medium text-white"></span></div>
                 <div class="flex justify-between py-1 border-b border-slate-800/60"><span class="text-slate-400">WhatsApp:</span> <span id="recWhatsapp" class="text-white font-mono"></span></div>
-                <div class="flex justify-between py-1 border-b border-slate-800/60"><span class="text-slate-400">Service Name:</span> <span id="recService" class="text-white font-medium"></span></div>
+                <div class="flex justify-between py-1 border-b border-slate-800/60"><span class="text-slate-400">Service:</span> <span id="recService" class="text-white font-medium"></span></div>
                 <div class="flex justify-between py-1 border-b border-slate-800/60"><span class="text-slate-400">Paid Amount:</span> <span id="recPrice" class="text-emerald-400 font-extrabold"></span></div>
-                <div class="flex justify-between py-1"><span class="text-slate-400">Verification Status:</span> <span class="bg-amber-500/20 text-amber-400 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">Pending Review</span></div>
+                <div class="flex justify-between py-1"><span class="text-slate-400">Status:</span> <span class="bg-amber-500/20 text-amber-400 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase">Pending Review</span></div>
             </div>
             <div class="pt-4 border-t border-slate-800 flex gap-3">
                 <button onclick="downloadReceipt()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-xl text-xs transition border border-slate-700 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-download"></i> Save Receipt
+                    <i class="fa-solid fa-download"></i> Save Image
                 </button>
                 <a id="whatsappChatBtn" href="#" target="_blank" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs transition text-center flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/30">
                     <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp Support
@@ -163,50 +204,49 @@
                     <i class="fa-solid fa-lock"></i>
                 </div>
                 <h3 class="text-base font-bold text-white">Admin Authentication</h3>
-                <p class="text-xs text-slate-400">Enter secure password to proceed</p>
+                <p class="text-xs text-slate-400">Secure credentials required</p>
             </div>
             <form onsubmit="verifyAdmin(event)" class="space-y-4">
                 <div>
                     <input type="password" id="adminPassInput" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 focus:outline-none text-center tracking-widest" placeholder="••••••••">
                 </div>
-                <button type="submit" class="w-full pro-gradient text-white font-bold py-3 rounded-xl transition text-sm shadow-lg shadow-emerald-900/30">Authorize Access</button>
+                <button type="submit" class="w-full pro-gradient text-slate-950 font-black py-3 rounded-xl transition text-sm shadow-lg shadow-emerald-900/30">Authorize Access</button>
             </form>
         </div>
     </div>
 
-    <!-- Pro Admin Dashboard -->
+    <!-- Admin Dashboard Modal -->
     <div id="adminDashboardModal" class="fixed inset-0 bg-slate-950 z-50 hidden overflow-y-auto p-4 md:p-8">
         <div class="max-w-6xl mx-auto space-y-6">
             <div class="flex justify-between items-center glass-panel p-5 rounded-3xl border border-slate-800">
                 <div class="flex items-center gap-3">
-                    <div class="pro-gradient text-white p-3 rounded-2xl"><i class="fa-solid fa-gauge-high"></i></div>
+                    <div class="pro-gradient text-slate-950 font-black p-3 rounded-2xl"><i class="fa-solid fa-gauge-high"></i></div>
                     <div>
-                        <h2 class="text-lg font-black text-white">Pro Admin Control Center</h2>
-                        <p class="text-xs text-slate-400">Manage store configurations, services, & orders</p>
+                        <h2 class="text-lg font-black text-white">Enterprise Admin Suite</h2>
+                        <p class="text-xs text-slate-400">Manage all dynamic panels, pricing, and configurations</p>
                     </div>
                 </div>
                 <button onclick="closeAdminDashboard()" class="bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white px-4 py-2.5 rounded-xl text-xs font-bold transition border border-red-500/20">Logout Panel</button>
             </div>
 
-            <!-- Tab Navigation Buttons -->
             <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-3">
-                <button onclick="switchTab('settingsTab')" id="btnSettingsTab" class="pro-gradient text-white px-5 py-2.5 rounded-xl text-xs font-bold transition shadow-md"><i class="fa-solid fa-gear mr-1.5"></i> Store Settings</button>
-                <button onclick="switchTab('servicesTab')" id="btnServicesTab" class="bg-slate-900 text-slate-300 hover:bg-slate-800 px-5 py-2.5 rounded-xl text-xs font-bold transition border border-slate-800"><i class="fa-solid fa-box mr-1.5"></i> Manage Services</button>
+                <button onclick="switchTab('settingsTab')" id="btnSettingsTab" class="pro-gradient text-slate-950 font-black px-5 py-2.5 rounded-xl text-xs transition shadow-md"><i class="fa-solid fa-gear mr-1.5"></i> Store Settings</button>
+                <button onclick="switchTab('servicesTab')" id="btnServicesTab" class="bg-slate-900 text-slate-300 hover:bg-slate-800 px-5 py-2.5 rounded-xl text-xs font-bold transition border border-slate-800"><i class="fa-solid fa-box mr-1.5"></i> Services</button>
                 <button onclick="switchTab('ordersTab')" id="btnOrdersTab" class="bg-slate-900 text-slate-300 hover:bg-slate-800 px-5 py-2.5 rounded-xl text-xs font-bold transition border border-slate-800"><i class="fa-solid fa-list-check mr-1.5"></i> Customer Orders</button>
                 <button onclick="switchTab('couponsTab')" id="btnCouponsTab" class="bg-slate-900 text-slate-300 hover:bg-slate-800 px-5 py-2.5 rounded-xl text-xs font-bold transition border border-slate-800"><i class="fa-solid fa-ticket mr-1.5"></i> Coupons</button>
             </div>
 
-            <!-- 1. Store Settings Tab (NEW & FULLY DYNAMIC) -->
+            <!-- Settings Tab -->
             <div id="settingsTab" class="admin-tab-content space-y-6">
                 <div class="glass-panel p-6 md:p-8 rounded-3xl border border-slate-800">
-                    <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2"><i class="fa-solid fa-sliders text-emerald-400"></i> Global Site & Contact Configurations</h3>
+                    <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2"><i class="fa-solid fa-sliders text-emerald-400"></i> Global Configurations</h3>
                     <form onsubmit="saveStoreSettings(event)" class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div>
-                            <label class="block text-xs font-bold text-slate-300 mb-1.5">Website / Brand Name</label>
+                            <label class="block text-xs font-bold text-slate-300 mb-1.5">Brand / Store Name</label>
                             <input type="text" id="settingBrandName" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-300 mb-1.5">WhatsApp Number (For Direct Orders/Support)</label>
+                            <label class="block text-xs font-bold text-slate-300 mb-1.5">WhatsApp Number (For Direct Orders)</label>
                             <input type="text" id="settingWhatsapp" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white" placeholder="923001234567">
                         </div>
                         <div>
@@ -222,45 +262,45 @@
                             <input type="email" id="settingEmail" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white">
                         </div>
                         <div class="md:col-span-2">
-                            <button type="submit" class="pro-gradient text-white font-bold py-3 px-6 rounded-xl text-xs transition shadow-lg shadow-emerald-900/30">Save All Configurations</button>
+                            <button type="submit" class="pro-gradient text-slate-950 font-black py-3 px-6 rounded-xl text-xs transition shadow-lg shadow-emerald-900/30">Save Configuration Changes</button>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <!-- 2. Services Management Tab -->
+            <!-- Services Tab -->
             <div id="servicesTab" class="admin-tab-content space-y-6 hidden">
                 <div class="glass-panel p-6 rounded-3xl border border-slate-800">
-                    <h3 class="text-base font-bold text-white mb-4">Add New Service Card</h3>
+                    <h3 class="text-base font-bold text-white mb-4">Add Pro Service</h3>
                     <form onsubmit="addNewService(event)" class="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <input type="text" id="newServiceName" placeholder="Service Name" required class="bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white">
                         <input type="text" id="newServiceImage" placeholder="Image URL link" required class="bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white">
                         <input type="number" id="newServicePrice" placeholder="Price in PKR" required class="bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white">
-                        <button type="submit" class="pro-gradient text-white font-bold rounded-xl text-xs py-3 shadow-md">Add Service</button>
+                        <button type="submit" class="pro-gradient text-slate-950 font-black rounded-xl text-xs py-3 shadow-md">Add Service</button>
                     </form>
                 </div>
                 <div class="glass-panel p-6 rounded-3xl border border-slate-800">
-                    <h3 class="text-base font-bold text-white mb-4">Existing Active Services</h3>
+                    <h3 class="text-base font-bold text-white mb-4">Active Services</h3>
                     <div id="adminServicesList" class="space-y-3"></div>
                 </div>
             </div>
 
-            <!-- 3. Orders Management Tab -->
+            <!-- Orders Tab -->
             <div id="ordersTab" class="admin-tab-content space-y-6 hidden">
                 <div class="glass-panel p-6 rounded-3xl border border-slate-800">
-                    <h3 class="text-base font-bold text-white mb-4">Customer Orders List</h3>
+                    <h3 class="text-base font-bold text-white mb-4">Customer Orders</h3>
                     <div id="adminOrdersList" class="space-y-4"></div>
                 </div>
             </div>
 
-            <!-- 4. Coupons Management Tab -->
+            <!-- Coupons Tab -->
             <div id="couponsTab" class="admin-tab-content space-y-6 hidden">
                 <div class="glass-panel p-6 rounded-3xl border border-slate-800">
-                    <h3 class="text-base font-bold text-white mb-4">Create Discount Coupon</h3>
+                    <h3 class="text-base font-bold text-white mb-4">Create Coupon</h3>
                     <form onsubmit="addNewCoupon(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <input type="text" id="newCouponCode" placeholder="Coupon Code (e.g. PRO20)" required class="bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white uppercase">
-                        <input type="number" id="newCouponDiscount" placeholder="Discount % (e.g. 15)" required class="bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white">
-                        <button type="submit" class="pro-gradient text-white font-bold rounded-xl text-xs py-3 shadow-md">Save Coupon</button>
+                        <input type="text" id="newCouponCode" placeholder="Code (e.g. PRO20)" required class="bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white uppercase">
+                        <input type="number" id="newCouponDiscount" placeholder="Discount % (e.g. 10)" required class="bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white">
+                        <button type="submit" class="pro-gradient text-slate-950 font-black rounded-xl text-xs py-3 shadow-md">Save Coupon</button>
                     </form>
                 </div>
                 <div class="glass-panel p-6 rounded-3xl border border-slate-800">
@@ -268,18 +308,25 @@
                     <div id="adminCouponsList" class="space-y-3"></div>
                 </div>
             </div>
-
         </div>
     </div>
 
-    <!-- Pro Footer -->
+    <!-- Footer -->
     <footer class="glass-panel mt-16 py-8 border-t border-slate-800 text-center text-xs text-slate-400">
-        <p>&copy; 2026 <span id="footerBrandName" class="font-bold text-white">AMMAR SOCIAL</span>. All Rights Reserved. Built for Pakistan.</p>
+        <p>&copy; 2026 <span id="footerBrandName" class="font-bold text-white">AMMAR SOCIAL</span>. Enterprise Edition.</p>
     </footer>
 
-    <!-- Pro Application Logic -->
+    <!-- App Script -->
     <script>
-        // Default Global Settings
+        // Hide Splash Animation after load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('introSplash');
+                splash.style.opacity = '0';
+                splash.style.visibility = 'hidden';
+            }, 1000);
+        });
+
         let storeSettings = JSON.parse(localStorage.getItem('ammar_settings')) || {
             brandName: 'Ammar Social',
             whatsapp: '923001234567',
@@ -303,8 +350,8 @@
         let appliedDiscount = 0;
 
         function applyGlobalSettingsToUI() {
-            document.getElementById('siteTitleMeta').innerText = storeSettings.brandName + " - Pro SMM Platform";
-            document.getElementById('brandHeaderName').innerHTML = storeSettings.brandName.split(' ')[0] + ' <span class="text-emerald-400">' + (storeSettings.brandName.split(' ')[1] || 'SOCIAL') + '</span>';
+            document.getElementById('siteTitleMeta').innerText = storeSettings.brandName + " - Enterprise SMM";
+            document.getElementById('brandHeaderName').innerHTML = storeSettings.brandName.split(' ')[0] + ' <span class="text-emerald-400 text-glow">' + (storeSettings.brandName.split(' ')[1] || 'SOCIAL') + '</span>';
             document.getElementById('heroMainTitle').innerHTML = 'Supercharge Your Social Presence with <span class="text-emerald-400">' + storeSettings.brandName + '</span>';
             document.getElementById('payBoxNumber').innerText = storeSettings.payNumber;
             document.getElementById('payBoxTitle').innerText = storeSettings.payTitle;
@@ -324,7 +371,7 @@
             grid.innerHTML = '';
             services.forEach(service => {
                 grid.innerHTML += `
-                    <div class="glass-panel rounded-3xl overflow-hidden border border-slate-800 flex flex-col justify-between hover:border-emerald-500/40 transition duration-300 group">
+                    <div class="glass-panel rounded-3xl overflow-hidden border border-slate-800 flex flex-col justify-between hover:border-emerald-500/40 transition duration-300 group shadow-lg">
                         <div>
                             <div class="relative overflow-hidden h-48">
                                 <img src="${service.image}" alt="${service.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
@@ -336,8 +383,8 @@
                             </div>
                         </div>
                         <div class="p-6 pt-0">
-                            <button onclick="openOrderModal(${service.id})" class="w-full bg-slate-900 hover:bg-emerald-600 text-white font-bold py-3 rounded-2xl text-xs transition flex items-center justify-center gap-2 border border-slate-700/80 shadow-sm">
-                                <i class="fa-solid fa-cart-plus text-emerald-400 group-hover:text-white"></i> Instant Order
+                            <button onclick="openOrderModal(${service.id})" class="w-full bg-slate-900 hover:bg-emerald-500 hover:text-slate-950 text-white font-bold py-3 rounded-2xl text-xs transition flex items-center justify-center gap-2 border border-slate-700/80 shadow-sm">
+                                <i class="fa-solid fa-cart-plus text-emerald-400 group-hover:text-slate-950"></i> Instant Order
                             </button>
                         </div>
                     </div>
@@ -407,7 +454,7 @@
             document.getElementById('recService').innerText = currentSelectedService.name;
             document.getElementById('recPrice').innerText = 'Rs. ' + finalPrice;
 
-            let waMsg = `Hello ${storeSettings.brandName}, New Pro Order.%0AOrder ID: ${orderId}%0AName: ${name}%0AService: ${currentSelectedService.name}%0APrice: Rs. ${finalPrice}`;
+            let waMsg = `Hello ${storeSettings.brandName}, New Order.%0AOrder ID: ${orderId}%0AName: ${name}%0AService: ${currentSelectedService.name}%0APrice: Rs. ${finalPrice}`;
             document.getElementById('whatsappChatBtn').href = `https://wa.me/${storeSettings.whatsapp}?text=${waMsg}`;
             document.getElementById('receiptModal').classList.remove('hidden');
         }
@@ -423,7 +470,6 @@
             });
         }
 
-        // Admin Auth & Dashboard Navigation
         function openAdminLogin() { document.getElementById('adminLoginModal').classList.remove('hidden'); }
         function closeAdminLogin() { document.getElementById('adminLoginModal').classList.add('hidden'); }
 
@@ -435,7 +481,7 @@
                 document.getElementById('adminDashboardModal').classList.remove('hidden');
                 loadAdminData();
             } else {
-                alert('Incorrect Password! (Default password is admin10)');
+                alert('Incorrect Password! (Default is admin10)');
             }
         }
         function closeAdminDashboard() { document.getElementById('adminDashboardModal').classList.add('hidden'); }
@@ -446,18 +492,16 @@
                 btn.className = "bg-slate-900 text-slate-300 hover:bg-slate-800 px-5 py-2.5 rounded-xl text-xs font-bold transition border border-slate-800";
             });
             document.getElementById(tabId).classList.remove('hidden');
-            document.getElementById('btn' + tabId.charAt(0).toUpperCase() + tabId.slice(1)).className = "pro-gradient text-white px-5 py-2.5 rounded-xl text-xs font-bold transition shadow-md";
+            document.getElementById('btn' + tabId.charAt(0).toUpperCase() + tabId.slice(1)).className = "pro-gradient text-slate-950 font-black px-5 py-2.5 rounded-xl text-xs transition shadow-md";
         }
 
         function loadAdminData() {
-            // Populate Settings Form fields
             document.getElementById('settingBrandName').value = storeSettings.brandName;
             document.getElementById('settingWhatsapp').value = storeSettings.whatsapp;
             document.getElementById('settingPayNumber').value = storeSettings.payNumber;
             document.getElementById('settingPayTitle').value = storeSettings.payTitle;
             document.getElementById('settingEmail').value = storeSettings.email;
 
-            // Services list
             let sList = document.getElementById('adminServicesList');
             sList.innerHTML = '';
             services.forEach(s => {
@@ -469,7 +513,6 @@
                 `;
             });
 
-            // Orders list
             let oList = document.getElementById('adminOrdersList');
             oList.innerHTML = '';
             if(orders.length === 0) oList.innerHTML = '<p class="text-xs text-slate-500">No orders placed yet.</p>';
@@ -481,13 +524,12 @@
                         <p class="text-slate-300">Link: <a href="${o.link}" target="_blank" class="text-teal-400 underline">${o.link}</a></p>
                         <div class="flex justify-between items-center pt-2 border-t border-slate-800/80">
                             <span class="text-white font-extrabold text-sm">Rs. ${o.price}</span>
-                            <button onclick="deleteOrder(${index})" class="bg-red-500/20 text-red-400 px-3 py-1 rounded-lg font-bold">Remove Order</button>
+                            <button onclick="deleteOrder(${index})" class="bg-red-500/20 text-red-400 px-3 py-1 rounded-lg font-bold">Remove</button>
                         </div>
                     </div>
                 `;
             });
 
-            // Coupons list
             let cList = document.getElementById('adminCouponsList');
             cList.innerHTML = '';
             coupons.forEach((c, index) => {
@@ -554,7 +596,6 @@
             loadAdminData();
         }
 
-        // Initialize Pro UI on load
         applyGlobalSettingsToUI();
         renderServices();
     </script>
