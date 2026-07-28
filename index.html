@@ -52,7 +52,7 @@
         <p class="text-[11px] text-emerald-400 font-bold tracking-widest animate-pulse uppercase">Loading Secure Platform...</p>
     </div>
 
-    <!-- Main Website View Container -->
+    <!-- Main Website View Container (Public Users Only) -->
     <div id="mainWebsiteView">
         
         <!-- Top Live Ticker Bar -->
@@ -69,7 +69,7 @@
             </div>
         </div>
 
-        <!-- Top Navbar -->
+        <!-- Top Navbar (Clean, No Admin Links Visible) -->
         <header class="glass-panel sticky top-0 z-40 border-b border-slate-800">
             <div class="max-w-7xl mx-auto px-4 py-3.5 flex justify-between items-center">
                 <div class="flex items-center space-x-3">
@@ -86,13 +86,14 @@
                 <nav class="hidden md:flex items-center space-x-6 text-xs font-bold text-slate-300">
                     <a href="#home" onclick="switchPage('home')" id="navHome" class="text-emerald-400 transition hover:text-emerald-300">Home</a>
                     <a href="#services" onclick="switchPage('services')" id="navServices" class="transition hover:text-emerald-300">Services</a>
+                    <a href="#track" onclick="switchPage('track')" id="navTrack" class="transition hover:text-emerald-300">Track Order</a>
                     <a href="#about" onclick="switchPage('about')" id="navAbout" class="transition hover:text-emerald-300">About Us</a>
                 </nav>
 
                 <div class="flex items-center space-x-3">
-                    <a href="#admin" onclick="openAdminDirectly(event)" class="text-xs font-bold text-emerald-400 bg-emerald-950/40 px-3.5 py-2 rounded-xl border border-emerald-500/30 hover:bg-emerald-500 hover:text-slate-950 transition flex items-center gap-1.5 shadow-md">
-                        <i class="fa-solid fa-lock text-[10px]"></i> Admin Portal
-                    </a>
+                    <button onclick="switchPage('track')" class="md:hidden text-xs font-bold text-emerald-400 bg-emerald-950/40 px-3 py-2 rounded-xl border border-emerald-500/30">
+                        <i class="fa-solid fa-magnifying-glass"></i> Track
+                    </button>
                 </div>
             </div>
         </header>
@@ -113,9 +114,9 @@
                     
                     <div class="flex flex-wrap justify-center gap-4">
                         <button onclick="switchPage('services')" class="pro-gradient text-slate-950 font-black px-8 py-3.5 rounded-2xl text-xs uppercase tracking-wider shadow-lg shadow-emerald-900/40 transition hover:opacity-90">Explore Services</button>
-                        <a href="https://wa.me/923714899865?text=Hello%20Ammar,%20I%20want%20to%20place%20an%20order%20for%20the%20SMM%20panel." target="_blank" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-8 py-3.5 rounded-2xl text-xs uppercase tracking-wider border border-slate-700 transition flex items-center gap-2">
-                            <i class="fa-brands fa-whatsapp text-emerald-400 text-base"></i> Direct WhatsApp
-                        </a>
+                        <button onclick="switchPage('track')" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-8 py-3.5 rounded-2xl text-xs uppercase tracking-wider border border-slate-700 transition flex items-center gap-2">
+                            <i class="fa-solid fa-magnifying-glass text-emerald-400"></i> Track My Order
+                        </button>
                     </div>
                 </div>
 
@@ -154,6 +155,54 @@
                 <div id="servicesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             </div>
 
+            <!-- TRACK ORDER PAGE -->
+            <div id="pageTrack" class="space-y-6 hidden">
+                <div class="glass-panel p-8 md:p-12 rounded-3xl border border-slate-800 max-w-2xl mx-auto space-y-6">
+                    <div class="text-center">
+                        <span class="bg-emerald-500/10 text-emerald-400 text-xs font-bold px-3.5 py-1.5 rounded-full border border-emerald-500/20">Live Order Status</span>
+                        <h2 class="text-2xl md:text-3xl font-black text-white mt-3">Track Your Order</h2>
+                        <p class="text-xs text-slate-400 mt-1">Enter your Order ID below to view complete details and processing status.</p>
+                    </div>
+                    
+                    <div class="flex gap-3">
+                        <input type="text" id="trackOrderIdInput" placeholder="Enter Order ID (e.g. ORD-123456)" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white uppercase focus:outline-none focus:border-emerald-500">
+                        <button onclick="trackOrderQuery()" class="pro-gradient text-slate-950 font-black px-6 py-3 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-emerald-900/30">Track</button>
+                    </div>
+
+                    <!-- Result Box -->
+                    <div id="trackResultContainer" class="hidden bg-slate-950 p-6 rounded-2xl border border-slate-800 space-y-4">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                            <span class="text-xs text-slate-400">Order ID:</span>
+                            <span id="resTrackId" class="text-emerald-400 font-mono font-bold text-sm"></span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 text-xs">
+                            <div>
+                                <p class="text-slate-400 mb-1">Customer Name:</p>
+                                <p id="resTrackName" class="text-white font-bold"></p>
+                            </div>
+                            <div>
+                                <p class="text-slate-400 mb-1">WhatsApp Number:</p>
+                                <p id="resTrackWhatsapp" class="text-white font-mono"></p>
+                            </div>
+                        </div>
+                        <div class="text-xs">
+                            <p class="text-slate-400 mb-1">Service Selected:</p>
+                            <p id="resTrackService" class="text-white font-medium"></p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 text-xs pt-2 border-t border-slate-800">
+                            <div>
+                                <p class="text-slate-400 mb-1">Paid Amount:</p>
+                                <p id="resTrackPrice" class="text-emerald-400 font-extrabold text-sm"></p>
+                            </div>
+                            <div>
+                                <p class="text-slate-400 mb-1">Current Status:</p>
+                                <span class="bg-amber-500/20 text-amber-400 px-3 py-1 rounded-full text-[10px] font-bold uppercase">Pending Review</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- ABOUT PAGE -->
             <div id="pageAbout" class="space-y-6 hidden">
                 <div class="glass-panel p-8 md:p-12 rounded-3xl border border-slate-800 max-w-4xl mx-auto space-y-6">
@@ -180,7 +229,7 @@
         </main>
     </div>
 
-    <!-- Floating WhatsApp Button (Added as Requested) -->
+    <!-- Floating WhatsApp Button -->
     <a href="https://wa.me/923714899865?text=Hello%20Ammar,%20I%20want%20to%20place%20an%20order%20for%20the%20SMM%20panel." 
        target="_blank" 
        class="fixed bottom-6 right-6 z-50 bg-emerald-600 hover:bg-emerald-500 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl transition transform hover:scale-110 border-2 border-slate-900"
@@ -188,7 +237,7 @@
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
-    <!-- Secret Admin Login View -->
+    <!-- Secret Admin Login View (Hidden from regular users, opens only via #admin URL hash) -->
     <div id="adminLoginView" class="hidden fixed inset-0 bg-slate-950 z-50 flex items-center justify-center p-4">
         <div class="glass-panel rounded-3xl max-w-sm w-full p-6 relative border border-slate-700 shadow-2xl">
             <div class="text-center mb-6">
@@ -425,10 +474,12 @@
         function switchPage(pageName) {
             document.getElementById('pageHome').classList.add('hidden');
             document.getElementById('pageServices').classList.add('hidden');
+            document.getElementById('pageTrack').classList.add('hidden');
             document.getElementById('pageAbout').classList.add('hidden');
             
             document.getElementById('navHome').className = "transition hover:text-emerald-300";
             document.getElementById('navServices').className = "transition hover:text-emerald-300";
+            document.getElementById('navTrack').className = "transition hover:text-emerald-300";
             document.getElementById('navAbout').className = "transition hover:text-emerald-300";
 
             if(pageName === 'home') {
@@ -438,16 +489,13 @@
                 document.getElementById('pageServices').classList.remove('hidden');
                 document.getElementById('navServices').className = "text-emerald-400 transition hover:text-emerald-300";
                 renderServices();
+            } else if(pageName === 'track') {
+                document.getElementById('pageTrack').classList.remove('hidden');
+                document.getElementById('navTrack').className = "text-emerald-400 transition hover:text-emerald-300";
             } else if(pageName === 'about') {
                 document.getElementById('pageAbout').classList.remove('hidden');
                 document.getElementById('navAbout').className = "text-emerald-400 transition hover:text-emerald-300";
             }
-        }
-
-        function openAdminDirectly(e) {
-            e.preventDefault();
-            window.location.hash = 'admin';
-            checkRoute();
         }
 
         function closeAdminView(e) {
@@ -520,6 +568,24 @@
                     cards[index].style.display = "none";
                 }
             });
+        }
+
+        function trackOrderQuery() {
+            let searchId = document.getElementById('trackOrderIdInput').value.trim().toUpperCase();
+            let foundOrder = orders.find(o => o.orderId.toUpperCase() === searchId);
+            let container = document.getElementById('trackResultContainer');
+
+            if(foundOrder) {
+                document.getElementById('resTrackId').innerText = foundOrder.orderId;
+                document.getElementById('resTrackName').innerText = foundOrder.name;
+                document.getElementById('resTrackWhatsapp').innerText = foundOrder.whatsapp;
+                document.getElementById('resTrackService').innerText = foundOrder.serviceName;
+                document.getElementById('resTrackPrice').innerText = 'Rs. ' + foundOrder.price;
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
+                alert('No order found with this ID. Please check and try again.');
+            }
         }
 
         function openOrderModal(id) {
@@ -665,7 +731,7 @@
         function saveStoreSettings(e) {
             e.preventDefault();
             storeSettings.brandName = document.getElementById('settingBrandName').value;
-            storeSettings.whatsapp = document.getElementById('settingWhatsapp').value;
+            storeSettings.whatsapp = document.getElementById('settingWhatsapp++')?.value || document.getElementById('settingWhatsapp').value;
             storeSettings.payNumber = document.getElementById('settingPayNumber').value;
             storeSettings.payTitle = document.getElementById('settingPayTitle').value;
             
