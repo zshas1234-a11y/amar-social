@@ -240,7 +240,69 @@ Premium AI Solutions
 
 </div>
 
+<script type="module">
 
+import { db } from "../firebase/config.js";
+
+import {
+collection,
+addDoc,
+getDocs
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+
+const addButton = document.querySelector("button");
+
+
+addButton.onclick = async()=>{
+
+
+let name = document.querySelectorAll("input")[0].value;
+
+let price = document.querySelectorAll("input")[1].value;
+
+let category = document.querySelector("select").value;
+
+
+
+if(!name || !price){
+
+alert("Please fill all fields");
+
+return;
+
+}
+
+
+
+await addDoc(
+collection(db,"services"),
+{
+
+name:name,
+
+price:price,
+
+category:category,
+
+createdAt:new Date()
+
+}
+
+);
+
+
+alert("Service Added Successfully");
+
+
+};
+
+
+
+</script>
 
 </body>
 
