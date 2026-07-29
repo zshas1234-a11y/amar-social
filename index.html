@@ -1,2173 +1,952 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="ur" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevCraft Elite | Professional Software & App Development Services</title>
-    <meta name="description" content="Hire expert software, website, and mobile app developers. Premium digital solutions for modern businesses.">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
+    <title id="siteTitleMeta">Ammar Social - Enterprise SMM Suite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <!-- Firebase App & Firestore SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
     <style>
-        :root {
-            --bg-primary: #090a0f;
-            --bg-secondary: #12141c;
-            --bg-card: rgba(18, 20, 28, 0.7);
-            --border-color: rgba(255, 255, 255, 0.08);
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --accent-primary: #6366f1;
-            --accent-secondary: #a855f7;
-            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-            --glow-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
-            --card-hover-transform: translateY(-6px);
-            --transition-speed: 0.3s;
-            --font-family: 'Plus Jakarta Sans', sans-serif;
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; color: #f8fafc; overflow-x: hidden; }
+        
+        .glass-panel { 
+            background: rgba(15, 23, 42, 0.8); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+        .glass-panel:hover {
+            border-color: rgba(16, 185, 129, 0.3);
+            box-shadow: 0 20px 45px rgba(16, 185, 129, 0.1);
         }
 
-        .light {
-            --bg-primary: #f8fafc;
-            --bg-secondary: #ffffff;
-            --bg-card: rgba(255, 255, 255, 0.8);
-            --border-color: rgba(0, 0, 0, 0.08);
-            --text-primary: #0f172a;
-            --text-secondary: #64748b;
-            --accent-primary: #4f46e5;
-            --accent-secondary: #9333ea;
-            --accent-gradient: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
-            --glow-shadow: 0 0 30px rgba(79, 70, 229, 0.15);
+        .pro-gradient { background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%); }
+        .text-glow { text-shadow: 0 0 20px rgba(16, 185, 129, 0.5); }
+        
+        #introSplash {
+            position: fixed; inset: 0; background: #020617; z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: var(--font-family);
-            scrollbar-width: thin;
-            scrollbar-color: var(--accent-primary) var(--bg-secondary);
-        }
-
-        body {
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            line-height: 1.6;
-            transition: background-color var(--transition-speed), color var(--transition-speed);
-        }
-
-        /* Loading Screen */
-        #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-primary);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid var(--border-color);
-            border-top: 3px solid var(--accent-primary);
-            border-radius: 50%;
+        .loader-ring {
+            width: 70px; height: 70px; border: 4px solid rgba(16, 185, 129, 0.2);
+            border-top: 4px solid #10b981; border-radius: 50%;
             animation: spin 1s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Utility Classes */
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-        .flex { display: flex; }
-        .flex-col { flex-direction: column; }
-        .items-center { align-items: center; }
-        .justify-between { justify-content: space-between; }
-        .justify-center { justify-content: center; }
-        .gap-1 { gap: 0.5rem; }
-        .gap-2 { gap: 1rem; }
-        .gap-4 { gap: 2rem; }
-        .grid { display: grid; }
-        .text-center { text-align: center; }
-        .font-bold { font-weight: 700; }
-        
-        /* Glassmorphism */
-        .glass {
-            background: var(--bg-card);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--border-color);
-        }
-
-        /* Buttons & CTAs */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            padding: 0.85rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
-            text-decoration: none;
-            border: none;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-primary {
-            background: var(--accent-gradient);
-            color: #ffffff;
-            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(99, 102, 241, 0.6);
-        }
-        .btn-outline {
-            background: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-        }
-        .btn-outline:hover {
-            background: var(--border-color);
-            transform: translateY(-2px);
-        }
-
-        /* Navbar */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            transition: all var(--transition-speed);
-        }
-        nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 80px;
-            padding: 0 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-            align-items: center;
-        }
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color var(--transition-speed);
-            font-size: 0.95rem;
-        }
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--text-primary);
-        }
-        .nav-actions {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-        .theme-toggle, .admin-trigger {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all var(--transition-speed);
-        }
-        .theme-toggle:hover, .admin-trigger:hover {
-            border-color: var(--accent-primary);
-            transform: scale(1.05);
-        }
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        /* Hero Section */
-        .hero {
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding-top: 80px;
-            overflow: hidden;
-        }
-        .hero-bg-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.5;
-        }
-        .hero-content {
-            text-align: center;
-            max-width: 900px;
-            z-index: 1;
-            padding: 2rem;
-        }
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            font-size: 0.85rem;
-            font-weight: 500;
-            margin-bottom: 1.5rem;
-            animation: fadeInDown 1s ease;
-        }
-        .badge i { color: #10b981; }
-        .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4.5rem);
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.02em;
-        }
-        .hero h1 span {
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .hero p {
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            color: var(--text-secondary);
-            margin-bottom: 2.5rem;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .hero-btns {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        /* Project Stats Section */
-        .stats-section {
-            padding: 4rem 0;
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-            background: var(--bg-secondary);
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 2rem;
-            text-align: center;
-        }
-        .stat-item h3 {
-            font-size: 3rem;
-            font-weight: 800;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
-        }
-        .stat-item p {
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        /* Section Titles */
-        .section-header {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto 4rem auto;
-        }
-        .section-header h2 {
-            font-size: clamp(2rem, 3vw, 2.75rem);
-            font-weight: 800;
-            margin-bottom: 1rem;
-            letter-spacing: -0.02em;
-        }
-        .section-header p {
-            color: var(--text-secondary);
-            font-size: 1.05rem;
-        }
-
-        /* Services Section */
-        .services-section {
-            padding: 8rem 0;
-        }
-        .filter-container {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
-        }
-        .filter-btn {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            padding: 0.6rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all var(--transition-speed);
-        }
-        .filter-btn:hover, .filter-btn.active {
-            background: var(--accent-gradient);
-            color: #fff;
-            border-color: transparent;
-        }
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-        .service-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 2.5rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-        .service-card:hover {
-            transform: var(--card-hover-transform);
-            border-color: var(--accent-primary);
-            box-shadow: var(--glow-shadow);
-        }
-        .service-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 16px;
-            background: var(--accent-gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: #fff;
-            margin-bottom: 1.5rem;
-        }
-        .service-card h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-        .service-card p {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            font-size: 0.95rem;
-        }
-        .service-features {
-            list-style: none;
-            margin-bottom: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-        .service-features li {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-        .service-features li i {
-            color: #10b981;
-        }
-        .service-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border-color);
-        }
-        .service-price {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--text-primary);
-        }
-        .service-time {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        /* Why Choose Me */
-        .features-section {
-            padding: 8rem 0;
-            background: var(--bg-secondary);
-        }
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-        .feature-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 2.5rem;
-            transition: all var(--transition-speed);
-        }
-        .feature-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent-primary);
-        }
-        .feature-card i {
-            font-size: 2rem;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1.5rem;
-            display: inline-block;
-        }
-        .feature-card h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-        .feature-card p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        /* Portfolio Section */
-        .portfolio-section {
-            padding: 8rem 0;
-        }
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-        .portfolio-card {
-            border-radius: 20px;
-            overflow: hidden;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            transition: all var(--transition-speed);
-        }
-        .portfolio-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent-primary);
-        }
-        .portfolio-img {
-            height: 240px;
-            width: 100%;
-            background-size: cover;
-            background-position: center;
-            position: relative;
-            transition: transform var(--transition-speed);
-        }
-        .portfolio-card:hover .portfolio-img {
-            transform: scale(1.03);
-        }
-        .portfolio-content {
-            padding: 2rem;
-        }
-        .portfolio-tag {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--accent-primary);
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-        .portfolio-content h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-        }
-        .portfolio-content p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-        }
-
-        /* Skills & Tech Section */
-        .skills-section {
-            padding: 8rem 0;
-            background: var(--bg-secondary);
-        }
-        .tech-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 1.5rem;
-            text-align: center;
-        }
-        .tech-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            padding: 2rem 1rem;
-            border-radius: 16px;
-            transition: all var(--transition-speed);
-        }
-        .tech-card:hover {
-            border-color: var(--accent-primary);
-            transform: translateY(-5px);
-        }
-        .tech-card i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-        .tech-card span {
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        /* Pricing Section */
-        .pricing-section {
-            padding: 8rem 0;
-        }
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-        }
-        .pricing-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 3rem 2rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            transition: all var(--transition-speed);
-        }
-        .pricing-card.featured {
-            border-color: var(--accent-primary);
-            box-shadow: var(--glow-shadow);
-        }
-        .pricing-badge {
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--accent-gradient);
-            color: #fff;
-            padding: 0.3rem 1rem;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-        .pricing-header h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        .pricing-header p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-bottom: 2rem;
-        }
-        .pricing-price {
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 2rem;
-        }
-        .pricing-price span {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        /* Testimonials */
-        .testimonials-section {
-            padding: 8rem 0;
-            background: var(--bg-secondary);
-        }
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-        }
-        .testimonial-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            padding: 2.5rem;
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .stars {
-            color: #f59e0b;
-            margin-bottom: 1.5rem;
-        }
-        .testimonial-card p {
-            font-style: italic;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
-        }
-        .client-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        .client-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-size: cover;
-            background-position: center;
-        }
-        .client-details h4 {
-            font-weight: 700;
-            font-size: 1rem;
-        }
-        .client-details p {
-            font-size: 0.8rem;
-            margin: 0;
-            font-style: normal;
-        }
-
-        /* FAQ Section */
-        .faq-section {
-            padding: 8rem 0;
-        }
-        .faq-container {
-            max-width: 800px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        .faq-item {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all var(--transition-speed);
-        }
-        .faq-question {
-            padding: 1.5rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-weight: 700;
-            cursor: pointer;
-            font-size: 1.05rem;
-        }
-        .faq-question i {
-            transition: transform var(--transition-speed);
-        }
-        .faq-item.active .faq-question i {
-            transform: rotate(180deg);
-        }
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-            padding: 0 2rem;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-        .faq-item.active .faq-answer {
-            padding-bottom: 1.5rem;
-            max-height: 200px;
-        }
-
-        /* Contact Section */
-        .contact-section {
-            padding: 8rem 0;
-            background: var(--bg-secondary);
-        }
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 4rem;
-        }
-        @media(max-width: 968px) {
-            .contact-grid { grid-template-columns: 1fr; }
-        }
-        .contact-info h3 {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-        }
-        .contact-info p {
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-        }
-        .contact-details-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-        .contact-detail-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        .contact-detail-item i {
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent-primary);
-            font-size: 1.1rem;
-        }
-        .contact-form {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            padding: 3rem;
-            border-radius: 20px;
-        }
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        .form-group label {
-            display: block;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        .form-control {
-            width: 100%;
-            padding: 0.85rem 1.2rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 0.95rem;
-            transition: all var(--transition-speed);
-        }
-        .form-control:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-        }
-        textarea.form-control {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--bg-primary);
-            border-top: 1px solid var(--border-color);
-            padding: 5rem 0 2rem 0;
-        }
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 3rem;
-            margin-bottom: 4rem;
-        }
-        @media(max-width: 968px) {
-            .footer-grid { grid-template-columns: 1fr; }
-        }
-        .footer-col h4 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-        }
-        .footer-col p, .footer-col ul {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            list-style: none;
-        }
-        .footer-col ul {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-        .footer-col ul a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: color var(--transition-speed);
-        }
-        .footer-col ul a:hover {
-            color: var(--text-primary);
-        }
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-        .social-links a {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-primary);
-            text-decoration: none;
-            transition: all var(--transition-speed);
-        }
-        .social-links a:hover {
-            background: var(--accent-gradient);
-            border-color: transparent;
-        }
-        .footer-bottom {
-            padding-top: 2rem;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        /* Floating Buttons */
-        .floating-buttons {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            z-index: 999;
-        }
-        .float-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-size: 1.25rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            cursor: pointer;
-            transition: transform var(--transition-speed);
-            text-decoration: none;
-            border: none;
-        }
-        .float-btn:hover {
-            transform: scale(1.1);
-        }
-        .whatsapp-float { background: #25d366; }
-        .backtotop-float { 
-            background: var(--bg-card); 
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-            opacity: 0;
-            visibility: hidden;
-            transition: all var(--transition-speed);
-        }
-        .backtotop-float.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Checkout Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(8px);
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all var(--transition-speed);
-        }
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        .modal-content {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            width: 100%;
-            max-width: 600px;
-            border-radius: 24px;
-            padding: 3rem;
-            position: relative;
-            max-height: 90vh;
-            overflow-y: auto;
-            transform: translateY(20px);
-            transition: transform var(--transition-speed);
-        }
-        .modal-overlay.active .modal-content {
-            transform: translateY(0);
-        }
-        .modal-close {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Admin Dashboard Styles */
-        .admin-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-primary);
-            z-index: 3000;
-            display: none;
-            overflow-y: auto;
-        }
-        .admin-header {
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .admin-body {
-            padding: 3rem 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        .admin-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-        .admin-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            padding: 1.5rem;
-            border-radius: 16px;
-        }
-        .admin-tabs {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 1rem;
-            overflow-x: auto;
-        }
-        .admin-tab {
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            font-weight: 600;
-            cursor: pointer;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            white-space: nowrap;
-        }
-        .admin-tab.active {
-            background: var(--accent-gradient);
-            color: #fff;
-        }
-        .admin-section-content { display: none; }
-        .admin-section-content.active { display: block; }
-
-        /* Notification Toast */
-        #toast-container {
-            position: fixed;
-            top: 2rem;
-            right: 2rem;
-            z-index: 4000;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-        .toast {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            animation: slideIn 0.3s ease;
-            backdrop-filter: blur(12px);
-        }
-        .toast.success i { color: #10b981; }
-        .toast.error i { color: #ef4444; }
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        /* Responsive Design */
-        @media(max-width: 768px) {
-            .nav-links {
-                position: fixed;
-                top: 80px;
-                left: -100%;
-                width: 100%;
-                height: calc(100vh - 80px);
-                background: var(--bg-secondary);
-                flex-direction: column;
-                justify-content: center;
-                transition: left 0.3s ease;
-                border-top: 1px solid var(--border-color);
-            }
-            .nav-links.active { left: 0; }
-            .mobile-menu-btn { display: block; }
-        }
+        .marquee-container { overflow: hidden; white-space: nowrap; }
+        .marquee-content { display: inline-block; animation: marquee 25s linear infinite; }
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-white">
 
-    <!-- Loading Screen -->
-    <div id="loading-screen">
-        <div class="spinner"></div>
+    <!-- Cinematic Intro Splash Screen -->
+    <div id="introSplash">
+        <div class="loader-ring mb-4"></div>
+        <h1 class="text-xl md:text-2xl font-black tracking-widest text-white uppercase mb-1">AMMAR <span class="text-emerald-400">SOCIAL</span></h1>
+        <p class="text-[11px] text-emerald-400 font-bold tracking-widest animate-pulse uppercase">Connecting Firebase Cloud...</p>
     </div>
 
-    <!-- Notification Toast Container -->
-    <div id="toast-container"></div>
-
-    <!-- Header & Navigation -->
-    <header class="glass" id="header">
-        <nav>
-            <a href="#" class="logo" id="brand-logo-text"><i class="fa-solid fa-code"></i> DevCraft Elite</a>
-            <ul class="nav-links" id="nav-links">
-                <li><a href="#services" class="active">Services</a></li>
-                <li><a href="#features">Why Us</a></li>
-                <li><a href="#portfolio">Portfolio</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#pricing">Pricing</a></li>
-                <li><a href="#faq">FAQ</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <div class="nav-actions">
-                <button class="theme-toggle" id="theme-toggle" title="Toggle Theme"><i class="fa-solid fa-moon"></i></button>
-                <button class="admin-trigger" id="admin-trigger" title="Admin Portal"><i class="fa-solid fa-lock"></i></button>
-                <button class="mobile-menu-btn" id="mobile-menu-btn"><i class="fa-solid fa-bars"></i></button>
+    <!-- Main Website View Container -->
+    <div id="mainWebsiteView">
+        
+        <!-- Top Live Ticker Bar -->
+        <div class="bg-slate-950 border-b border-emerald-500/20 py-2 px-4 text-xs font-semibold text-emerald-300 flex flex-wrap justify-between items-center">
+            <div class="flex items-center gap-2 mb-1 md:mb-0">
+                <span class="inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full border border-emerald-500/20 text-[11px] font-bold">
+                    <i class="fa-solid fa-cloud-arrow-up text-emerald-400"></i> Firebase Cloud Connected
+                </span>
             </div>
-        </nav>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <canvas class="hero-bg-canvas" id="hero-canvas"></canvas>
-        <div class="hero-content">
-            <div class="badge"><i class="fa-solid fa-circle"></i> Available for New Projects & Contracts</div>
-            <h1 id="hero-title">High-Performance <span>Software & App</span> Solutions</h1>
-            <p id="hero-subtitle">We engineer robust web applications, native mobile apps, scalable backend systems, and AI-driven products that elevate your digital presence and accelerate growth.</p>
-            <div class="hero-btns">
-                <a href="#services" class="btn btn-primary">Explore Services <i class="fa-solid fa-arrow-right"></i></a>
-                <a href="#contact" class="btn btn-outline">Schedule Consultation</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Project Statistics -->
-    <section class="stats-section">
-        <div class="container">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <h3 class="counter" data-target="250">0</h3>
-                    <p>Completed Projects</p>
-                </div>
-                <div class="stat-item">
-                    <h3 class="counter" data-target="99">0</h3>
-                    <p>Client Satisfaction (%)</p>
-                </div>
-                <div class="stat-item">
-                    <h3 class="counter" data-target="8">0</h3>
-                    <p>Years of Expertise</p>
-                </div>
-                <div class="stat-item">
-                    <h3 class="counter" data-target="50">0</h3>
-                    <p>Global Enterprise Clients</p>
+            <div class="marquee-container w-full md:w-1/2 overflow-hidden">
+                <div class="marquee-content text-slate-400">
+                    ⚡ Instant Automated Delivery &nbsp;&nbsp;|&nbsp;&nbsp; Use Code <span class="text-emerald-400 font-bold">AMMAR10</span> for 10% OFF &nbsp;&nbsp;|&nbsp;&nbsp; Pakistan's #1 Trusted SMM Panel.
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Services Section -->
-    <section class="services-section" id="services">
-        <div class="container">
-            <div class="section-header">
-                <h2>Elite Development Services</h2>
-                <p>Tailored technology solutions designed for scale, security, and exceptional user experience.</p>
+        <!-- Top Navbar -->
+        <header class="glass-panel sticky top-0 z-40 border-b border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 py-3.5 flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="pro-gradient text-slate-950 p-2.5 rounded-2xl shadow-lg">
+                        <i class="fa-solid fa-bolt text-lg font-black"></i>
+                    </div>
+                    <div>
+                        <h1 id="brandHeaderName" class="text-lg font-black tracking-wider text-white uppercase">AMMAR <span class="text-emerald-400 text-glow">SOCIAL</span></h1>
+                        <p class="text-[10px] text-emerald-400 font-bold tracking-widest uppercase">Cloud Enterprise Suite</p>
+                    </div>
+                </div>
+                
+                <nav class="hidden md:flex items-center space-x-6 text-xs font-bold text-slate-300">
+                    <a href="#home" onclick="switchPage('home')" id="navHome" class="text-emerald-400 transition hover:text-emerald-300">Home</a>
+                    <a href="#services" onclick="switchPage('services')" id="navServices" class="transition hover:text-emerald-300">Services</a>
+                    <a href="#track" onclick="switchPage('track')" id="navTrack" class="transition hover:text-emerald-300">Track Order</a>
+                    <a href="#about" onclick="switchPage('about')" id="navAbout" class="transition hover:text-emerald-300">About Us</a>
+                </nav>
+
+                <div class="flex items-center space-x-3">
+                    <button onclick="switchPage('track')" class="md:hidden text-xs font-bold text-emerald-400 bg-emerald-950/40 px-3 py-2 rounded-xl border border-emerald-500/30">
+                        <i class="fa-solid fa-magnifying-glass"></i> Track
+                    </button>
+                </div>
             </div>
+        </header>
+
+        <!-- Dynamic Pages Container -->
+        <main class="max-w-7xl mx-auto px-4 py-8 w-full relative">
             
-            <div class="filter-container" id="filter-container">
-                <button class="filter-btn active" data-filter="all">All Services</button>
-                <button class="filter-btn" data-filter="Website">Website</button>
-                <button class="filter-btn" data-filter="Software">Software</button>
-                <button class="filter-btn" data-filter="Application">Application</button>
-                <button class="filter-btn" data-filter="AI">AI</button>
-                <button class="filter-btn" data-filter="Design">Design</button>
-            </div>
-
-            <div class="services-grid" id="services-grid">
-                <!-- Dynamically populated via JS -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Why Choose Me -->
-    <section class="features-section" id="features">
-        <div class="container">
-            <div class="section-header">
-                <h2>Why Choose DevCraft Elite?</h2>
-                <p>We combine rigorous engineering standards with cutting-edge design to deliver unbeatable results.</p>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <i class="fa-solid fa-bolt"></i>
-                    <h3>Lightning Fast Execution</h3>
-                    <p>Optimized architectures and clean codebase ensuring rapid deployment without sacrificing stability.</p>
+            <!-- HOME PAGE -->
+            <div id="pageHome" class="space-y-12">
+                <div class="glass-panel rounded-3xl p-8 md:p-14 text-center relative overflow-hidden border border-slate-700/80 shadow-2xl">
+                    <div class="absolute -right-20 -top-20 w-60 h-60 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-bold px-4 py-1.5 rounded-full inline-flex items-center gap-2 mb-4">
+                        <i class="fa-solid fa-circle-check text-emerald-400"></i> Firebase-Powered Social Growth Platform
+                    </span>
+                    <h2 id="heroMainTitle" class="text-3xl md:text-5xl font-black text-white mb-4 tracking-tight">Supercharge Your Social Presence</h2>
+                    <p class="text-slate-400 max-w-2xl mx-auto text-sm md:text-base mb-8">High-performance automated growth engine backed by secure Firebase Cloud database storage.</p>
+                    
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <button onclick="switchPage('services')" class="pro-gradient text-slate-950 font-black px-8 py-3.5 rounded-2xl text-xs uppercase tracking-wider shadow-lg shadow-emerald-900/40 transition hover:opacity-90">Explore Services</button>
+                        <button onclick="switchPage('track')" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-8 py-3.5 rounded-2xl text-xs uppercase tracking-wider border border-slate-700 transition flex items-center gap-2">
+                            <i class="fa-solid fa-magnifying-glass text-emerald-400"></i> Track My Order
+                        </button>
+                    </div>
                 </div>
-                <div class="feature-card">
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="glass-panel p-6 rounded-3xl border border-slate-800">
+                        <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center text-lg mb-4 border border-emerald-500/20"><i class="fa-solid fa-bolt"></i></div>
+                        <h3 class="font-bold text-white text-base mb-2">Instant Cloud Sync</h3>
+                        <p class="text-xs text-slate-400">Orders and services are instantly synchronized through Google Firebase Cloud.</p>
+                    </div>
+                    <div class="glass-panel p-6 rounded-3xl border border-slate-800">
+                        <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center text-lg mb-4 border border-emerald-500/20"><i class="fa-solid fa-shield-halved"></i></div>
+                        <h3 class="font-bold text-white text-base mb-2">100% Safe & Secure</h3>
+                        <p class="text-xs text-slate-400">Encrypted cloud database storage and complete data privacy for all users.</p>
+                    </div>
+                    <div class="glass-panel p-6 rounded-3xl border border-slate-800">
+                        <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center text-lg mb-4 border border-emerald-500/20"><i class="fa-solid fa-headset"></i></div>
+                        <h3 class="font-bold text-white text-base mb-2">24/7 Support</h3>
+                        <p class="text-xs text-slate-400">Dedicated support team available round the clock via WhatsApp.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SERVICES PAGE -->
+            <div id="pageServices" class="space-y-6 hidden">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-cubes text-emerald-400"></i> Professional Service Catalogs
+                    </h3>
+                    <div class="w-full md:w-72 relative">
+                        <input type="text" id="searchService" placeholder="Search services..." onkeyup="filterServices()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 pl-10 text-xs text-white focus:outline-none focus:border-emerald-500">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-500 text-xs"></i>
+                    </div>
+                </div>
+
+                <div id="servicesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </div>
+
+            <!-- TRACK ORDER PAGE -->
+            <div id="pageTrack" class="space-y-6 hidden">
+                <div class="glass-panel p-8 md:p-12 rounded-3xl border border-slate-800 max-w-2xl mx-auto space-y-6">
+                    <div class="text-center">
+                        <span class="bg-emerald-500/10 text-emerald-400 text-xs font-bold px-3.5 py-1.5 rounded-full border border-emerald-500/20">Live Cloud Status</span>
+                        <h2 class="text-2xl md:text-3xl font-black text-white mt-3">Track Your Order</h2>
+                        <p class="text-xs text-slate-400 mt-1">Enter your Order ID below to fetch live status from Firebase.</p>
+                    </div>
+                    
+                    <div class="flex gap-3">
+                        <input type="text" id="trackOrderIdInput" placeholder="Enter Order ID (e.g. ORD-123456)" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white uppercase focus:outline-none focus:border-emerald-500">
+                        <button onclick="trackOrderQuery()" class="pro-gradient text-slate-950 font-black px-6 py-3 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-emerald-900/30">Track</button>
+                    </div>
+
+                    <div id="trackResultContainer" class="hidden bg-slate-950 p-6 rounded-2xl border border-slate-800 space-y-4">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                            <span class="text-xs text-slate-400">Order ID:</span>
+                            <span id="resTrackId" class="text-emerald-400 font-mono font-bold text-sm"></span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 text-xs">
+                            <div>
+                                <p class="text-slate-400 mb-1">Customer Name:</p>
+                                <p id="resTrackName" class="text-white font-bold"></p>
+                            </div>
+                            <div>
+                                <p class="text-slate-400 mb-1">WhatsApp Number:</p>
+                                <p id="resTrackWhatsapp" class="text-white font-mono"></p>
+                            </div>
+                        </div>
+                        <div class="text-xs">
+                            <p class="text-slate-400 mb-1">Service Selected:</p>
+                            <p id="resTrackService" class="text-white font-medium"></p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 text-xs pt-2 border-t border-slate-800">
+                            <div>
+                                <p class="text-slate-400 mb-1">Paid Amount:</p>
+                                <p id="resTrackPrice" class="text-emerald-400 font-extrabold text-sm"></p>
+                            </div>
+                            <div>
+                                <p class="text-slate-400 mb-1">Current Status:</p>
+                                <span id="resTrackStatus" class="bg-amber-500/20 text-amber-400 px-3 py-1 rounded-full text-[10px] font-bold uppercase">Pending</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABOUT PAGE -->
+            <div id="pageAbout" class="space-y-6 hidden">
+                <div class="glass-panel p-8 md:p-12 rounded-3xl border border-slate-800 max-w-4xl mx-auto space-y-6">
+                    <div class="text-center">
+                        <span class="bg-emerald-500/10 text-emerald-400 text-xs font-bold px-3.5 py-1.5 rounded-full border border-emerald-500/20">About Our Company</span>
+                        <h2 id="aboutBrandName" class="text-2xl md:text-4xl font-black text-white mt-3">Welcome to Ammar Social</h2>
+                    </div>
+                    <p class="text-slate-300 text-sm md:text-base leading-relaxed">
+                        Ammar Social is Pakistan's leading automated cloud SMM platform. We help creators, businesses, and influencers grow their digital presence across Instagram, TikTok, YouTube, and other major social networks with high quality, speed, and reliability.
+                    </p>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Floating WhatsApp Button -->
+    <a id="floatingWhatsappBtn" href="https://wa.me/923714899865?text=Hello%20Ammar,%20I%20want%20to%20place%20an%20order%20for%20the%20SMM%20panel." 
+       target="_blank" 
+       class="fixed bottom-6 right-6 z-50 bg-emerald-600 hover:bg-emerald-500 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl transition transform hover:scale-110 border-2 border-slate-900"
+       title="Chat on WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Secret Admin Login View -->
+    <div id="adminLoginView" class="hidden fixed inset-0 bg-slate-950 z-50 flex items-center justify-center p-4">
+        <div class="glass-panel rounded-3xl max-w-sm w-full p-6 relative border border-slate-700 shadow-2xl">
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-slate-900 border border-emerald-500/30 text-emerald-400 rounded-2xl mx-auto flex items-center justify-center text-lg mb-2 shadow-lg">
                     <i class="fa-solid fa-shield-halved"></i>
-                    <h3>Enterprise Grade Security</h3>
-                    <p>Robust authorization, data encryption, and adherence to top security compliance guidelines.</p>
                 </div>
-                <div class="feature-card">
-                    <i class="fa-solid fa-mobile-screen"></i>
-                    <h3>Fully Responsive & Fluid</h3>
-                    <p>Flawless adaptive experiences across mobile, tablet, and desktop viewports.</p>
+                <h3 class="text-base font-bold text-white">Secret Admin Gateway</h3>
+                <p class="text-xs text-slate-400">Restricted Enterprise Node</p>
+            </div>
+            <form onsubmit="verifyAdmin(event)" class="space-y-4">
+                <div>
+                    <input type="password" id="adminPassInput" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 focus:outline-none text-center tracking-widest" placeholder="Enter Admin Password">
                 </div>
-                <div class="feature-card">
-                    <i class="fa-solid fa-headset"></i>
-                    <h3>Dedicated Lifetime Support</h3>
-                    <p>Ongoing maintenance, regular optimizations, and prompt bug fixes guaranteed.</p>
-                </div>
+                <button type="submit" class="w-full pro-gradient text-slate-950 font-black py-3 rounded-xl transition text-sm shadow-lg shadow-emerald-900/30">Authenticate</button>
+            </form>
+            <div class="text-center mt-4">
+                <a href="#" onclick="closeAdminView(event)" class="text-xs text-slate-500 hover:text-slate-300 underline">← Return to Main Store</a>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Portfolio Section -->
-    <section class="portfolio-section" id="portfolio">
-        <div class="container">
-            <div class="section-header">
-                <h2>Featured Portfolio Projects</h2>
-                <p>A showcase of high-impact products delivered for our global clientele.</p>
-            </div>
-            <div class="portfolio-grid">
-                <div class="portfolio-card">
-                    <div class="portfolio-img" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80')"></div>
-                    <div class="portfolio-content">
-                        <span class="portfolio-tag">Fintech SaaS</span>
-                        <h3>Global Billing & Invoice Automation</h3>
-                        <p>Real-time payment processing platform with automated ledger tracking and multi-currency support.</p>
-                        <a href="#contact" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">View Case Study</a>
-                    </div>
-                </div>
-                <div class="portfolio-card">
-                    <div class="portfolio-img" style="background-image: url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80')"></div>
-                    <div class="portfolio-content">
-                        <span class="portfolio-tag">E-Commerce Ecosystem</span>
-                        <h3>Luxury Fashion Marketplace</h3>
-                        <p>High-speed headless e-commerce store with advanced search filters and instant checkout flows.</p>
-                        <a href="#contact" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">View Case Study</a>
-                    </div>
-                </div>
-                <div class="portfolio-card">
-                    <div class="portfolio-img" style="background-image: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80')"></div>
-                    <div class="portfolio-content">
-                        <span class="portfolio-tag">AI Integration</span>
-                        <h3>Neural Document Processing AI</h3>
-                        <p>Custom LLM-powered document parser extracting financial metrics and generating automated summaries.</p>
-                        <a href="#contact" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">View Case Study</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Skills & Technologies -->
-    <section class="skills-section" id="skills">
-        <div class="container">
-            <div class="section-header">
-                <h2>Tech Stack & Expertise</h2>
-                <p>Leveraging industry-standard frameworks and state-of-the-art tools.</p>
-            </div>
-            <div class="tech-grid">
-                <div class="tech-card"><i class="fa-brands fa-react" style="color: #61dafb;"></i><span>React / Next.js</span></div>
-                <div class="tech-card"><i class="fa-brands fa-node" style="color: #68a063;"></i><span>Node.js</span></div>
-                <div class="tech-card"><i class="fa-brands fa-python" style="color: #3776ab;"></i><span>Python / AI</span></div>
-                <div class="tech-card"><i class="fa-brands fa-flutter" style="color: #02569b;"></i><span>Flutter</span></div>
-                <div class="tech-card"><i class="fa-brands fa-aws" style="color: #ff9900;"></i><span>AWS Cloud</span></div>
-                <div class="tech-card"><i class="fa-solid fa-fire" style="color: #ffca28;"></i><span>Firebase</span></div>
-                <div class="tech-card"><i class="fa-brands fa-docker" style="color: #2496ed;"></i><span>Docker</span></div>
-                <div class="tech-card"><i class="fa-brands fa-git-alt" style="color: #f05032;"></i><span>Git / CI/CD</span></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section class="pricing-section" id="pricing">
-        <div class="container">
-            <div class="section-header">
-                <h2>Flexible Engagement Models</h2>
-                <p>Transparent pricing structures for startups, growing enterprises, and custom initiatives.</p>
-            </div>
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <div class="pricing-header">
-                        <h3>Starter Project</h3>
-                        <p>Ideal for landing pages, simple business sites, and quick MVPs.</p>
-                        <div class="pricing-price">$999 <span>/ project</span></div>
-                    </div>
-                    <ul class="service-features">
-                        <li><i class="fa-solid fa-check"></i> Responsive Web Design</li>
-                        <li><i class="fa-solid fa-check"></i> 3-5 Core Pages</li>
-                        <li><i class="fa-solid fa-check"></i> Basic SEO Optimization</li>
-                        <li><i class="fa-solid fa-check"></i> 1 Week Delivery</li>
-                    </ul>
-                    <button class="btn btn-outline" onclick="openCheckout('Landing Page / Starter', 999)">Select Plan</button>
-                </div>
-                <div class="pricing-card featured">
-                    <div class="pricing-badge">Most Popular</div>
-                    <div class="pricing-header">
-                        <h3>Professional Suite</h3>
-                        <p>Perfect for full-stack web apps, e-commerce, and SaaS solutions.</p>
-                        <div class="pricing-price">$2,499 <span>/ project</span></div>
-                    </div>
-                    <ul class="service-features">
-                        <li><i class="fa-solid fa-check"></i> Full Stack Development</li>
-                        <li><i class="fa-solid fa-check"></i> Custom UI/UX Design</li>
-                        <li><i class="fa-solid fa-check"></i> Database & API Integration</li>
-                        <li><i class="fa-solid fa-check"></i> 2-3 Weeks Delivery</li>
-                    </ul>
-                    <button class="btn btn-primary" onclick="openCheckout('Full Stack Application', 2499)">Select Plan</button>
-                </div>
-                <div class="pricing-card">
-                    <div class="pricing-header">
-                        <h3>Enterprise Contract</h3>
-                        <p>Dedicated engineering team for complex AI and enterprise software.</p>
-                        <div class="pricing-price">$5,999+ <span>/ custom</span></div>
-                    </div>
-                    <ul class="service-features">
-                        <li><i class="fa-solid fa-check"></i> Custom Software Architecture</li>
-                        <li><i class="fa-solid fa-check"></i> Advanced AI / LLM Integration</li>
-                        <li><i class="fa-solid fa-check"></i> High Scalability & Security</li>
-                        <li><i class="fa-solid fa-check"></i> Dedicated Priority Support</li>
-                    </ul>
-                    <button class="btn btn-outline" onclick="openCheckout('Enterprise Custom Solution', 5999)">Select Plan</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Slider -->
-    <section class="testimonials-section">
-        <div class="container">
-            <div class="section-header">
-                <h2>Client Success Stories</h2>
-                <p>Hear from leaders who scaled their products with our development expertise.</p>
-            </div>
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
+    <!-- Pro Admin Dashboard View -->
+    <div id="adminDashboardView" class="hidden fixed inset-0 bg-slate-950 z-50 overflow-y-auto p-4 md:p-8">
+        <div class="max-w-6xl mx-auto space-y-6">
+            <div class="flex justify-between items-center glass-panel p-5 rounded-3xl border border-slate-800">
+                <div class="flex items-center gap-3">
+                    <div class="pro-gradient text-slate-950 font-black p-3 rounded-2xl"><i class="fa-solid fa-gauge-high"></i></div>
                     <div>
-                        <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                        <p>"DevCraft Elite completely overhauled our SaaS platform. Performance increased by 300% and user retention skyrocketed. Absolute professionals!"</p>
-                    </div>
-                    <div class="client-info">
-                        <div class="client-avatar" style="background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80')"></div>
-                        <div class="client-details">
-                            <h4>Sarah Jenkins</h4>
-                            <p>CTO, FinFlow Technologies</p>
-                        </div>
+                        <h2 class="text-lg font-black text-white">Cloud Admin Dashboard</h2>
+                        <p class="text-xs text-slate-400">Firebase Firestore Connected</p>
                     </div>
                 </div>
-                <div class="testimonial-card">
-                    <div>
-                        <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                        <p>"Delivered our iOS and Android mobile app ahead of schedule. The code quality and architecture are remarkably clean and maintainable."</p>
-                    </div>
-                    <div class="client-info">
-                        <div class="client-avatar" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80')"></div>
-                        <div class="client-details">
-                            <h4>Marcus Vance</h4>
-                            <p>Founder, FitPulse App</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div>
-                        <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                        <p>"Their expertise in AI integration gave us a massive competitive edge. The document parsing tool they built saves us dozens of hours weekly."</p>
-                    </div>
-                    <div class="client-info">
-                        <div class="client-avatar" style="background-image: url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80')"></div>
-                        <div class="client-details">
-                            <h4>Elena Rostova</h4>
-                            <p>Product Lead, DataCore AI</p>
-                        </div>
-                    </div>
-                </div>
+                <button onclick="logoutAdmin()" class="bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white px-4 py-2.5 rounded-xl text-xs font-bold transition border border-red-500/20">Lock Panel</button>
             </div>
-        </div>
-    </section>
 
-    <!-- FAQ Section -->
-    <section class="faq-section" id="faq">
-        <div class="container">
-            <div class="section-header">
-                <h2>Frequently Asked Questions</h2>
-                <p>Everything you need to know about working with us.</p>
+            <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-3">
+                <button onclick="switchAdminTab('settingsTab')" id="btnSettingsTab" class="pro-gradient text-slate-950 font-black px-5 py-2.5 rounded-xl text-xs transition shadow-md"><i class="fa-solid fa-gear mr-1.5"></i> Store Settings</button>
+                <button onclick="switchAdminTab('servicesTab')" id="btnServicesTab" class="bg-slate-900 text-slate-300 hover:bg-slate-800 px-5 py-2.5 rounded-xl text-xs font-bold transition border border-slate-800"><i class="fa-solid fa-box mr-1.5"></i> Services</button>
+                <button onclick="switchAdminTab('ordersTab')" id="btnOrdersTab" class="bg-slate-900 text-slate-300 hover:bg-slate-800 px-5 py-2.5 rounded-xl text-xs font-bold transition border border-slate-800"><i class="fa-solid fa-list-check mr-1.5"></i> Customer Orders</button>
+                <button onclick="switchAdminTab('couponsTab')" id="btnCouponsTab" class="bg-slate-900 text-slate-300 hover:bg-slate-800 px-5 py-2.5 rounded-xl text-xs font-bold transition border border-slate-800"><i class="fa-solid fa-ticket mr-1.5"></i> Coupons</button>
             </div>
-            <div class="faq-container">
-                <div class="faq-item">
-                    <div class="faq-question">What is your typical project kickoff process? <i class="fa-solid fa-chevron-down"></i></div>
-                    <div class="faq-answer">We start with a detailed discovery call to align on your objectives, requirements, and technical scope. From there, we deliver a comprehensive project roadmap and begin iterative development.</div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">Do you provide ongoing maintenance after launch? <i class="fa-solid fa-chevron-down"></i></div>
-                    <div class="faq-answer">Yes! All projects include post-launch support windows, and we offer flexible monthly maintenance retainers for continuous feature upgrades and monitoring.</div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">How do you ensure data security and IP confidentiality? <i class="fa-solid fa-chevron-down"></i></div>
-                    <div class="faq-answer">We sign standard NDAs prior to any project discussion. All intellectual property rights belong 100% to you upon final delivery.</div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">What payment methods do you accept? <i class="fa-solid fa-chevron-down"></i></div>
-                    <div class="faq-answer">We accept secure credit card payments, bank wire transfers, and popular cryptocurrency options structured across milestone payment terms.</div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Contact Section -->
-    <section class="contact-section" id="contact">
-        <div class="container">
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <h3>Let's Build Something Exceptional Together</h3>
-                    <p>Have an idea or ready to start your project? Reach out directly or fill out the form, and we'll respond within 24 hours.</p>
-                    <div class="contact-details-list">
-                        <div class="contact-detail-item">
-                            <i class="fa-solid fa-envelope"></i>
-                            <div>
-                                <span style="font-size: 0.8rem; color: var(--text-secondary); display: block;">Email Us</span>
-                                <strong id="contact-email-display">contact@devcraftelite.com</strong>
-                            </div>
+            <!-- Settings Tab -->
+            <div id="settingsTab" class="admin-tab-content space-y-6">
+                <div class="glass-panel p-6 md:p-8 rounded-3xl border border-slate-800">
+                    <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2"><i class="fa-solid fa-sliders text-emerald-400"></i> Global Configurations</h3>
+                    <form onsubmit="saveStoreSettings(event)" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1.5">Brand / Store Name</label>
+                            <input type="text" id="settingBrandName" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white">
                         </div>
-                        <div class="contact-detail-item">
-                            <i class="fa-brands fa-whatsapp"></i>
-                            <div>
-                                <span style="font-size: 0.8rem; color: var(--text-secondary); display: block;">WhatsApp</span>
-                                <strong id="contact-wa-display">+1 (555) 234-5678</strong>
-                            </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1.5">WhatsApp Number</label>
+                            <input type="text" id="settingWhatsapp" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white" placeholder="923714899865">
                         </div>
-                    </div>
-                </div>
-                <form class="contact-form" id="main-contact-form">
-                    <div class="form-group">
-                        <label>Your Name</label>
-                        <input type="text" class="form-control" name="name" required placeholder="John Doe">
-                    </div>
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" class="form-control" name="email" required placeholder="john@company.com">
-                    </div>
-                    <div class="form-group">
-                        <label>Project Details</label>
-                        <textarea class="form-control" name="message" required placeholder="Tell us about your project scope, goals, and timeline..."></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message <i class="fa-solid fa-paper-plane"></i></button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <a href="#" class="logo" style="margin-bottom: 1rem; display: inline-flex;"><i class="fa-solid fa-code"></i> DevCraft Elite</a>
-                    <p id="footer-desc">Professional software, web, and mobile app development services helping forward-thinking enterprises scale rapidly with cutting-edge technology.</p>
-                    <div class="social-links" id="footer-socials">
-                        <a href="#"><i class="fa-brands fa-github"></i></a>
-                        <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
-                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="#"><i class="fa-brands fa-telegram"></i></a>
-                    </div>
-                </div>
-                <div class="footer-col">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#features">Why Us</a></li>
-                        <li><a href="#portfolio">Portfolio</a></li>
-                        <li><a href="#pricing">Pricing</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Services</h4>
-                    <ul>
-                        <li><a href="#services">Website Development</a></li>
-                        <li><a href="#services">Software Engineering</a></li>
-                        <li><a href="#services">Mobile App Development</a></li>
-                        <li><a href="#services">AI Projects</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Newsletter</h4>
-                    <p style="margin-bottom: 1rem;">Subscribe for tech insights and updates.</p>
-                    <form id="newsletter-form" style="display: flex; gap: 0.5rem;">
-                        <input type="email" placeholder="Your email" class="form-control" required style="padding: 0.6rem 1rem;">
-                        <button type="submit" class="btn btn-primary" style="padding: 0.6rem 1rem;"><i class="fa-solid fa-arrow-right"></i></button>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1.5">Payment Account Number</label>
+                            <input type="text" id="settingPayNumber" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1.5">Account Title</label>
+                            <input type="text" id="settingPayTitle" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white">
+                        </div>
+                        <div class="md:col-span-2">
+                            <button type="submit" class="pro-gradient text-slate-950 font-black py-3 px-6 rounded-xl text-xs transition shadow-lg shadow-emerald-900/30">Save Configuration Changes to Cloud</button>
+                        </div>
                     </form>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p id="footer-copy">&copy; 2026 DevCraft Elite. All rights reserved.</p>
-                <p>Crafted with precision & high performance.</p>
+
+            <!-- Services Tab -->
+            <div id="servicesTab" class="admin-tab-content space-y-6 hidden">
+                <div class="glass-panel p-6 rounded-3xl border border-slate-800">
+                    <h3 class="text-base font-bold text-white mb-4">Add Pro Service to Cloud</h3>
+                    <form onsubmit="addNewService(event)" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <input type="text" id="newServiceName" placeholder="Service Name" required class="bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white">
+                        <input type="text" id="newServiceImage" placeholder="Image URL link" required class="bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white">
+                        <input type="number" id="newServicePrice" placeholder="Price in PKR" required class="bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white">
+                        <button type="submit" class="pro-gradient text-slate-950 font-black rounded-xl text-xs py-3 shadow-md">Add Service</button>
+                    </form>
+                </div>
+                <div class="glass-panel p-6 rounded-3xl border border-slate-800">
+                    <h3 class="text-base font-bold text-white mb-4">Active Cloud Services</h3>
+                    <div id="adminServicesList" class="space-y-3">Loading...</div>
+                </div>
+            </div>
+
+            <!-- Orders Tab -->
+            <div id="ordersTab" class="admin-tab-content space-y-6 hidden">
+                <div class="glass-panel p-6 rounded-3xl border border-slate-800">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-base font-bold text-white">Cloud Customer Orders</h3>
+                        <button onclick="loadAdminOrders()" class="bg-slate-900 hover:bg-slate-800 text-emerald-400 px-3 py-1.5 rounded-xl text-xs border border-slate-700"><i class="fa-solid fa-rotate mr-1"></i> Refresh</button>
+                    </div>
+                    <div id="adminOrdersList" class="space-y-4">Loading orders...</div>
+                </div>
+            </div>
+
+            <!-- Coupons Tab -->
+            <div id="couponsTab" class="admin-tab-content space-y-6 hidden">
+                <div class="glass-panel p-6 rounded-3xl border border-slate-800">
+                    <h3 class="text-base font-bold text-white mb-4">Create Cloud Coupon</h3>
+                    <form onsubmit="addNewCoupon(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <input type="text" id="newCouponCode" placeholder="Code (e.g. PRO20)" required class="bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white uppercase">
+                        <input type="number" id="newCouponDiscount" placeholder="Discount % (e.g. 10)" required class="bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white">
+                        <button type="submit" class="pro-gradient text-slate-950 font-black rounded-xl text-xs py-3 shadow-md">Save Coupon</button>
+                    </form>
+                </div>
+                <div class="glass-panel p-6 rounded-3xl border border-slate-800">
+                    <h3 class="text-base font-bold text-white mb-4">Active Cloud Coupons</h3>
+                    <div id="adminCouponsList" class="space-y-3">Loading...</div>
+                </div>
             </div>
         </div>
+    </div>
+
+    <!-- Screenshot Viewer Modal -->
+    <div id="screenshotModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-panel rounded-3xl max-w-lg w-full p-6 relative border border-slate-700 shadow-2xl text-center space-y-4">
+            <h3 class="text-base font-bold text-white">Payment Screenshot Proof</h3>
+            <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 flex justify-center">
+                <img id="modalScreenshotImg" src="" alt="Payment Proof" class="max-h-[60vh] rounded-xl object-contain">
+            </div>
+            <button onclick="closeScreenshotModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-2.5 rounded-xl text-xs transition">Close Viewer</button>
+        </div>
+    </div>
+
+    <!-- Order Modal -->
+    <div id="orderModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="glass-panel rounded-3xl max-w-lg w-full p-6 md:p-8 relative border border-slate-700 my-6 shadow-2xl">
+            <button onclick="closeOrderModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+            <div class="flex items-center gap-3 mb-4">
+                <div class="pro-gradient text-slate-950 p-2.5 rounded-xl font-bold"><i class="fa-solid fa-cart-shopping"></i></div>
+                <div>
+                    <h3 class="text-lg font-bold text-white">Secure Cloud Checkout</h3>
+                    <p id="modalServiceName" class="text-xs text-emerald-400 font-semibold"></p>
+                </div>
+            </div>
+            
+            <form id="orderForm" onsubmit="submitOrder(event)" class="space-y-4">
+                <input type="hidden" id="selectedServiceId">
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase">Your Full Name</label>
+                    <input type="text" id="custName" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="e.g. Muhammad Zain">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase">WhatsApp Number</label>
+                    <input type="text" id="custWhatsapp" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="e.g. 923714899865">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase">Target Profile / Post Link</label>
+                    <input type="text" id="custLink" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="Paste target URL here">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase">Coupon Code</label>
+                        <input type="text" id="couponInput" onblur="applyCoupon()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500 uppercase" placeholder="Optional">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase">Total Amount</label>
+                        <input type="text" id="modalPriceDisplay" readonly class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-emerald-400 font-extrabold">
+                    </div>
+                </div>
+
+                <div class="bg-emerald-950/20 p-4 rounded-2xl border border-emerald-500/30 text-xs space-y-1.5">
+                    <p class="font-bold text-white flex items-center gap-1.5"><i class="fa-solid fa-wallet text-emerald-400"></i> Transfer Payment To:</p>
+                    <p class="text-slate-300">Method / Number: <span id="payBoxNumber" class="text-emerald-400 font-mono font-bold">Loading...</span></p>
+                    <p class="text-slate-300">Account Title: <span id="payBoxTitle" class="text-emerald-400 font-bold">Loading...</span></p>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase">Payment Screenshot <span class="text-red-400">*Required</span></label>
+                    <input type="file" id="paymentProof" accept="image/*" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-300 file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-emerald-600 file:text-white cursor-pointer">
+                </div>
+
+                <button type="submit" class="w-full pro-gradient text-slate-950 font-black py-3.5 rounded-xl transition text-sm tracking-wide flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/30">
+                    Confirm & Submit to Cloud <i class="fa-solid fa-circle-check"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Receipt Modal -->
+    <div id="receiptModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="glass-panel rounded-3xl max-w-md w-full p-6 relative border border-slate-700 shadow-2xl" id="receiptContent">
+            
+            <div class="bg-amber-500/10 border border-amber-500/30 p-3 rounded-2xl mb-4 text-center text-xs text-amber-300 font-bold flex items-center gap-2">
+                <i class="fa-solid fa-triangle-exclamation text-amber-400 text-sm"></i>
+                <span>Apna Order ID lazmi save karein! Yeh baad mein order track karne ke kaam aayega.</span>
+            </div>
+
+            <div class="text-center pb-4 border-b border-slate-800">
+                <div class="w-12 h-12 pro-gradient text-slate-950 font-black rounded-2xl mx-auto flex items-center justify-center text-xl mb-2 shadow-md">
+                    <i class="fa-solid fa-receipt"></i>
+                </div>
+                <h3 id="recBrandTitle" class="text-xl font-black text-white">AMMAR SOCIAL</h3>
+                <p class="text-xs text-emerald-400 font-semibold">Firebase Cloud Receipt</p>
+            </div>
+            <div class="py-5 space-y-3 text-xs md:text-sm">
+                <div class="flex justify-between py-1 border-b border-slate-800/60"><span class="text-slate-400">Order ID:</span> <span id="recOrderId" class="font-mono font-bold text-emerald-400 text-base"></span></div>
+                <div class="flex justify-between py-1 border-b border-slate-800/60"><span class="text-slate-400">Customer Name:</span> <span id="recName" class="font-medium text-white"></span></div>
+                <div class="flex justify-between py-1 border-b border-slate-800/60"><span class="text-slate-400">WhatsApp:</span> <span id="recWhatsapp" class="text-white font-mono"></span></div>
+                <div class="flex justify-between py-1 border-b border-slate-800/60"><span class="text-slate-400">Service:</span> <span id="recService" class="text-white font-medium"></span></div>
+                <div class="flex justify-between py-1 border-b border-slate-800/60"><span class="text-slate-400">Paid Amount:</span> <span id="recPrice" class="text-emerald-400 font-extrabold"></span></div>
+                <div class="flex justify-between py-1"><span class="text-slate-400">Status:</span> <span class="bg-amber-500/20 text-amber-400 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase">Pending</span></div>
+            </div>
+            <div class="pt-4 border-t border-slate-800 flex gap-3">
+                <button onclick="downloadReceipt()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-xl text-xs transition border border-slate-700 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-download"></i> Save Image
+                </button>
+                <a id="whatsappChatBtn" href="#" target="_blank" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs transition text-center flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/30">
+                    <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp Support
+                </a>
+            </div>
+            <button onclick="closeReceiptModal()" class="w-full mt-3 bg-slate-900 text-slate-400 hover:text-white py-2.5 rounded-xl text-xs font-semibold">Close Window</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="glass-panel mt-16 py-8 border-t border-slate-800 text-center text-xs text-slate-400">
+        <p>&copy; 2026 <span id="footerBrandName" class="font-bold text-white">AMMAR SOCIAL</span>. Firebase Enterprise Edition.</p>
     </footer>
 
-    <!-- Floating Action Buttons -->
-    <div class="floating-buttons">
-        <a href="https://whatsapp.com" target="_blank" class="float-btn whatsapp-float" id="whatsapp-float-btn" title="Chat on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-        <button class="float-btn backtotop-float" id="backtotop-btn" title="Back to Top"><i class="fa-solid fa-arrow-up"></i></button>
-    </div>
-
-    <!-- Checkout Modal -->
-    <div class="modal-overlay" id="checkout-modal">
-        <div class="modal-content">
-            <button class="modal-close" id="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
-            <h2 style="margin-bottom: 0.5rem; font-size: 1.75rem;">Project Checkout</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem;">Complete your details below to initiate your project request.</p>
-            <form id="checkout-form">
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" class="form-control" name="fullname" required placeholder="John Doe">
-                </div>
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" class="form-control" name="email" required placeholder="john@company.com">
-                </div>
-                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <div class="form-group">
-                        <label>WhatsApp Number</label>
-                        <input type="text" class="form-control" name="whatsapp" required placeholder="+1 555-0199">
-                    </div>
-                    <div class="form-group">
-                        <label>Country</label>
-                        <input type="text" class="form-control" name="country" required placeholder="United States">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Selected Service</label>
-                    <input type="text" class="form-control" id="modal-service-input" name="service" readonly>
-                </div>
-                <div class="form-group">
-                    <label>Project Description / Requirements</label>
-                    <textarea class="form-control" name="description" required placeholder="Describe your project vision and goals..."></textarea>
-                </div>
-                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <div class="form-group">
-                        <label>Budget (USD)</label>
-                        <input type="number" class="form-control" id="modal-budget-input" name="budget" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Expected Deadline</label>
-                        <input type="date" class="form-control" name="deadline" required>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Submit Order <i class="fa-solid fa-check"></i></button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Hidden Admin Panel (Demo Interface) -->
-    <!-- NOTE: In a production environment, this area requires secure backend authentication (Node.js, PHP, Firebase/Supabase Auth). Secrets or admin logic should never be exposed in client-side code. -->
-    <div class="admin-modal" id="admin-panel">
-        <div class="admin-header">
-            <h2 class="logo"><i class="fa-solid fa-shield-halved"></i> Admin Control Center</h2>
-            <button class="btn btn-outline" id="admin-close-btn" style="padding: 0.5rem 1rem;"><i class="fa-solid fa-xmark"></i> Close</button>
-        </div>
-        <div class="admin-body">
-            <div class="admin-grid">
-                <div class="admin-card">
-                    <span style="color: var(--text-secondary); font-size: 0.85rem;">Total Services</span>
-                    <h3 id="admin-stat-services" style="font-size: 2rem; font-weight: 800; margin-top: 0.5rem;">0</h3>
-                </div>
-                <div class="admin-card">
-                    <span style="color: var(--text-secondary); font-size: 0.85rem;">Active Orders</span>
-                    <h3 id="admin-stat-orders" style="font-size: 2rem; font-weight: 800; margin-top: 0.5rem;">0</h3>
-                </div>
-                <div class="admin-card">
-                    <span style="color: var(--text-secondary); font-size: 0.85rem;">Messages Received</span>
-                    <h3 id="admin-stat-messages" style="font-size: 2rem; font-weight: 800; margin-top: 0.5rem;">0</h3>
-                </div>
-                <div class="admin-card">
-                    <span style="color: var(--text-secondary); font-size: 0.85rem;">Total Visitors</span>
-                    <h3 style="font-size: 2rem; font-weight: 800; margin-top: 0.5rem;">1,428</h3>
-                </div>
-            </div>
-
-            <div class="admin-tabs">
-                <button class="admin-tab active" data-target="tab-dashboard">Dashboard</button>
-                <button class="admin-tab" data-target="tab-services">Services Manager</button>
-                <button class="admin-tab" data-target="tab-orders">Orders & Customers</button>
-                <button class="admin-tab" data-target="tab-settings">Settings</button>
-            </div>
-
-            <!-- Tab 1: Dashboard -->
-            <div id="tab-dashboard" class="admin-section-content active">
-                <h3 style="margin-bottom: 1rem;">Recent Activity Feed</h3>
-                <div class="admin-card" style="margin-bottom: 2rem;">
-                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 1rem;" id="admin-activity-list">
-                        <li><i class="fa-solid fa-circle-dot" style="color: var(--accent-primary); margin-right: 0.5rem;"></i> System initialized securely. Ready for production contracts.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Tab 2: Services Manager -->
-            <div id="tab-services" class="admin-section-content">
-                <div class="flex justify-between items-center" style="margin-bottom: 1.5rem;">
-                    <h3>Manage Services</h3>
-                    <button class="btn btn-primary" onclick="openServiceModal()"><i class="fa-solid fa-plus"></i> Add New Service</button>
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="admin-search-services" placeholder="Search services..." oninput="filterAdminServices()">
-                </div>
-                <div id="admin-services-list" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;"></div>
-            </div>
-
-            <!-- Tab 3: Orders & Customers -->
-            <div id="tab-orders" class="admin-section-content">
-                <div class="flex justify-between items-center" style="margin-bottom: 1.5rem;">
-                    <h3>Checkout Requests & Customers</h3>
-                    <button class="btn btn-outline" onclick="exportCustomerData()"><i class="fa-solid fa-download"></i> Export CSV</button>
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="admin-search-customers" placeholder="Search customers by name or email..." oninput="filterAdminCustomers()">
-                </div>
-                <div id="admin-orders-list" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;"></div>
-            </div>
-
-            <!-- Tab 4: Settings -->
-            <div id="tab-settings" class="admin-section-content">
-                <h3>Website Configuration</h3>
-                <form id="admin-settings-form" class="admin-card" style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem;">
-                    <div class="form-group">
-                        <label>Website Name</label>
-                        <input type="text" class="form-control" name="siteName" id="setting-siteName" value="DevCraft Elite">
-                    </div>
-                    <div class="form-group">
-                        <label>Contact Email</label>
-                        <input type="email" class="form-control" name="siteEmail" id="setting-siteEmail" value="contact@devcraftelite.com">
-                    </div>
-                    <div class="form-group">
-                        <label>WhatsApp Number</label>
-                        <input type="text" class="form-control" name="whatsappNum" id="setting-whatsappNum" value="+1 (555) 234-5678">
-                    </div>
-                    <div class="form-group">
-                        <label>Hero Title</label>
-                        <input type="text" class="form-control" name="heroTitle" id="setting-heroTitle" value="High-Performance Software & App Solutions">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Service Add/Edit Modal (Admin) -->
-    <div class="modal-overlay" id="service-modal" style="z-index: 3500;">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeServiceModal()"><i class="fa-solid fa-xmark"></i></button>
-            <h2 id="service-modal-title" style="margin-bottom: 1.5rem;">Add New Service</h2>
-            <form id="service-form">
-                <input type="hidden" id="service-edit-id">
-                <div class="form-group">
-                    <label>Service Name</label>
-                    <input type="text" class="form-control" id="s-name" required>
-                </div>
-                <div class="form-group">
-                    <label>Category</label>
-                    <select class="form-control" id="s-category" required>
-                        <option value="Website">Website</option>
-                        <option value="Software">Software</option>
-                        <option value="Application">Application</option>
-                        <option value="AI">AI</option>
-                        <option value="Design">Design</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Short Description</label>
-                    <textarea class="form-control" id="s-desc" required></textarea>
-                </div>
-                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <div class="form-group">
-                        <label>Starting Price ($)</label>
-                        <input type="number" class="form-control" id="s-price" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Estimated Delivery Time</label>
-                        <input type="text" class="form-control" id="s-delivery" required placeholder="e.g. 5-7 Days">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Icon (FontAwesome class e.g. fa-solid fa-code)</label>
-                    <input type="text" class="form-control" id="s-icon" required value="fa-solid fa-code">
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Save Service</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- JavaScript Application Code -->
+    <!-- Firebase Configuration & Application Script -->
     <script>
-        /* State Management & LocalStorage */
-        const DEFAULT_SERVICES = [
-            { id: 1, name: "Website Development", category: "Website", desc: "High-speed, responsive business and portfolio websites built with modern frameworks.", price: 999, delivery: "5-7 Days", icon: "fa-solid fa-globe", features: ["Fully Responsive", "SEO Optimized", "CMS Integration"], enabled: true },
-            { id: 2, name: "Software Development", category: "Software", desc: "Robust custom desktop and cloud software engineered for scalable business workflows.", price: 2499, delivery: "2-3 Weeks", icon: "fa-solid fa-laptop-code", features: ["Secure Architecture", "Cloud Deployment", "API Integration"], enabled: true },
-            { id: 3, name: "Mobile App Development", category: "Mobile", desc: "Cross-platform iOS and Android mobile apps built with Flutter and React Native.", price: 1999, delivery: "2-3 Weeks", icon: "fa-solid fa-mobile-screen-button", features: ["iOS & Android", "High Performance", "Push Notifications"], enabled: true },
-            { id: 4, name: "AI Projects & LLMs", category: "AI", desc: "Advanced artificial intelligence integrations, custom bots, and document parsers.", price: 3499, delivery: "3-4 Weeks", icon: "fa-solid fa-brain", features: ["Custom LLM Integration", "Neural Processing", "Automation"], enabled: true },
-            { id: 5, name: "UI/UX Design", category: "Design", desc: "Stunning, human-centric interface designs crafted in Figma with complete design systems.", price: 799, delivery: "3-5 Days", icon: "fa-solid fa-wand-magic-sparkles", features: ["Figma Wireframes", "Interactive Prototype", "Design Systems"], enabled: true },
-            { id: 6, name: "E-Commerce Solutions", category: "Website", desc: "Secure online stores with high-converting checkout funnels and payment gateways.", price: 1499, delivery: "1-2 Weeks", icon: "fa-solid fa-cart-shopping", features: ["Stripe / PayPal", "Inventory Management", "Fast Checkout"], enabled: true }
-        ];
-
-        let services = JSON.parse(localStorage.getItem('devcraft_services')) || DEFAULT_SERVICES;
-        let orders = JSON.parse(localStorage.getItem('devcraft_orders')) || [];
-        let messages = JSON.parse(localStorage.getItem('devcraft_messages')) || [];
-        let settings = JSON.parse(localStorage.getItem('devcraft_settings')) || {
-            siteName: "DevCraft Elite",
-            siteEmail: "contact@devcraftelite.com",
-            whatsappNum: "+1 (555) 234-5678",
-            heroTitle: "High-Performance Software & App Solutions"
+        // --- FIREBASE CONFIGURATION ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyCM6ZvVOQEVBoNPJNCBJBOJP83WAX2O5lU",
+            authDomain: "amar-social-hub.firebaseapp.com",
+            projectId: "amar-social-hub",
+            storageBucket: "amar-social-hub.firebasestorage.app",
+            messagingSenderId: "12961893425",
+            appId: "1:12961893425:web:c74bba9ca1c9d4badad910",
+            measurementId: "G-F2DPY3DWG2"
         };
 
-        function saveData() {
-            localStorage.setItem('devcraft_services', JSON.stringify(services));
-            localStorage.setItem('devcraft_orders', JSON.stringify(orders));
-            localStorage.setItem('devcraft_messages', JSON.stringify(messages));
-            localStorage.setItem('devcraft_settings', JSON.stringify(settings));
-        }
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-        /* Toast Notifications */
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation'}"></i> <span>${message}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                setTimeout(() => toast.remove(), 300);
-            }, 3500);
-        }
-
-        /* Loading Screen Removal */
         window.addEventListener('load', () => {
-            const loader = document.getElementById('loading-screen');
-            loader.style.opacity = '0';
-            setTimeout(() => loader.style.visibility = 'hidden', 500);
-            renderServices('all');
-            updateAdminStats();
-            applySettings();
-            initCounters();
+            setTimeout(() => {
+                const splash = document.getElementById('introSplash');
+                splash.style.opacity = '0';
+                splash.style.visibility = 'hidden';
+            }, 600);
+
+            fetchGlobalSettings();
+            checkRoute();
         });
 
-        /* Theme Toggle */
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        themeToggleBtn.addEventListener('click', () => {
-            const html = document.documentElement;
-            if(html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                html.classList.add('light');
-                themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+        window.addEventListener('hashchange', checkRoute);
+
+        function checkRoute() {
+            if (window.location.hash === '#admin') {
+                document.getElementById('mainWebsiteView').classList.add('hidden');
+                if(localStorage.getItem('admin_logged') === 'true') {
+                    document.getElementById('adminDashboardView').classList.remove('hidden');
+                    loadAdminData();
+                } else {
+                    document.getElementById('adminLoginView').classList.remove('hidden');
+                }
             } else {
-                html.classList.remove('light');
-                html.classList.add('dark');
-                themeToggleBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
-            }
-        });
-
-        /* Mobile Menu */
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const navLinks = document.getElementById('nav-links');
-        mobileMenuBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => navLinks.classList.remove('active'));
-        });
-
-        /* Hero Background Canvas Particles */
-        const canvas = document.getElementById('hero-canvas');
-        const ctx = canvas.getContext('2d');
-        let particlesArray = [];
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 1;
-                this.speedX = Math.random() * 0.5 - 0.25;
-                this.speedY = Math.random() * 0.5 - 0.25;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if(this.x > canvas.width) this.x = 0;
-                if(this.x < 0) this.x = canvas.width;
-                if(this.y > canvas.height) this.y = 0;
-                if(this.y < 0) this.y = canvas.height;
-            }
-            draw() {
-                ctx.fillStyle = document.documentElement.classList.contains('dark') ? 'rgba(99, 102, 241, 0.4)' : 'rgba(79, 70, 229, 0.3)';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
+                document.getElementById('adminLoginView').classList.add('hidden');
+                document.getElementById('adminDashboardView').classList.add('hidden');
+                document.getElementById('mainWebsiteView').classList.remove('hidden');
             }
         }
 
-        function initParticles() {
-            particlesArray = [];
-            for(let i = 0; i < 60; i++) {
-                particlesArray.push(new Particle());
-            }
-        }
-        initParticles();
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particlesArray.forEach(p => {
-                p.update();
-                p.draw();
-            });
-            requestAnimationFrame(animateParticles);
-        }
-        animateParticles();
-
-        /* Render Services */
-        function renderServices(filter) {
-            const grid = document.getElementById('services-grid');
-            grid.innerHTML = '';
+        function switchPage(pageName) {
+            document.getElementById('pageHome').classList.add('hidden');
+            document.getElementById('pageServices').classList.add('hidden');
+            document.getElementById('pageTrack').classList.add('hidden');
+            document.getElementById('pageAbout').classList.add('hidden');
             
-            const filtered = services.filter(s => {
-                if(!s.enabled) return false;
-                if(filter === 'all') return true;
-                return s.category === filter;
-            });
+            document.getElementById('navHome').className = "transition hover:text-emerald-300";
+            document.getElementById('navServices').className = "transition hover:text-emerald-300";
+            document.getElementById('navTrack').className = "transition hover:text-emerald-300";
+            document.getElementById('navAbout').className = "transition hover:text-emerald-300";
 
-            if(filtered.length === 0) {
-                grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary);">No services found in this category.</p>`;
-                return;
+            if(pageName === 'home') {
+                document.getElementById('pageHome').classList.remove('hidden');
+                document.getElementById('navHome').className = "text-emerald-400 transition hover:text-emerald-300";
+            } else if(pageName === 'services') {
+                document.getElementById('pageServices').classList.remove('hidden');
+                document.getElementById('navServices').className = "text-emerald-400 transition hover:text-emerald-300";
+                fetchServices();
+            } else if(pageName === 'track') {
+                document.getElementById('pageTrack').classList.remove('hidden');
+                document.getElementById('navTrack').className = "text-emerald-400 transition hover:text-emerald-300";
+            } else if(pageName === 'about') {
+                document.getElementById('pageAbout').classList.remove('hidden');
+                document.getElementById('navAbout').className = "text-emerald-400 transition hover:text-emerald-300";
             }
+        }
 
-            filtered.forEach(s => {
-                const card = document.createElement('div');
-                card.className = 'service-card';
-                card.innerHTML = `
-                    <div>
-                        <div class="service-icon"><i class="${s.icon}"></i></div>
-                        <h3>${s.name}</h3>
-                        <p>${s.desc}</p>
-                        <ul class="service-features">
-                            ${s.features ? s.features.map(f => `<li><i class="fa-solid fa-check"></i> ${f}</li>`).join('') : ''}
-                        </ul>
-                    </div>
-                    <div class="service-footer">
+        function closeAdminView(e) {
+            e.preventDefault();
+            window.location.hash = '';
+            checkRoute();
+        }
+
+        let storeSettings = {
+            brandName: 'Ammar Social',
+            whatsapp: '923714899865',
+            payNumber: '0371-4899865',
+            payTitle: 'Ammar Social Store'
+        };
+
+        let currentSelectedService = null;
+        let appliedDiscount = 0;
+        let cachedServices = [];
+        let cachedCoupons = [];
+
+        async function fetchGlobalSettings() {
+            try {
+                let doc = await db.collection('settings').doc('general').get();
+                if(doc.exists) {
+                    storeSettings = doc.data();
+                } else {
+                    await db.collection('settings').doc('general').set(storeSettings);
+                }
+                updateUIWithSettings();
+            } catch(err) {
+                console.error("Error fetching settings:", err);
+                updateUIWithSettings();
+            }
+        }
+
+        function updateUIWithSettings() {
+            document.getElementById('brandHeaderName').innerHTML = `${storeSettings.brandName.split(' ')[0]} <span class="text-emerald-400 text-glow">${storeSettings.brandName.split(' ').slice(1).join(' ') || 'SOCIAL'}</span>`;
+            document.getElementById('siteTitleMeta').innerText = storeSettings.brandName + " - Enterprise SMM Suite";
+            document.getElementById('footerBrandName').innerText = storeSettings.brandName.toUpperCase();
+            document.getElementById('aboutBrandName').innerText = "Welcome to " + storeSettings.brandName;
+            document.getElementById('payBoxNumber').innerText = storeSettings.payNumber;
+            document.getElementById('payBoxTitle').innerText = storeSettings.payTitle;
+            document.getElementById('floatingWhatsappBtn').href = `https://wa.me/${storeSettings.whatsapp}?text=Hello%20Ammar,%20I%20want%20to%20place%20an%20order%20for%20the%20SMM%20panel.`;
+        }
+
+        async function fetchServices() {
+            const grid = document.getElementById('servicesGrid');
+            grid.innerHTML = '<p class="text-xs text-slate-400 col-span-3 text-center py-6">Loading services from Firebase Cloud...</p>';
+            try {
+                let snapshot = await db.collection('services').get();
+                cachedServices = [];
+                grid.innerHTML = '';
+                
+                if(snapshot.empty) {
+                    // Default services add agar empty ho
+                    let defaults = [
+                        { name: 'Instagram HQ Followers (1000)', price: 799, image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=500&auto=format&fit=crop' },
+                        { name: 'TikTok Real Views & Likes (5000)', price: 550, image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop' },
+                        { name: 'YouTube Monetization Watchtime Pack', price: 3499, image: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=500&auto=format&fit=crop' }
+                    ];
+                    for(let d of defaults) {
+                        let ref = await db.collection('services').add(d);
+                        cachedServices.push({ id: ref.id, ...d });
+                    }
+                } else {
+                    snapshot.forEach(doc => {
+                        cachedServices.push({ id: doc.id, ...doc.data() });
+                    });
+                }
+
+                renderServicesGrid(cachedServices);
+            } catch(err) {
+                console.error(err);
+                grid.innerHTML = '<p class="text-xs text-red-400 col-span-3 text-center">Error connecting to Firebase Cloud.</p>';
+            }
+        }
+
+        function renderServicesGrid(list) {
+            const grid = document.getElementById('servicesGrid');
+            grid.innerHTML = '';
+            list.forEach(service => {
+                grid.innerHTML += `
+                    <div class="glass-panel rounded-3xl overflow-hidden border border-slate-800 flex flex-col justify-between hover:border-emerald-500/40 transition duration-300 group shadow-lg">
                         <div>
-                            <div class="service-price">$${s.price}</div>
-                            <div class="service-time"><i class="fa-regular fa-clock"></i> ${s.delivery}</div>
+                            <div class="relative overflow-hidden h-48">
+                                <img src="${service.image}" alt="${service.name}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+                            </div>
+                            <div class="p-6">
+                                <h4 class="font-bold text-white text-base mb-2">${service.name}</h4>
+                                <div class="text-emerald-400 font-black text-xl">Rs. ${service.price}</div>
+                            </div>
                         </div>
-                        <button class="btn btn-primary" style="padding: 0.6rem 1.25rem; font-size: 0.85rem;" onclick="openCheckout('${s.name}', ${s.price})">Checkout <i class="fa-solid fa-arrow-right"></i></button>
+                        <div class="p-6 pt-0">
+                            <button onclick="openOrderModal('${service.id}')" class="w-full bg-slate-900 hover:bg-emerald-500 hover:text-slate-950 text-white font-bold py-3 rounded-2xl text-xs transition flex items-center justify-center gap-2 border border-slate-700 shadow-md">
+                                <i class="fa-solid fa-cart-plus text-emerald-400 group-hover:text-slate-950"></i> Instant Order
+                            </button>
+                        </div>
                     </div>
                 `;
-                grid.appendChild(card);
             });
         }
 
-        /* Filter Buttons */
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                renderServices(e.target.getAttribute('data-filter'));
-            });
-        });
+        function filterServices() {
+            let query = document.getElementById('searchService').value.toLowerCase();
+            let filtered = cachedServices.filter(s => s.name.toLowerCase().includes(query));
+            renderServicesGrid(filtered);
+        }
 
-        /* Animated Counters */
-        function initCounters() {
-            const counters = document.querySelectorAll('.counter');
-            counters.forEach(counter => {
-                const target = +counter.getAttribute('data-target');
-                let count = 0;
-                const speed = target / 50;
-                const updateCount = () => {
-                    count += speed;
-                    if(count < target) {
-                        counter.innerText = Math.ceil(count);
-                        setTimeout(updateCount, 30);
-                    } else {
-                        counter.innerText = target + (target === 99 ? '%' : '+');
+        async function trackOrderQuery() {
+            let searchId = document.getElementById('trackOrderIdInput').value.trim().toUpperCase();
+            let container = document.getElementById('trackResultContainer');
+            
+            try {
+                let snapshot = await db.collection('orders').where('orderId', '==', searchId).get();
+                if(!snapshot.empty) {
+                    let foundOrder = snapshot.docs[0].data();
+                    document.getElementById('resTrackId').innerText = foundOrder.orderId;
+                    document.getElementById('resTrackName').innerText = foundOrder.name;
+                    document.getElementById('resTrackWhatsapp').innerText = foundOrder.whatsapp;
+                    document.getElementById('resTrackService').innerText = foundOrder.serviceName;
+                    document.getElementById('resTrackPrice').innerText = 'Rs. ' + foundOrder.price;
+                    document.getElementById('resTrackStatus').innerText = foundOrder.status || 'Pending';
+                    container.classList.remove('hidden');
+                } else {
+                    container.classList.add('hidden');
+                    alert('No order found with this ID in Firebase Cloud.');
+                }
+            } catch(err) {
+                console.error(err);
+                alert('Error querying cloud database.');
+            }
+        }
+
+        function openOrderModal(id) {
+            currentSelectedService = cachedServices.find(s => s.id === id);
+            document.getElementById('selectedServiceId').value = id;
+            document.getElementById('modalServiceName').innerText = currentSelectedService.name;
+            document.getElementById('modalPriceDisplay').value = 'Rs. ' + currentSelectedService.price;
+            appliedDiscount = 0;
+            document.getElementById('couponInput').value = '';
+            document.getElementById('orderModal').classList.remove('hidden');
+        }
+
+        function closeOrderModal() { document.getElementById('orderModal').classList.add('hidden'); }
+
+        async function applyCoupon() {
+            let code = document.getElementById('couponInput').value.trim().toUpperCase();
+            try {
+                let snapshot = await db.collection('coupons').where('code', '==', code).get();
+                if(!snapshot.empty) {
+                    let found = snapshot.docs[0].data();
+                    appliedDiscount = found.discount;
+                    let discountedPrice = currentSelectedService.price - (currentSelectedService.price * appliedDiscount / 100);
+                    document.getElementById('modalPriceDisplay').value = 'Rs. ' + discountedPrice + ` (${appliedDiscount}% OFF)`;
+                    alert('Coupon applied successfully!');
+                } else if(code !== '') {
+                    alert('Invalid Coupon Code!');
+                }
+            } catch(err) {
+                console.error(err);
+            }
+        }
+
+        function submitOrder(e) {
+            e.preventDefault();
+            let name = document.getElementById('custName').value;
+            let whatsapp = document.getElementById('custWhatsapp').value;
+            let link = document.getElementById('custLink').value;
+            let finalPrice = currentSelectedService.price - (currentSelectedService.price * appliedDiscount / 100);
+            let orderId = 'ORD-' + Math.floor(100000 + Math.random() * 900000);
+
+            let fileInput = document.getElementById('paymentProof');
+            if (fileInput.files && fileInput.files[0]) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    let img = new Image();
+                    img.src = e.target.result;
+                    img.onload = function() {
+                        let canvas = document.createElement('canvas');
+                        let ctx = canvas.getContext('2d');
+                        canvas.width = 400; canvas.height = 400;
+                        ctx.drawImage(img, 0, 0, 400, 400);
+                        let compressedData = canvas.toDataURL('image/jpeg', 0.5);
+                        saveOrderToFirebase(orderId, name, whatsapp, link, finalPrice, compressedData);
                     }
                 };
-                updateCount();
-            });
-        }
-
-        /* FAQ Accordion */
-        document.querySelectorAll('.faq-question').forEach(q => {
-            q.addEventListener('click', () => {
-                const item = q.parentElement;
-                item.classList.toggle('active');
-            });
-        });
-
-        /* Back to Top & Scroll Spy */
-        const backToTopBtn = document.getElementById('backtotop-btn');
-        window.addEventListener('scroll', () => {
-            if(window.scrollY > 400) {
-                backToTopBtn.classList.add('visible');
+                reader.readAsDataURL(fileInput.files[0]);
             } else {
-                backToTopBtn.classList.remove('visible');
+                saveOrderToFirebase(orderId, name, whatsapp, link, finalPrice, '');
             }
-        });
-        backToTopBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        /* Checkout Modal Handler */
-        const checkoutModal = document.getElementById('checkout-modal');
-        function openCheckout(serviceName, price) {
-            document.getElementById('modal-service-input').value = serviceName;
-            document.getElementById('modal-budget-input').value = price;
-            checkoutModal.classList.add('active');
-        }
-        document.getElementById('modal-close-btn').addEventListener('click', () => {
-            checkoutModal.classList.remove('active');
-        });
-        checkoutModal.addEventListener('click', (e) => {
-            if(e.target === checkoutModal) checkoutModal.classList.remove('active');
-        });
-
-        document.getElementById('checkout-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            const order = {
-                id: Date.now(),
-                name: formData.get('fullname'),
-                email: formData.get('email'),
-                whatsapp: formData.get('whatsapp'),
-                country: formData.get('country'),
-                service: formData.get('service'),
-                description: formData.get('description'),
-                budget: formData.get('budget'),
-                deadline: formData.get('deadline'),
-                date: new Date().toLocaleDateString()
-            };
-            orders.unshift(order);
-            saveData();
-            updateAdminStats();
-            checkoutModal.classList.remove('active');
-            e.target.reset();
-            showToast('Order successfully submitted! We will contact you shortly.');
-        });
-
-        /* Contact Form Handler */
-        document.getElementById('main-contact-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            const msg = {
-                id: Date.now(),
-                name: formData.get('name'),
-                email: formData.get('email'),
-                message: formData.get('message'),
-                date: new Date().toLocaleDateString()
-            };
-            messages.unshift(msg);
-            saveData();
-            updateAdminStats();
-            e.target.reset();
-            showToast('Message sent successfully! Thank you.');
-        });
-
-        document.getElementById('newsletter-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            e.target.reset();
-            showToast('Subscribed successfully to newsletter!');
-        });
-
-        /* Admin Panel Logic */
-        const adminTrigger = document.getElementById('admin-trigger');
-        const adminPanel = document.getElementById('admin-panel');
-        const adminCloseBtn = document.getElementById('admin-close-btn');
-
-        adminTrigger.addEventListener('click', () => {
-            adminPanel.style.display = 'block';
-            renderAdminServices();
-            renderAdminOrders();
-        });
-        adminCloseBtn.addEventListener('click', () => {
-            adminPanel.style.display = 'none';
-        });
-
-        // Admin Tabs
-        document.querySelectorAll('.admin-tab').forEach(tab => {
-            tab.addEventListener('click', (e) => {
-                document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.admin-section-content').forEach(c => c.classList.remove('active'));
-                e.target.classList.add('active');
-                document.getElementById(e.target.getAttribute('data-target')).classList.add('active');
-            });
-        });
-
-        function updateAdminStats() {
-            document.getElementById('admin-stat-services').innerText = services.length;
-            document.getElementById('admin-stat-orders').innerText = orders.length;
-            document.getElementById('admin-stat-messages').innerText = messages.length;
         }
 
-        function renderAdminServices() {
-            const list = document.getElementById('admin-services-list');
-            list.innerHTML = '';
-            services.forEach(s => {
-                const item = document.createElement('div');
-                item.className = 'admin-card flex justify-between items-center';
-                item.innerHTML = `
-                    <div>
-                        <strong>${s.name}</strong> (${s.category}) - $${s.price} | <span style="color: ${s.enabled ? '#10b981' : '#ef4444'}">${s.enabled ? 'Active' : 'Disabled'}</span>
-                    </div>
-                    <div class="flex gap-1">
-                        <button class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="toggleService(${s.id})">${s.enabled ? 'Disable' : 'Enable'}</button>
-                        <button class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="editService(${s.id})">Edit</button>
-                        <button class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; color: #ef4444; border-color: #ef4444;" onclick="deleteService(${s.id})">Delete</button>
-                    </div>
-                `;
-                list.appendChild(item);
+        async function saveOrderToFirebase(orderId, name, whatsapp, link, finalPrice, screenshot) {
+            let newOrder = {
+                orderId, name, whatsapp, link,
+                serviceName: currentSelectedService.name,
+                price: finalPrice,
+                screenshot: screenshot,
+                status: 'Pending',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            try {
+                await db.collection('orders').add(newOrder);
+                closeOrderModal();
+
+                document.getElementById('recOrderId').innerText = orderId;
+                document.getElementById('recName').innerText = name;
+                document.getElementById('recWhatsapp').innerText = whatsapp;
+                document.getElementById('recService').innerText = currentSelectedService.name;
+                document.getElementById('recPrice').innerText = 'Rs. ' + finalPrice;
+
+                let waMsg = `Hello ${storeSettings.brandName}, New Order.%0AOrder ID: ${orderId}%0AName: ${name}%0AService: ${currentSelectedService.name}%0APrice: Rs. ${finalPrice}`;
+                document.getElementById('whatsappChatBtn').href = `https://wa.me/${storeSettings.whatsapp}?text=${waMsg}`;
+                document.getElementById('receiptModal').classList.remove('hidden');
+            } catch(err) {
+                alert('Error saving order to Firebase Cloud: ' + err.message);
+            }
+        }
+
+        function closeReceiptModal() { document.getElementById('receiptModal').classList.add('hidden'); }
+
+        function downloadReceipt() {
+            html2canvas(document.getElementById('receiptContent')).then(canvas => {
+                let link = document.createElement('a');
+                link.download = 'Receipt.png';
+                link.href = canvas.toDataURL();
+                link.click();
             });
         }
 
-        function renderAdminOrders() {
-            const list = document.getElementById('admin-orders-list');
-            list.innerHTML = '';
-            if(orders.length === 0) {
-                list.innerHTML = `<p style="color: var(--text-secondary);">No orders received yet.</p>`;
+        function viewScreenshot(base64Image) {
+            if(!base64Image) {
+                alert('No screenshot provided for this order.');
                 return;
             }
-            orders.forEach(o => {
-                const item = document.createElement('div');
-                item.className = 'admin-card';
-                item.innerHTML = `
-                    <div class="flex justify-between items-center" style="margin-bottom: 0.5rem;">
-                        <strong>${o.name} (${o.email})</strong>
-                        <span style="color: var(--accent-primary); font-weight: 700;">$${o.budget}</span>
-                    </div>
-                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Service: <strong>${o.service}</strong> | WhatsApp: ${o.whatsapp} | Country: ${o.country}</p>
-                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Desc: ${o.description}</p>
-                    <span style="font-size: 0.75rem; color: var(--text-secondary);">Ordered on: ${o.date}</span>
-                `;
-                list.appendChild(item);
-            });
+            document.getElementById('modalScreenshotImg').src = base64Image;
+            document.getElementById('screenshotModal').classList.remove('hidden');
         }
 
-        function toggleService(id) {
-            const s = services.find(item => item.id === id);
-            if(s) {
-                s.enabled = !s.enabled;
-                saveData();
-                renderAdminServices();
-                renderServices('all');
-                showToast('Service status updated.');
-            }
+        function closeScreenshotModal() {
+            document.getElementById('screenshotModal').classList.add('hidden');
         }
 
-        function deleteService(id) {
-            if(confirm('Are you sure you want to delete this service?')) {
-                services = services.filter(item => item.id !== id);
-                saveData();
-                renderAdminServices();
-                renderServices('all');
-                updateAdminStats();
-                showToast('Service deleted.');
-            }
-        }
-
-        const serviceModal = document.getElementById('service-modal');
-        function openServiceModal(id = null) {
-            document.getElementById('service-form').reset();
-            document.getElementById('service-edit-id').value = '';
-            document.getElementById('service-modal-title').innerText = 'Add New Service';
-            if(id) {
-                const s = services.find(item => item.id === id);
-                if(s) {
-                    document.getElementById('service-edit-id').value = s.id;
-                    document.getElementById('s-name').value = s.name;
-                    document.getElementById('s-category').value = s.category;
-                    document.getElementById('s-desc').value = s.desc;
-                    document.getElementById('s-price').value = s.price;
-                    document.getElementById('s-delivery').value = s.delivery;
-                    document.getElementById('s-icon').value = s.icon;
-                    document.getElementById('service-modal-title').innerText = 'Edit Service';
-                }
-            }
-            serviceModal.classList.add('active');
-        }
-        function closeServiceModal() {
-            serviceModal.classList.remove('active');
-        }
-        function editService(id) {
-            openServiceModal(id);
-        }
-
-        document.getElementById('service-form').addEventListener('submit', (e) => {
+        function verifyAdmin(e) {
             e.preventDefault();
-            const editId = document.getElementById('service-edit-id').value;
-            const data = {
-                name: document.getElementById('s-name').value,
-                category: document.getElementById('s-category').value,
-                desc: document.getElementById('s-desc').value,
-                price: parseFloat(document.getElementById('s-price').value),
-                delivery: document.getElementById('s-delivery').value,
-                icon: document.getElementById('s-icon').value,
-                enabled: true
-            };
-
-            if(editId) {
-                const index = services.findIndex(item => item.id == editId);
-                if(index !== -1) {
-                    services[index] = { ...services[index], ...data };
-                }
-                showToast('Service updated successfully.');
+            let pass = document.getElementById('adminPassInput').value;
+            if(pass === 'admin10') {
+                localStorage.setItem('admin_logged', 'true');
+                document.getElementById('adminLoginView').classList.add('hidden');
+                document.getElementById('adminDashboardView').classList.remove('hidden');
+                loadAdminData();
             } else {
-                data.id = Date.now();
-                data.features = ["High Performance", "Secure", "Fully Scalable"];
-                services.push(data);
-                showToast('New service added successfully.');
+                alert('Incorrect Security Password!');
             }
-
-            saveData();
-            renderAdminServices();
-            renderServices('all');
-            updateAdminStats();
-            closeServiceModal();
-        });
-
-        function filterAdminServices() {
-            const query = document.getElementById('admin-search-services').value.toLowerCase();
-            const items = document.querySelectorAll('#admin-services-list > div');
-            items.forEach(item => {
-                const text = item.innerText.toLowerCase();
-                item.style.display = text.includes(query) ? 'flex' : 'none';
-            });
         }
 
-        function filterAdminCustomers() {
-            const query = document.getElementById('admin-search-customers').value.toLowerCase();
-            const items = document.querySelectorAll('#admin-orders-list > div');
-            items.forEach(item => {
-                const text = item.innerText.toLowerCase();
-                item.style.display = text.includes(query) ? 'block' : 'none';
-            });
+        function logoutAdmin() {
+            localStorage.removeItem('admin_logged');
+            window.location.hash = '';
+            checkRoute();
         }
 
-        function exportCustomerData() {
-            if(orders.length === 0) {
-                showToast('No customer data to export.', 'error');
-                return;
+        function switchAdminTab(tabId) {
+            document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('#adminDashboardView button[id^="btn"]').forEach(btn => {
+                btn.className = "bg-slate-900 text-slate-300 hover:bg-slate-800 px-5 py-2.5 rounded-xl text-xs font-bold transition border border-slate-800";
+            });
+            document.getElementById(tabId).classList.remove('hidden');
+            document.getElementById('btn' + tabId.charAt(0).toUpperCase() + tabId.slice(1)).className = "pro-gradient text-slate-950 font-black px-5 py-2.5 rounded-xl text-xs transition shadow-md";
+        }
+
+        async function loadAdminData() {
+            document.getElementById('settingBrandName').value = storeSettings.brandName;
+            document.getElementById('settingWhatsapp').value = storeSettings.whatsapp;
+            document.getElementById('settingPayNumber').value = storeSettings.payNumber;
+            document.getElementById('settingPayTitle').value = storeSettings.payTitle;
+
+            // Load Admin Services
+            let sList = document.getElementById('adminServicesList');
+            sList.innerHTML = 'Loading...';
+            try {
+                let sSnap = await db.collection('services').get();
+                sList.innerHTML = '';
+                sSnap.forEach(doc => {
+                    let s = doc.data();
+                    sList.innerHTML += `
+                        <div class="flex justify-between items-center bg-slate-950 p-3.5 rounded-2xl border border-slate-800 text-xs">
+                            <div><strong class="text-white">${s.name}</strong> - <span class="text-emerald-400 font-bold">Rs. ${s.price}</span></div>
+                            <button onclick="deleteService('${doc.id}')" class="text-red-400 bg-red-500/10 px-3 py-1.5 rounded-xl border border-red-500/20"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    `;
+                });
+            } catch(err) { sList.innerHTML = 'Error loading services.'; }
+
+            loadAdminOrders();
+
+            // Load Admin Coupons
+            let cList = document.getElementById('adminCouponsList');
+            cList.innerHTML = 'Loading...';
+            try {
+                let cSnap = await db.collection('coupons').get();
+                cList.innerHTML = '';
+                cSnap.forEach(doc => {
+                    let c = doc.data();
+                    cList.innerHTML += `
+                        <div class="flex justify-between items-center bg-slate-950 p-3.5 rounded-2xl border border-slate-800 text-xs">
+                            <div><strong class="text-white">${c.code}</strong> - <span class="text-emerald-400 font-bold">${c.discount}% OFF</span></div>
+                            <button onclick="deleteCoupon('${doc.id}')" class="text-red-400 bg-red-500/10 px-3 py-1.5 rounded-xl border border-red-500/20"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    `;
+                });
+            } catch(err) { cList.innerHTML = 'Error loading coupons.'; }
+        }
+
+        async function loadAdminOrders() {
+            let oList = document.getElementById('adminOrdersList');
+            oList.innerHTML = '<p class="text-xs text-slate-500">Loading orders from cloud...</p>';
+            try {
+                let oSnap = await db.collection('orders').orderBy('createdAt', 'desc').get();
+                oList.innerHTML = '';
+                if(oSnap.empty) {
+                    oList.innerHTML = '<p class="text-xs text-slate-500">No orders placed yet.</p>';
+                    return;
+                }
+                oSnap.forEach(doc => {
+                    let o = doc.data();
+                    let docId = doc.id;
+                    oList.innerHTML += `
+                        <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs space-y-2">
+                            <div class="flex justify-between"><strong class="text-emerald-400 font-mono">${o.orderId}</strong> <span class="text-slate-400">${o.serviceName}</span></div>
+                            <p class="text-slate-300">Customer: <b>${o.name}</b> | WhatsApp: <b>${o.whatsapp}</b></p>
+                            <p class="text-slate-300">Link: <a href="${o.link}" target="_blank" class="text-teal-400 underline">${o.link}</a></p>
+                            <div class="flex justify-between items-center pt-2 border-t border-slate-800">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-white font-extrabold text-sm">Rs. ${o.price}</span>
+                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold ${o.status === 'Completed' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'}">${o.status || 'Pending'}</span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button onclick="viewScreenshot('${o.screenshot}')" class="bg-teal-500/20 text-teal-300 hover:bg-teal-500 hover:text-slate-950 px-3 py-1 rounded-lg font-bold transition flex items-center gap-1"><i class="fa-solid fa-image"></i> Proof</button>
+                                    <button onclick="updateOrderStatus('${docId}', 'Completed')" class="bg-emerald-600 hover:bg-emerald-500 text-slate-950 px-3 py-1 rounded-lg font-bold">Complete</button>
+                                    <button onclick="deleteOrder('${docId}')" class="bg-red-500/20 text-red-400 px-3 py-1 rounded-lg font-bold"><i class="fa-solid fa-trash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch(err) {
+                oList.innerHTML = '<p class="text-xs text-red-400">Error loading cloud orders.</p>';
             }
-            let csv = 'Name,Email,WhatsApp,Country,Service,Budget,Deadline,Date\n';
-            orders.forEach(o => {
-                csv += `"${o.name}","${o.email}","${o.whatsapp}","${o.country}","${o.service}","${o.budget}","${o.deadline}","${o.date}"\n`;
-            });
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.setAttribute('href', url);
-            a.setAttribute('download', 'customers_orders.csv');
-            a.click();
-            showToast('Customer data exported successfully.');
         }
 
-        // Settings Form
-        document.getElementById('admin-settings-form').addEventListener('submit', (e) => {
+        async function saveStoreSettings(e) {
             e.preventDefault();
-            settings.siteName = document.getElementById('setting-siteName').value;
-            settings.siteEmail = document.getElementById('setting-siteEmail').value;
-            settings.whatsappNum = document.getElementById('setting-whatsappNum').value;
-            settings.heroTitle = document.getElementById('setting-heroTitle').value;
-            saveData();
-            applySettings();
-            showToast('Settings saved successfully.');
-        });
+            storeSettings.brandName = document.getElementById('settingBrandName').value;
+            storeSettings.whatsapp = document.getElementById('settingWhatsapp').value;
+            storeSettings.payNumber = document.getElementById('settingPayNumber').value;
+            storeSettings.payTitle = document.getElementById('settingPayTitle').value;
+            
+            try {
+                await db.collection('settings').doc('general').set(storeSettings);
+                updateUIWithSettings();
+                alert('Store settings successfully updated to Firebase Cloud!');
+            } catch(err) {
+                alert('Error saving settings: ' + err.message);
+            }
+        }
 
-        function applySettings() {
-            document.getElementById('brand-logo-text').innerHTML = `<i class="fa-solid fa-code"></i> ${settings.siteName}`;
-            document.getElementById('contact-email-display').innerText = settings.siteEmail;
-            document.getElementById('contact-wa-display').innerText = settings.whatsappNum;
-            document.getElementById('footer-copy').innerHTML = `&copy; 2026 ${settings.siteName}. All rights reserved.`;
+        async function addNewService(e) {
+            e.preventDefault();
+            let name = document.getElementById('newServiceName').value;
+            let image = document.getElementById('newServiceImage').value;
+            let price = Number(document.getElementById('newServicePrice').value);
+            try {
+                await db.collection('services').add({ name, image, price });
+                loadAdminData();
+                alert('Service added to Cloud successfully!');
+            } catch(err) {
+                alert('Error adding service: ' + err.message);
+            }
+        }
+
+        async function deleteService(id) {
+            if(confirm('Delete this service from cloud?')) {
+                try {
+                    await db.collection('services').doc(id).delete();
+                    loadAdminData();
+                } catch(err) { alert('Error deleting service.'); }
+            }
+        }
+
+        async function addNewCoupon(e) {
+            e.preventDefault();
+            let code = document.getElementById('newCouponCode').value.toUpperCase();
+            let discount = Number(document.getElementById('newCouponDiscount').value);
+            try {
+                await db.collection('coupons').add({ code, discount });
+                loadAdminData();
+                alert('Coupon added to Cloud successfully!');
+            } catch(err) { alert('Error adding coupon.'); }
+        }
+
+        async function deleteCoupon(id) {
+            try {
+                await db.collection('coupons').doc(id).delete();
+                loadAdminData();
+            } catch(err) { alert('Error deleting coupon.'); }
+        }
+
+        async function updateOrderStatus(docId, status) {
+            try {
+                await db.collection('orders').doc(docId).update({ status: status });
+                loadAdminOrders();
+            } catch(err) { alert('Error updating order status.'); }
+        }
+
+        async function deleteOrder(docId) {
+            if(confirm('Delete this order from cloud?')) {
+                try {
+                    await db.collection('orders').doc(docId).delete();
+                    loadAdminOrders();
+                } catch(err) { alert('Error deleting order.'); }
+            }
         }
     </script>
 </body>
