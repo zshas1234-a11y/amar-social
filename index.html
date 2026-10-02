@@ -2,493 +2,1511 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Amar Social Hub</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amar Social Hub - SMM Store</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
 :root{
- --bg:#050816;--card:#0d1328;--card2:#111a35;
- --blue:#4f8cff;--purple:#8b5cf6;--cyan:#22d3ee;
- --green:#22c55e;--red:#ef4444;--white:#fff;
- --muted:#94a3b8;--border:rgba(255,255,255,.1);
+    --bg:#050816;
+    --bg2:#0b1024;
+    --card:rgba(255,255,255,.075);
+    --card2:rgba(255,255,255,.11);
+    --border:rgba(255,255,255,.13);
+    --text:#fff;
+    --muted:#a8b1c7;
+    --blue:#4f8cff;
+    --purple:#8b5cf6;
+    --cyan:#22d3ee;
+    --green:#22c55e;
+    --red:#ef4444;
+    --shadow:0 25px 80px rgba(0,0,0,.45);
 }
+
+html{
+    scroll-behavior:smooth;
+}
+
 body{
- font-family:Arial,Helvetica,sans-serif;
- background:
- radial-gradient(circle at 10% 10%,rgba(79,140,255,.18),transparent 30%),
- radial-gradient(circle at 90% 20%,rgba(139,92,246,.15),transparent 30%),
- #050816;
- color:var(--white);min-height:100vh;
+    font-family:Arial,Helvetica,sans-serif;
+    background:
+        radial-gradient(circle at 10% 10%,rgba(79,140,255,.18),transparent 28%),
+        radial-gradient(circle at 90% 20%,rgba(139,92,246,.18),transparent 30%),
+        radial-gradient(circle at 50% 90%,rgba(34,211,238,.10),transparent 30%),
+        var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
 }
-button,input,textarea{font:inherit}
-button{cursor:pointer}
-.header{
- position:relative;overflow:hidden;padding:28px 18px 45px;
- text-align:center;
- background:linear-gradient(135deg,#070b1d,#101a38,#090d20);
- border-bottom:1px solid var(--border);
+
+body:before,
+body:after{
+    content:"";
+    position:fixed;
+    width:300px;
+    height:300px;
+    border-radius:50%;
+    filter:blur(80px);
+    pointer-events:none;
+    z-index:-1;
 }
-.header:before,.header:after{
- content:"";position:absolute;border-radius:50%;filter:blur(3px);
+
+body:before{
+    background:rgba(79,140,255,.16);
+    top:10%;
+    left:-150px;
 }
-.header:before{
- width:300px;height:300px;background:rgba(79,140,255,.16);
- left:-100px;top:-170px;
+
+body:after{
+    background:rgba(139,92,246,.13);
+    right:-150px;
+    bottom:5%;
 }
-.header:after{
- width:320px;height:320px;background:rgba(139,92,246,.14);
- right:-110px;bottom:-190px;
+
+/* ================= HEADER ================= */
+
+header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    background:rgba(5,8,22,.78);
+    backdrop-filter:blur(20px);
+    border-bottom:1px solid rgba(255,255,255,.08);
 }
-.logo{
- position:relative;z-index:2;
- font-size:clamp(32px,7vw,65px);font-weight:1000;
- letter-spacing:-2px;
- background:linear-gradient(90deg,#fff,#60a5fa,#a78bfa,#fff);
- -webkit-background-clip:text;background-clip:text;color:transparent;
- text-shadow:0 0 35px rgba(79,140,255,.35);
-}
-.tagline{
- position:relative;z-index:2;color:#aab7d4;
- letter-spacing:4px;margin-top:8px;font-size:12px;
-}
+
 .nav{
- position:relative;z-index:2;display:flex;justify-content:center;
- gap:10px;flex-wrap:wrap;margin-top:24px;
+    width:min(1200px,calc(100% - 30px));
+    margin:auto;
+    height:72px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
 }
-.nav button{
- border:1px solid var(--border);color:white;
- background:rgba(255,255,255,.06);padding:10px 18px;
- border-radius:12px;backdrop-filter:blur(10px);
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+    color:white;
 }
-.container{width:min(1150px,calc(100% - 28px));margin:28px auto}
+
+.logo-icon{
+    width:45px;
+    height:45px;
+    border-radius:14px;
+    display:grid;
+    place-items:center;
+    font-size:23px;
+    font-weight:900;
+    background:linear-gradient(135deg,var(--blue),var(--purple));
+    box-shadow:
+        0 8px 25px rgba(79,140,255,.35),
+        inset 0 1px 1px rgba(255,255,255,.4);
+    transform:perspective(500px) rotateX(8deg);
+}
+
+.logo-text strong{
+    display:block;
+    font-size:19px;
+}
+
+.logo-text span{
+    color:var(--cyan);
+    font-size:10px;
+    letter-spacing:3px;
+}
+
+.nav-btn{
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.07);
+    color:white;
+    padding:10px 15px;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+/* ================= HERO ================= */
+
 .hero{
- padding:30px;border:1px solid var(--border);border-radius:25px;
- background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.025));
- box-shadow:0 25px 70px rgba(0,0,0,.3);
- text-align:center;margin-bottom:25px;
+    width:min(1200px,calc(100% - 30px));
+    margin:55px auto 35px;
+    min-height:390px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:35px;
 }
-.hero h1{font-size:clamp(28px,5vw,48px);margin-bottom:12px}
-.hero p{color:var(--muted);max-width:700px;margin:auto;line-height:1.7}
+
+.hero-content{
+    flex:1;
+}
+
+.badge{
+    display:inline-flex;
+    padding:9px 14px;
+    border-radius:50px;
+    background:rgba(79,140,255,.12);
+    border:1px solid rgba(79,140,255,.28);
+    color:#9fc0ff;
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:1px;
+    margin-bottom:18px;
+}
+
+.hero h1{
+    font-size:clamp(40px,7vw,76px);
+    line-height:.98;
+    font-weight:950;
+    letter-spacing:-3px;
+}
+
+.gradient{
+    background:linear-gradient(90deg,#fff,#70a7ff,#b38cff,#fff);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+}
+
+.hero p{
+    color:var(--muted);
+    max-width:650px;
+    margin-top:20px;
+    line-height:1.7;
+    font-size:16px;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:12px;
+    margin-top:27px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    border:0;
+    border-radius:14px;
+    padding:14px 20px;
+    color:white;
+    cursor:pointer;
+    font-weight:800;
+    font-size:14px;
+    transition:.2s;
+}
+
+.btn:hover{
+    transform:translateY(-3px);
+}
+
+.btn-primary{
+    background:linear-gradient(135deg,var(--blue),var(--purple));
+    box-shadow:0 15px 35px rgba(79,140,255,.25);
+}
+
+.btn-dark{
+    background:rgba(255,255,255,.08);
+    border:1px solid var(--border);
+}
+
+/* 3D OBJECT */
+
+.hero-3d{
+    width:390px;
+    height:330px;
+    position:relative;
+    display:grid;
+    place-items:center;
+    perspective:900px;
+}
+
+.cube{
+    width:190px;
+    height:190px;
+    position:relative;
+    transform-style:preserve-3d;
+    transform:rotateX(55deg) rotateZ(40deg);
+    animation:float 5s ease-in-out infinite;
+}
+
+.face{
+    position:absolute;
+    inset:0;
+    display:grid;
+    place-items:center;
+    font-size:55px;
+    font-weight:900;
+    border:1px solid rgba(255,255,255,.2);
+    background:linear-gradient(135deg,rgba(79,140,255,.85),rgba(139,92,246,.72));
+    box-shadow:inset 0 0 35px rgba(255,255,255,.12);
+}
+
+.front{transform:translateZ(95px)}
+.back{transform:rotateY(180deg) translateZ(95px)}
+.right{transform:rotateY(90deg) translateZ(95px)}
+.left{transform:rotateY(-90deg) translateZ(95px)}
+.top{transform:rotateX(90deg) translateZ(95px)}
+.bottom{transform:rotateX(-90deg) translateZ(95px)}
+
+@keyframes float{
+    0%,100%{transform:rotateX(55deg) rotateZ(40deg) translateY(0)}
+    50%{transform:rotateX(55deg) rotateZ(40deg) translateY(-22px)}
+}
+
+/* ================= MAIN ================= */
+
+.container{
+    width:min(1200px,calc(100% - 30px));
+    margin:auto;
+}
+
+.section-title{
+    text-align:center;
+    margin:35px 0 25px;
+}
+
+.section-title h2{
+    font-size:32px;
+}
+
+.section-title p{
+    color:var(--muted);
+    margin-top:8px;
+}
+
+/* ================= SEARCH ================= */
+
+.search-box{
+    display:flex;
+    margin-bottom:20px;
+}
+
+.search-box input{
+    width:100%;
+    padding:16px 18px;
+    border-radius:15px;
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.06);
+    color:white;
+    outline:none;
+    font-size:15px;
+}
+
+.search-box input::placeholder{
+    color:#7d879d;
+}
+
+/* ================= SERVICES ================= */
+
 .services{
- display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+    padding-bottom:50px;
 }
+
 .service{
- position:relative;overflow:hidden;
- background:linear-gradient(145deg,#111a35,#080d20);
- border:1px solid var(--border);border-radius:22px;padding:22px;
- box-shadow:0 18px 45px rgba(0,0,0,.28);
- transition:.25s;transform-style:preserve-3d;
+    position:relative;
+    padding:22px;
+    border-radius:22px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.11),
+            rgba(255,255,255,.035)
+        );
+    border:1px solid var(--border);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    transition:.3s;
 }
-.service:hover{transform:translateY(-7px) rotateX(2deg);border-color:rgba(79,140,255,.55)}
+
+.service:hover{
+    transform:
+        perspective(800px)
+        rotateX(3deg)
+        rotateY(-3deg)
+        translateY(-7px);
+    border-color:rgba(79,140,255,.45);
+}
+
 .service:before{
- content:"";position:absolute;width:130px;height:130px;
- border-radius:50%;background:rgba(79,140,255,.12);
- right:-50px;top:-50px;
+    content:"";
+    position:absolute;
+    width:130px;
+    height:130px;
+    background:rgba(79,140,255,.15);
+    filter:blur(35px);
+    right:-60px;
+    top:-60px;
 }
+
 .service-icon{
- width:55px;height:55px;border-radius:16px;
- display:flex;align-items:center;justify-content:center;
- background:linear-gradient(135deg,var(--blue),var(--purple));
- font-size:25px;margin-bottom:18px;
- box-shadow:0 10px 25px rgba(79,140,255,.25);
+    width:52px;
+    height:52px;
+    border-radius:16px;
+    display:grid;
+    place-items:center;
+    font-size:25px;
+    background:linear-gradient(135deg,var(--blue),var(--purple));
+    margin-bottom:18px;
+    box-shadow:0 10px 30px rgba(79,140,255,.25);
 }
-.service h3{font-size:20px;margin-bottom:9px}
-.service p{color:var(--muted);font-size:13px;line-height:1.6;min-height:42px}
+
+.service h3{
+    font-size:19px;
+    margin-bottom:8px;
+}
+
+.service p{
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.5;
+    min-height:40px;
+}
+
+.service-bottom{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:20px;
+}
+
 .price{
- font-size:22px;font-weight:900;margin:17px 0;
- color:#67e8f9;
+    font-size:18px;
+    font-weight:900;
 }
-.price small{font-size:11px;color:var(--muted);font-weight:normal}
-.order-btn,.primary{
- width:100%;border:0;padding:13px 16px;border-radius:12px;
- color:white;font-weight:800;
- background:linear-gradient(135deg,var(--blue),var(--purple));
- box-shadow:0 10px 25px rgba(79,140,255,.2);
- transition:.2s;
+
+.price small{
+    color:var(--muted);
+    font-size:10px;
+    font-weight:500;
 }
-.order-btn:hover,.primary:hover{transform:translateY(-2px);filter:brightness(1.1)}
-.empty{text-align:center;color:var(--muted);padding:50px}
-.footer{text-align:center;color:#64748b;padding:35px 15px}
+
+.order-btn{
+    padding:11px 15px;
+    border:0;
+    border-radius:11px;
+    color:white;
+    background:linear-gradient(135deg,var(--blue),var(--purple));
+    cursor:pointer;
+    font-weight:800;
+}
+
+/* ================= MODAL ================= */
+
 .modal{
- display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);
- backdrop-filter:blur(8px);z-index:1000;padding:18px;
- align-items:center;justify-content:center;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.72);
+    backdrop-filter:blur(10px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:5000;
+    padding:15px;
 }
-.modal.show{display:flex}
-.box{
- width:min(500px,100%);max-height:92vh;overflow:auto;
- background:linear-gradient(145deg,#111a35,#080d20);
- border:1px solid var(--border);border-radius:24px;padding:25px;
- box-shadow:0 30px 100px rgba(0,0,0,.5);
+
+.modal.show{
+    display:flex;
 }
-.box h2{margin-bottom:18px}
-.field{margin-bottom:14px}
-.field label{display:block;font-size:12px;color:#aab7d4;margin-bottom:7px}
-.field input,.field textarea,.admin input,.admin textarea,.admin select{
- width:100%;background:#070c1d;color:white;
- border:1px solid var(--border);border-radius:11px;
- padding:12px;outline:none;
+
+.modal-box{
+    width:min(480px,100%);
+    background:
+        linear-gradient(
+            145deg,
+            #11182e,
+            #080d1d
+        );
+    border:1px solid var(--border);
+    border-radius:25px;
+    padding:25px;
+    box-shadow:0 30px 100px rgba(0,0,0,.6);
+    animation:pop .25s ease;
 }
-.field textarea{min-height:80px;resize:vertical}
-.field input:focus,.field textarea:focus,.admin input:focus,.admin textarea:focus{
- border-color:var(--blue);
- box-shadow:0 0 0 3px rgba(79,140,255,.1);
+
+@keyframes pop{
+    from{transform:scale(.85);opacity:0}
+    to{transform:scale(1);opacity:1}
 }
+
+.modal-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
 .close{
- float:right;border:0;background:rgba(255,255,255,.08);
- color:white;width:35px;height:35px;border-radius:10px;
+    width:35px;
+    height:35px;
+    border:0;
+    border-radius:10px;
+    background:rgba(255,255,255,.08);
+    color:white;
+    cursor:pointer;
+    font-size:18px;
 }
-.order-info{
- background:rgba(255,255,255,.04);padding:14px;border-radius:13px;
- margin-bottom:15px;
+
+.form-group{
+    margin-bottom:14px;
 }
+
+.form-group label{
+    display:block;
+    font-size:12px;
+    color:#cbd5e1;
+    margin-bottom:7px;
+}
+
+.form-group input,
+.form-group textarea{
+    width:100%;
+    padding:13px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.06);
+    color:white;
+    outline:none;
+}
+
+.form-group textarea{
+    min-height:80px;
+    resize:vertical;
+}
+
+.selected{
+    background:rgba(79,140,255,.08);
+    border:1px solid rgba(79,140,255,.25);
+    padding:14px;
+    border-radius:13px;
+    margin-bottom:15px;
+}
+
+.selected strong{
+    display:block;
+}
+
+.selected span{
+    color:#8db5ff;
+    font-size:13px;
+}
+
 .total-box{
- display:flex;justify-content:space-between;
- padding:15px 0;margin:12px 0;border-top:1px solid var(--border);
- font-size:21px;font-weight:900;
+    display:flex;
+    justify-content:space-between;
+    padding:15px 0;
+    border-top:1px solid var(--border);
+    margin-top:15px;
+    font-size:20px;
+    font-weight:900;
 }
-.qty-row{display:flex;align-items:center;gap:8px}
-.qty-row button{
- width:36px;height:36px;border:0;border-radius:9px;
- background:#1d2948;color:white;font-size:20px;
+
+/* ================= RECEIPT ================= */
+
+.receipt{
+    position:fixed;
+    inset:0;
+    z-index:6000;
+    background:rgba(0,0,0,.78);
+    backdrop-filter:blur(12px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:15px;
 }
-.qty-row input{width:70px;text-align:center}
-.receipt{text-align:center}
-.receipt-icon{
- width:75px;height:75px;border-radius:50%;
- background:rgba(34,197,94,.15);color:#4ade80;
- display:flex;align-items:center;justify-content:center;
- font-size:40px;margin:0 auto 15px;
+
+.receipt.show{
+    display:flex;
 }
+
 .receipt-card{
- text-align:left;background:rgba(255,255,255,.045);
- border:1px solid var(--border);border-radius:15px;padding:16px;
- margin:18px 0;line-height:1.9;
+    width:min(480px,100%);
+    background:white;
+    color:#111827;
+    border-radius:25px;
+    padding:25px;
+    box-shadow:0 30px 100px rgba(0,0,0,.5);
 }
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.whatsapp{background:#16a34a!important}
-.secondary{background:#26324e!important}
-.admin{
- display:none;position:fixed;inset:0;z-index:2000;
- background:#050816;overflow:auto;
+
+.receipt-logo{
+    text-align:center;
+    font-size:24px;
+    font-weight:950;
+    margin-bottom:5px;
 }
-.admin.show{display:block}
-.admin-top{
- padding:18px;display:flex;justify-content:space-between;
- align-items:center;gap:10px;background:#0b1125;
- border-bottom:1px solid var(--border);position:sticky;top:0;z-index:5;
+
+.receipt-sub{
+    text-align:center;
+    color:#64748b;
+    font-size:12px;
+    margin-bottom:20px;
 }
-.admin-top h2{font-size:20px}
-.admin-top button{
- border:0;border-radius:9px;padding:10px 14px;
- background:#26324e;color:white;
+
+.success-mark{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    background:#dcfce7;
+    color:#16a34a;
+    display:grid;
+    place-items:center;
+    margin:0 auto 15px;
+    font-size:30px;
+    font-weight:bold;
 }
-.admin-wrap{width:min(1200px,calc(100% - 28px));margin:25px auto}
-.admin-grid{display:grid;grid-template-columns:330px 1fr;gap:20px}
+
+.receipt-info{
+    background:#f8fafc;
+    border-radius:14px;
+    padding:15px;
+    margin-bottom:15px;
+}
+
+.receipt-row{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    padding:7px 0;
+    font-size:13px;
+}
+
+.receipt-total{
+    border-top:1px dashed #cbd5e1;
+    padding-top:13px;
+    margin-top:8px;
+    display:flex;
+    justify-content:space-between;
+    font-size:20px;
+    font-weight:900;
+}
+
+.receipt-buttons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:18px;
+}
+
+.whatsapp{
+    background:#16a34a;
+}
+
+.home{
+    background:#111827;
+}
+
+/* ================= ADMIN ================= */
+
+.admin-page{
+    display:none;
+    min-height:100vh;
+}
+
+.admin-page.show{
+    display:block;
+}
+
+.admin-header{
+    background:rgba(5,8,22,.92);
+    border-bottom:1px solid var(--border);
+    padding:18px;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.admin-nav{
+    width:min(1200px,calc(100% - 30px));
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.admin-title{
+    font-weight:900;
+    font-size:20px;
+}
+
+.admin-wrap{
+    width:min(1200px,calc(100% - 30px));
+    margin:25px auto;
+}
+
+.admin-grid{
+    display:grid;
+    grid-template-columns:350px 1fr;
+    gap:20px;
+}
+
 .admin-card{
- background:#0d1328;border:1px solid var(--border);
- border-radius:18px;padding:20px;margin-bottom:20px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:20px;
+    box-shadow:var(--shadow);
 }
-.admin-card h3{margin-bottom:15px}
-.admin input,.admin textarea{margin-bottom:10px}
-.admin-btn{
- border:0;padding:11px 15px;border-radius:10px;
- color:white;font-weight:800;background:linear-gradient(135deg,var(--blue),var(--purple));
+
+.admin-card h3{
+    margin-bottom:16px;
 }
-.admin-btn.red{background:#7f1d1d}
-.admin-btn.green{background:#15803d}
+
+.admin-input{
+    width:100%;
+    padding:13px;
+    margin-bottom:10px;
+    border-radius:11px;
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.06);
+    color:white;
+    outline:none;
+}
+
+.admin-list{
+    max-height:600px;
+    overflow:auto;
+}
+
 .admin-service{
- display:grid;grid-template-columns:1fr 110px 150px;
- gap:10px;align-items:center;
- padding:13px 0;border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    padding:14px 0;
+    border-bottom:1px solid rgba(255,255,255,.08);
 }
-.admin-actions{display:flex;gap:5px}
-.orders-list .order{
- border:1px solid var(--border);border-radius:13px;padding:15px;margin-bottom:10px;
+
+.admin-service-info strong{
+    display:block;
 }
-.login-screen{
- position:fixed;inset:0;z-index:3000;background:#050816;
- display:none;align-items:center;justify-content:center;padding:20px;
+
+.admin-service-info span{
+    color:var(--muted);
+    font-size:12px;
 }
-.login-screen.show{display:flex}
+
+.admin-actions{
+    display:flex;
+    gap:6px;
+}
+
+.small-btn{
+    border:0;
+    padding:8px 10px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+.edit{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.delete{
+    background:#fee2e2;
+    color:#b91c1c;
+}
+
+.orders{
+    margin-top:20px;
+}
+
+.order-card{
+    padding:15px;
+    border:1px solid var(--border);
+    border-radius:14px;
+    margin-bottom:12px;
+}
+
+.order-head{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    font-weight:800;
+}
+
+.order-items{
+    margin-top:10px;
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.7;
+}
+
+.empty{
+    padding:40px 15px;
+    text-align:center;
+    color:var(--muted);
+}
+
+/* LOGIN */
+
+.login-page{
+    min-height:100vh;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.login-page.show{
+    display:flex;
+}
+
 .login-box{
- width:min(400px,100%);padding:28px;background:#0d1328;
- border:1px solid var(--border);border-radius:22px;
- box-shadow:0 30px 100px #000;
+    width:min(410px,100%);
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:25px;
+    padding:30px;
+    box-shadow:var(--shadow);
+    text-align:center;
 }
+
+.login-icon{
+    width:70px;
+    height:70px;
+    margin:0 auto 18px;
+    display:grid;
+    place-items:center;
+    border-radius:20px;
+    background:linear-gradient(135deg,var(--blue),var(--purple));
+    font-size:32px;
+}
+
+.login-box h2{
+    margin-bottom:8px;
+}
+
+.login-box p{
+    color:var(--muted);
+    font-size:13px;
+    margin-bottom:20px;
+}
+
 .login-box input{
- width:100%;margin:15px 0;padding:13px;border-radius:11px;
- background:#050816;color:white;border:1px solid var(--border);
+    width:100%;
+    padding:14px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.06);
+    color:white;
+    outline:none;
+    margin-bottom:12px;
 }
-.note{font-size:11px;color:#64748b;margin-top:9px;line-height:1.5}
-@media(max-width:750px){
- .admin-grid{grid-template-columns:1fr}
- .admin-service{grid-template-columns:1fr 90px}
- .admin-actions{grid-column:1/-1}
- .actions{grid-template-columns:1fr}
- .hero{padding:22px}
+
+.error{
+    color:#f87171;
+    font-size:12px;
+    min-height:18px;
+}
+
+/* FOOTER */
+
+footer{
+    text-align:center;
+    padding:30px 15px;
+    color:#718096;
+    border-top:1px solid rgba(255,255,255,.07);
+    font-size:12px;
+}
+
+/* MOBILE */
+
+@media(max-width:850px){
+
+    .hero{
+        flex-direction:column;
+        text-align:center;
+        margin-top:35px;
+    }
+
+    .hero p{
+        margin-left:auto;
+        margin-right:auto;
+    }
+
+    .hero-buttons{
+        justify-content:center;
+    }
+
+    .hero-3d{
+        width:300px;
+        height:260px;
+        transform:scale(.8);
+        margin-top:-20px;
+    }
+
+    .services{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .admin-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:550px){
+
+    .services{
+        grid-template-columns:1fr;
+    }
+
+    .hero h1{
+        font-size:45px;
+    }
+
+    .logo-text strong{
+        font-size:16px;
+    }
+
+    .receipt-buttons{
+        grid-template-columns:1fr;
+    }
+
+    .admin-service{
+        flex-direction:column;
+        align-items:flex-start;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<header class="header">
- <div class="logo">AMAR SOCIAL HUB</div>
- <div class="tagline">PREMIUM SMM SERVICES • FAST • SECURE • RELIABLE</div>
- <div class="nav">
-   <button onclick="scrollToServices()">🛍 Services</button>
-   <button onclick="showInfo()">ℹ️ About</button>
- </div>
+<!-- =====================================================
+     CUSTOMER HOME
+===================================================== -->
+
+<div id="homePage">
+
+<header>
+    <nav class="nav">
+
+        <a href="#" class="logo">
+            <div class="logo-icon">A</div>
+
+            <div class="logo-text">
+                <strong>Amar Social Hub</strong>
+                <span>SMM STORE</span>
+            </div>
+        </a>
+
+        <button class="nav-btn" onclick="scrollToServices()">
+            Services
+        </button>
+
+    </nav>
 </header>
 
-<main class="container">
 
- <section class="hero">
-   <h1>Grow Your Social Media 🚀</h1>
-   <p>
-    Amar Social Hub par premium social media services order karein.
-    Service select karein, apna naam aur WhatsApp number enter karein
-    aur order complete karein.
-   </p>
- </section>
+<section class="hero">
 
- <section id="serviceSection">
-   <div class="services" id="services">
-     <div class="empty">Loading services...</div>
-   </div>
- </section>
+    <div class="hero-content">
+
+        <div class="badge">
+            ⚡ FAST • SECURE • PROFESSIONAL
+        </div>
+
+        <h1>
+            Grow Your
+            <span class="gradient">
+                Social Media
+            </span>
+        </h1>
+
+        <p>
+            Amar Social Hub par social media services
+            easily order karein. Service select karein,
+            apna naam aur WhatsApp number enter karein
+            aur order complete karein.
+        </p>
+
+        <div class="hero-buttons">
+
+            <button
+                class="btn btn-primary"
+                onclick="scrollToServices()"
+            >
+                🚀 Explore Services
+            </button>
+
+            <button
+                class="btn btn-dark"
+                onclick="openOrderHelp()"
+            >
+                ℹ️ How It Works
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="hero-3d">
+
+        <div class="cube">
+
+            <div class="face front">A</div>
+            <div class="face back">S</div>
+            <div class="face right">M</div>
+            <div class="face left">M</div>
+            <div class="face top">⚡</div>
+            <div class="face bottom">★</div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<main class="container" id="servicesSection">
+
+    <div class="section-title">
+
+        <h2>Our Services</h2>
+
+        <p>
+            Apni required service select karein
+        </p>
+
+    </div>
+
+
+    <div class="search-box">
+
+        <input
+            id="serviceSearch"
+            placeholder="🔎 Search services..."
+        >
+
+    </div>
+
+
+    <div
+        id="services"
+        class="services"
+    >
+
+        <div class="empty">
+            Loading services...
+        </div>
+
+    </div>
 
 </main>
 
-<footer class="footer">
- © <span id="year"></span> Amar Social Hub — All Rights Reserved
+
+<footer>
+    © <span id="year"></span>
+    Amar Social Hub — All Rights Reserved
 </footer>
 
-
-<!-- ORDER MODAL -->
-<div class="modal" id="orderModal">
- <div class="box">
-
-  <button class="close" onclick="closeOrder()">×</button>
-
-  <h2>🛒 Place Your Order</h2>
-
-  <div class="order-info">
-   <strong id="selectedName"></strong>
-   <br>
-   <span id="selectedDescription" style="color:#94a3b8;font-size:13px"></span>
-   <div class="price" id="selectedPrice"></div>
-  </div>
-
-  <div class="field">
-   <label>Your Name</label>
-   <input id="customerName" placeholder="Enter your name">
-  </div>
-
-  <div class="field">
-   <label>WhatsApp Number</label>
-   <input id="customerPhone" type="tel" placeholder="03XXXXXXXXX">
-  </div>
-
-  <div class="field">
-   <label>Quantity</label>
-   <div class="qty-row">
-    <button onclick="changeQty(-1)">−</button>
-    <input id="quantity" type="number" min="1" value="1"
-           onchange="updateOrderTotal()">
-    <button onclick="changeQty(1)">+</button>
-   </div>
-  </div>
-
-  <div class="total-box">
-   <span>Total</span>
-   <span id="orderTotal">PKR 0</span>
-  </div>
-
-  <button class="primary" id="placeOrderBtn" onclick="placeOrder()">
-   ✅ Order Done
-  </button>
-
- </div>
 </div>
 
 
-<!-- RECEIPT -->
-<div class="modal" id="receiptModal">
- <div class="box receipt">
+<!-- =====================================================
+     ORDER MODAL
+===================================================== -->
 
-  <div class="receipt-icon">✓</div>
+<div id="orderModal" class="modal">
 
-  <h2>Order Submitted!</h2>
+    <div class="modal-box">
 
-  <p style="color:#94a3b8">
-   Aapka order successfully receive ho gaya hai.
-  </p>
+        <div class="modal-head">
 
-  <div class="receipt-card" id="receiptContent"></div>
+            <h2>Place Your Order</h2>
 
-  <div class="actions">
-   <button class="primary whatsapp" onclick="goWhatsApp()">
-    💬 Go to WhatsApp
-   </button>
+            <button
+                class="close"
+                onclick="closeOrder()"
+            >
+                ×
+            </button>
 
-   <button class="primary secondary" onclick="goHome()">
-    🏠 Go to Home
-   </button>
-  </div>
+        </div>
 
- </div>
+
+        <div class="selected">
+
+            <strong id="selectedService">
+                Service
+            </strong>
+
+            <span id="selectedPrice">
+                PKR 0
+            </span>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Your Name
+            </label>
+
+            <input
+                id="customerName"
+                placeholder="Enter your name"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                WhatsApp Number
+            </label>
+
+            <input
+                id="customerWhatsApp"
+                placeholder="03XXXXXXXXX"
+                type="tel"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Quantity
+            </label>
+
+            <input
+                id="orderQuantity"
+                type="number"
+                min="1"
+                value="1"
+                oninput="calculateOrderTotal()"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Link / Username
+            </label>
+
+            <textarea
+                id="serviceLink"
+                placeholder="Enter profile/post/page link or username"
+            ></textarea>
+
+        </div>
+
+
+        <div class="total-box">
+
+            <span>Total</span>
+
+            <span id="orderTotal">
+                PKR 0
+            </span>
+
+        </div>
+
+
+        <button
+            class="btn btn-primary"
+            style="width:100%"
+            onclick="submitOrder()"
+        >
+            🛒 Order Done
+        </button>
+
+    </div>
+
 </div>
 
 
-<!-- ADMIN LOGIN -->
-<div class="login-screen" id="loginScreen">
- <div class="login-box">
+<!-- =====================================================
+     RECEIPT
+===================================================== -->
 
-  <h2>🔐 Amar Social Hub Admin</h2>
-  <p style="color:#94a3b8;margin-top:7px">
-   Admin panel access
-  </p>
+<div id="receipt" class="receipt">
 
-  <input id="adminPassword" type="password"
-         placeholder="Enter admin password">
+    <div class="receipt-card">
 
-  <button class="primary" onclick="adminLogin()">Login</button>
+        <div class="success-mark">
+            ✓
+        </div>
 
-  <p id="loginError" style="color:#ef4444;margin-top:10px"></p>
+        <div class="receipt-logo">
+            Amar Social Hub
+        </div>
 
- </div>
+        <div class="receipt-sub">
+            ORDER RECEIPT
+        </div>
+
+
+        <div class="receipt-info">
+
+            <div class="receipt-row">
+                <span>Order ID</span>
+                <strong id="receiptId">---</strong>
+            </div>
+
+            <div class="receipt-row">
+                <span>Name</span>
+                <strong id="receiptName">---</strong>
+            </div>
+
+            <div class="receipt-row">
+                <span>WhatsApp</span>
+                <strong id="receiptWhatsApp">---</strong>
+            </div>
+
+            <div class="receipt-row">
+                <span>Service</span>
+                <strong id="receiptService">---</strong>
+            </div>
+
+            <div class="receipt-row">
+                <span>Quantity</span>
+                <strong id="receiptQuantity">---</strong>
+            </div>
+
+            <div class="receipt-row">
+                <span>Status</span>
+                <strong>New Order</strong>
+            </div>
+
+            <div class="receipt-total">
+                <span>Total</span>
+                <span id="receiptTotal">PKR 0</span>
+            </div>
+
+        </div>
+
+
+        <div class="receipt-buttons">
+
+            <button
+                id="whatsappButton"
+                class="btn whatsapp"
+            >
+                💬 Go to WhatsApp
+            </button>
+
+            <button
+                class="btn home"
+                onclick="goHome()"
+            >
+                🏠 Go to Home
+            </button>
+
+        </div>
+
+    </div>
+
 </div>
 
 
-<!-- ADMIN PANEL -->
-<div class="admin" id="adminPanel">
+<!-- =====================================================
+     HELP MODAL
+===================================================== -->
 
- <div class="admin-top">
-  <h2>⚙️ Amar Social Hub Admin</h2>
+<div id="helpModal" class="modal">
 
-  <div style="display:flex;gap:7px">
-   <button onclick="closeAdmin()">Home</button>
-   <button onclick="adminLogout()">Logout</button>
-  </div>
- </div>
+    <div class="modal-box">
 
- <div class="admin-wrap">
+        <div class="modal-head">
 
-  <div class="admin-grid">
+            <h2>How It Works</h2>
 
-   <!-- SETTINGS -->
-   <div>
+            <button
+                class="close"
+                onclick="closeOrderHelp()"
+            >
+                ×
+            </button>
 
-    <div class="admin-card">
+        </div>
 
-     <h3>🏪 Shop Settings</h3>
+        <p style="color:#a8b1c7;line-height:1.8">
 
-     <input id="shopNameInput"
-            placeholder="Shop name">
+            1. Apni required service select karein.<br>
+            2. Apna naam aur WhatsApp number enter karein.<br>
+            3. Quantity aur required link enter karein.<br>
+            4. <b style="color:white">Order Done</b> par click karein.<br>
+            5. Receipt show hogi.<br>
+            6. <b style="color:#22c55e">Go to WhatsApp</b> par click karke order message bhej dein.
 
-     <button class="admin-btn" onclick="saveShopName()">
-      Save Shop Name
-     </button>
+        </p>
 
-     <br><br>
+    </div>
 
-     <input id="adminWhatsApp"
-            placeholder="Admin WhatsApp number">
+</div>
 
-     <button class="admin-btn green"
-             onclick="saveWhatsApp()">
-      Save WhatsApp
-     </button>
 
-     <p class="note">
-      Example: 923001234567
-     </p>
+<!-- =====================================================
+     ADMIN LOGIN
+===================================================== -->
+
+<div id="adminLogin" class="login-page">
+
+    <div class="login-box">
+
+        <div class="login-icon">
+            🔐
+        </div>
+
+        <h2>
+            Admin Login
+        </h2>
+
+        <p>
+            Amar Social Hub Admin Panel
+        </p>
+
+        <input
+            id="adminPassword"
+            type="password"
+            placeholder="Enter admin password"
+        >
+
+        <button
+            class="btn btn-primary"
+            style="width:100%"
+            onclick="adminLogin()"
+        >
+            Login
+        </button>
+
+        <div
+            id="loginError"
+            class="error"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ADMIN PAGE
+===================================================== -->
+
+<div id="adminPage" class="admin-page">
+
+    <div class="admin-header">
+
+        <div class="admin-nav">
+
+            <div class="admin-title">
+                ⚙️ Amar Social Hub Admin
+            </div>
+
+            <div style="display:flex;gap:7px">
+
+                <button
+                    class="nav-btn"
+                    onclick="openHome()"
+                >
+                    Home
+                </button>
+
+                <button
+                    class="nav-btn"
+                    onclick="adminLogout()"
+                >
+                    Logout
+                </button>
+
+            </div>
+
+        </div>
 
     </div>
 
 
-    <div class="admin-card">
+    <div class="admin-wrap">
 
-     <h3>➕ Add New Service</h3>
+        <div class="admin-grid">
 
-     <input id="newServiceName"
-            placeholder="Service name">
+            <!-- SETTINGS -->
 
-     <textarea id="newServiceDescription"
-               placeholder="Service description"></textarea>
+            <div class="admin-card">
 
-     <input id="newServicePrice"
-            type="number"
-            min="0"
-            placeholder="Price">
+                <h3>
+                    ⚙️ Store Settings
+                </h3>
 
-     <button class="admin-btn"
-             onclick="addService()">
-      + Add Service
-     </button>
+                <label
+                    style="
+                        display:block;
+                        color:#a8b1c7;
+                        font-size:12px;
+                        margin-bottom:7px
+                    "
+                >
+                    Admin WhatsApp Number
+                </label>
+
+                <input
+                    id="adminWhatsApp"
+                    class="admin-input"
+                    placeholder="923XXXXXXXXX"
+                >
+
+                <button
+                    class="btn btn-primary"
+                    style="width:100%"
+                    onclick="saveSettings()"
+                >
+                    💾 Save WhatsApp
+                </button>
+
+
+                <hr
+                    style="
+                        border:0;
+                        border-top:1px solid rgba(255,255,255,.1);
+                        margin:22px 0
+                    "
+                >
+
+
+                <h3>
+                    ➕ Add Service
+                </h3>
+
+                <input
+                    id="serviceName"
+                    class="admin-input"
+                    placeholder="Service name"
+                >
+
+                <input
+                    id="servicePrice"
+                    class="admin-input"
+                    type="number"
+                    min="0"
+                    placeholder="Price"
+                >
+
+                <input
+                    id="serviceUnit"
+                    class="admin-input"
+                    placeholder="Unit e.g. 1000 Likes"
+                >
+
+                <input
+                    id="serviceIcon"
+                    class="admin-input"
+                    placeholder="Emoji e.g. ❤️"
+                    value="🚀"
+                >
+
+                <textarea
+                    id="serviceDescription"
+                    class="admin-input"
+                    style="min-height:80px"
+                    placeholder="Short description"
+                ></textarea>
+
+                <button
+                    class="btn btn-primary"
+                    style="width:100%"
+                    onclick="addService()"
+                >
+                    + Add Service
+                </button>
+
+            </div>
+
+
+            <!-- SERVICE MANAGEMENT -->
+
+            <div class="admin-card">
+
+                <h3>
+                    📦 Service Management
+                </h3>
+
+                <input
+                    id="adminSearch"
+                    class="admin-input"
+                    placeholder="🔎 Search service..."
+                    oninput="renderAdminServices()"
+                >
+
+                <div
+                    id="adminServices"
+                    class="admin-list"
+                >
+                    Loading...
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ORDERS -->
+
+        <div class="admin-card orders">
+
+            <h3>
+                📋 Customer Orders
+            </h3>
+
+            <div id="adminOrders">
+                Loading orders...
+            </div>
+
+        </div>
 
     </div>
 
-   </div>
-
-
-   <!-- SERVICES -->
-   <div>
-
-    <div class="admin-card">
-
-     <h3>📦 Services Management</h3>
-
-     <input id="adminSearch"
-            placeholder="Search service..."
-            oninput="renderAdminServices()">
-
-     <div id="adminServices"></div>
-
-    </div>
-
-
-    <div class="admin-card">
-
-     <h3>📋 Customer Orders</h3>
-
-     <div class="orders-list" id="ordersList">
-      Loading orders...
-     </div>
-
-    </div>
-
-   </div>
-
-  </div>
-
- </div>
 </div>
 
+
+<!-- =====================================================
+     FIREBASE
+===================================================== -->
 
 <script type="module">
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import {
+    initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
 
 import {
- getFirestore,
- collection,
- addDoc,
- getDocs,
- getDoc,
- doc,
- setDoc,
- updateDoc,
- deleteDoc,
- query,
- orderBy,
- limit
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    getDoc,
+    doc,
+    setDoc,
+    deleteDoc,
+    query,
+    orderBy,
+    limit
 }
-from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+from
+"https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 
 /* =====================================================
@@ -496,52 +1514,87 @@ from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 ===================================================== */
 
 const firebaseConfig = {
- apiKey:"AIzaSyBqkDPahbv24mCWZ6L62V5FxCwKNgApgNU",
- authDomain:"amar-social-18b48.firebaseapp.com",
- projectId:"amar-social-18b48",
- storageBucket:"amar-social-18b48.firebasestorage.app",
- messagingSenderId:"562759285262",
- appId:"1:562759285262:web:8996321fcf35a4d65b9a5f"
+
+    apiKey:
+        "AIzaSyBqkDPahbv24mCWZ6L62V5FxCwKNgApgNU",
+
+    authDomain:
+        "amar-social-18b48.firebaseapp.com",
+
+    projectId:
+        "amar-social-18b48",
+
+    storageBucket:
+        "amar-social-18b48.firebasestorage.app",
+
+    messagingSenderId:
+        "562759285262",
+
+    appId:
+        "1:562759285262:web:8996321fcf35a4d65b9a5f"
+
 };
 
-const app=initializeApp(firebaseConfig);
-const db=getFirestore(app);
+
+const app =
+    initializeApp(firebaseConfig);
+
+const db =
+    getFirestore(app);
 
 
 /* =====================================================
-   ADMIN PASSWORD
+   DEFAULT ADMIN PASSWORD
 ===================================================== */
 
-const ADMIN_PASSWORD="Admin@12345";
+const ADMIN_PASSWORD =
+    "Admin@12345";
 
 
 /* =====================================================
-   GLOBAL
+   GLOBAL VARIABLES
 ===================================================== */
 
-let services=[];
-let selectedService=null;
-let lastOrder=null;
-let adminWhatsApp="";
+let services = [];
+
+let selectedService = null;
+
+let adminWhatsApp =
+    "";
 
 
 /* =====================================================
-   HELPERS
+   BASIC HELPERS
 ===================================================== */
 
-const $=id=>document.getElementById(id);
+function escapeHTML(value){
 
-function money(n){
- return "PKR "+Number(n||0).toLocaleString();
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
 }
 
-function escapeHTML(v){
- return String(v??"")
- .replace(/&/g,"&amp;")
- .replace(/</g,"&lt;")
- .replace(/>/g,"&gt;")
- .replace(/"/g,"&quot;")
- .replace(/'/g,"&#039;");
+
+function formatPKR(value){
+
+    return "PKR " +
+        Number(value || 0)
+        .toLocaleString();
+
+}
+
+
+function createOrderId(){
+
+    return "ASH-" +
+        Date.now()
+        .toString()
+        .slice(-8);
+
 }
 
 
@@ -551,41 +1604,42 @@ function escapeHTML(v){
 
 async function loadSettings(){
 
- try{
+    try{
 
-  const shop=await getDoc(
-   doc(db,"settings","shop")
-  );
+        const ref =
+            doc(
+                db,
+                "settings",
+                "store"
+            );
 
-  if(shop.exists()){
+        const snap =
+            await getDoc(ref);
 
-   const data=shop.data();
+        if(snap.exists()){
 
-   const name=data.name||"AMAR SOCIAL HUB";
+            const data =
+                snap.data();
 
-   document.title=name;
+            adminWhatsApp =
+                data.whatsapp || "";
 
-   $("shopNameInput").value=name;
+        }
 
-  }
+        document.getElementById(
+            "adminWhatsApp"
+        ).value =
+            adminWhatsApp;
 
-  const contact=await getDoc(
-   doc(db,"settings","contact")
-  );
+    }
+    catch(error){
 
-  if(contact.exists()){
+        console.error(
+            "Settings:",
+            error
+        );
 
-   adminWhatsApp=contact.data().whatsapp||"";
-
-   $("adminWhatsApp").value=adminWhatsApp;
-
-  }
-
- }catch(e){
-
-  console.error(e);
-
- }
+    }
 
 }
 
@@ -596,481 +1650,718 @@ async function loadSettings(){
 
 async function loadServices(){
 
- try{
+    const container =
+        document.getElementById(
+            "services"
+        );
 
-  const snap=await getDocs(
-   collection(db,"services")
-  );
+    container.innerHTML =
+        `<div class="empty">Loading services...</div>`;
 
-  services=[];
+    try{
 
-  snap.forEach(d=>{
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "services"
+                )
+            );
 
-   const x=d.data();
+        services = [];
 
-   services.push({
-    id:d.id,
-    name:x.name||"",
-    description:x.description||"",
-    price:Number(x.price||0)
-   });
+        snapshot.forEach(item=>{
 
-  });
+            const data =
+                item.data();
 
-  services.sort((a,b)=>
-   a.name.localeCompare(b.name)
-  );
+            services.push({
 
-  renderServices();
-  renderAdminServices();
+                id:
+                    item.id,
 
- }catch(e){
+                name:
+                    data.name || "",
 
-  console.error(e);
+                price:
+                    Number(
+                        data.price || 0
+                    ),
 
-  $("services").innerHTML=`
-   <div class="empty">
-    Services load nahi ho rahi.
-    Firebase Firestore Rules check karein.
-   </div>
-  `;
+                unit:
+                    data.unit || "Service",
 
- }
+                icon:
+                    data.icon || "🚀",
+
+                description:
+                    data.description || ""
+
+            });
+
+        });
+
+        services.sort(
+            (a,b)=>
+                a.name.localeCompare(
+                    b.name
+                )
+        );
+
+        renderServices();
+        renderAdminServices();
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        container.innerHTML = `
+            <div class="empty">
+                Services load nahi ho rahi.
+                Firebase Firestore Rules check karein.
+            </div>
+        `;
+
+    }
 
 }
 
 
 /* =====================================================
-   CUSTOMER SERVICES
+   RENDER SERVICES
 ===================================================== */
 
 function renderServices(){
 
- const search="";
+    const container =
+        document.getElementById(
+            "services"
+        );
 
- if(!services.length){
+    const search =
+        document.getElementById(
+            "serviceSearch"
+        )
+        .value
+        .toLowerCase()
+        .trim();
 
-  $("services").innerHTML=`
-   <div class="empty">
-    Abhi koi service available nahi hai.
-   </div>
-  `;
+    const filtered =
+        services.filter(service=>
+            service.name
+                .toLowerCase()
+                .includes(search)
+        );
 
-  return;
- }
+    if(filtered.length === 0){
 
- $("services").innerHTML=services.map(s=>`
+        container.innerHTML = `
+            <div class="empty">
+                No services found.
+            </div>
+        `;
 
-  <div class="service">
+        return;
 
-   <div class="service-icon">🚀</div>
+    }
 
-   <h3>${escapeHTML(s.name)}</h3>
+    container.innerHTML = "";
 
-   <p>${escapeHTML(s.description)}</p>
+    filtered.forEach(service=>{
 
-   <div class="price">
-    ${money(s.price)}
-    <small>/ unit</small>
-   </div>
+        const card =
+            document.createElement("div");
 
-   <button class="order-btn"
-    onclick="window.openOrder('${s.id}')">
-    🛒 Order Now
-   </button>
+        card.className =
+            "service";
 
-  </div>
+        card.innerHTML = `
 
- `).join("");
+            <div class="service-icon">
+                ${escapeHTML(service.icon)}
+            </div>
+
+            <h3>
+                ${escapeHTML(service.name)}
+            </h3>
+
+            <p>
+                ${escapeHTML(service.description)}
+            </p>
+
+            <div class="service-bottom">
+
+                <div class="price">
+                    ${formatPKR(service.price)}
+                    <small>
+                        / ${escapeHTML(service.unit)}
+                    </small>
+                </div>
+
+                <button
+                    class="order-btn"
+                    data-order="${service.id}"
+                >
+                    Order Now
+                </button>
+
+            </div>
+        `;
+
+        container.appendChild(card);
+
+    });
 
 }
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+document.getElementById(
+    "serviceSearch"
+)
+.addEventListener(
+    "input",
+    renderServices
+);
+
+
+/* =====================================================
+   ORDER BUTTON
+===================================================== */
+
+document.getElementById(
+    "services"
+)
+.addEventListener(
+    "click",
+    event=>{
+
+        const id =
+            event.target.dataset.order;
+
+        if(!id)
+            return;
+
+        const service =
+            services.find(
+                item =>
+                    item.id === id
+            );
+
+        if(!service)
+            return;
+
+        openOrder(service);
+
+    }
+);
 
 
 /* =====================================================
    OPEN ORDER
 ===================================================== */
 
-window.openOrder=function(id){
+window.openOrder =
+function(service){
 
- selectedService=
-  services.find(x=>x.id===id);
+    selectedService =
+        service;
 
- if(!selectedService)return;
+    document.getElementById(
+        "selectedService"
+    ).textContent =
+        service.name;
 
- $("selectedName").textContent=
-  selectedService.name;
+    document.getElementById(
+        "selectedPrice"
+    ).textContent =
+        formatPKR(service.price) +
+        " / " +
+        service.unit;
 
- $("selectedDescription").textContent=
-  selectedService.description;
+    document.getElementById(
+        "orderQuantity"
+    ).value =
+        1;
 
- $("selectedPrice").textContent=
-  money(selectedService.price);
+    document.getElementById(
+        "serviceLink"
+    ).value =
+        "";
 
- $("quantity").value=1;
+    calculateOrderTotal();
 
- $("customerName").value="";
- $("customerPhone").value="";
-
- updateOrderTotal();
-
- $("orderModal").classList.add("show");
-
-};
-
-
-window.closeOrder=function(){
- $("orderModal").classList.remove("show");
-};
-
-
-/* =====================================================
-   QUANTITY
-===================================================== */
-
-window.changeQty=function(amount){
-
- let q=parseInt($("quantity").value)||1;
-
- q+=amount;
-
- if(q<1)q=1;
-
- $("quantity").value=q;
-
- updateOrderTotal();
-
-};
-
-window.updateOrderTotal=function(){
-
- if(!selectedService)return;
-
- let q=parseInt($("quantity").value)||1;
-
- if(q<1)q=1;
-
- $("quantity").value=q;
-
- $("orderTotal").textContent=
-  money(selectedService.price*q);
+    document.getElementById(
+        "orderModal"
+    ).classList.add("show");
 
 };
 
 
 /* =====================================================
-   PLACE ORDER
+   CLOSE ORDER
 ===================================================== */
 
-window.placeOrder=async function(){
+window.closeOrder =
+function(){
 
- if(!selectedService)return;
-
- const name=$("customerName").value.trim();
- const phone=$("customerPhone").value.trim();
- const quantity=parseInt($("quantity").value)||1;
-
- if(!name){
-  alert("Please enter your name.");
-  return;
- }
-
- if(!phone){
-  alert("Please enter your WhatsApp number.");
-  return;
- }
-
- if(quantity<1){
-  alert("Quantity must be at least 1.");
-  return;
- }
-
- const total=selectedService.price*quantity;
-
- const btn=$("placeOrderBtn");
-
- btn.disabled=true;
- btn.textContent="Submitting...";
-
- try{
-
-  const order={
-   customerName:name,
-   customerPhone:phone,
-   serviceId:selectedService.id,
-   serviceName:selectedService.name,
-   unitPrice:selectedService.price,
-   quantity:quantity,
-   total:total,
-   status:"New",
-   createdAt:new Date().toISOString()
-  };
-
-  const ref=await addDoc(
-   collection(db,"orders"),
-   order
-  );
-
-  lastOrder={
-   id:ref.id,
-   ...order
-  };
-
-  $("receiptContent").innerHTML=`
-
-   <strong>Order ID:</strong>
-   ${escapeHTML(ref.id)}
-
-   <br>
-
-   <strong>Name:</strong>
-   ${escapeHTML(name)}
-
-   <br>
-
-   <strong>WhatsApp:</strong>
-   ${escapeHTML(phone)}
-
-   <br>
-
-   <strong>Service:</strong>
-   ${escapeHTML(selectedService.name)}
-
-   <br>
-
-   <strong>Quantity:</strong>
-   ${quantity}
-
-   <br>
-
-   <strong>Unit Price:</strong>
-   ${money(selectedService.price)}
-
-   <br>
-
-   <strong>Total:</strong>
-   <span style="color:#67e8f9;font-weight:900">
-    ${money(total)}
-   </span>
-
-  `;
-
-  closeOrder();
-
-  $("receiptModal").classList.add("show");
-
- }catch(e){
-
-  console.error(e);
-
-  alert(
-   "Order submit nahi hua. Firebase Firestore Rules check karein."
-  );
-
- }finally{
-
-  btn.disabled=false;
-  btn.textContent="✅ Order Done";
-
- }
+    document.getElementById(
+        "orderModal"
+    ).classList.remove("show");
 
 };
 
 
 /* =====================================================
-   WHATSAPP
+   CALCULATE TOTAL
 ===================================================== */
 
-window.goWhatsApp=function(){
+window.calculateOrderTotal =
+function(){
 
- if(!lastOrder){
+    if(!selectedService)
+        return;
 
-  alert("Order information unavailable.");
-  return;
+    let quantity =
+        Number(
+            document.getElementById(
+                "orderQuantity"
+            ).value
+        );
 
- }
+    if(!Number.isFinite(quantity) || quantity < 1)
+        quantity = 1;
 
- if(!adminWhatsApp){
+    const total =
+        selectedService.price *
+        quantity;
 
-  alert(
-   "Admin WhatsApp number set nahi hai. Admin panel mein number save karein."
-  );
-
-  return;
-
- }
-
- let number=
-  adminWhatsApp.replace(/\D/g,"");
-
- if(number.startsWith("0"))
-  number="92"+number.substring(1);
-
- const message=
- `Assalam o Alaikum Amar Social Hub,%0A%0A`+
- `New Order%0A`+
- `Order ID: ${lastOrder.id}%0A`+
- `Name: ${lastOrder.customerName}%0A`+
- `WhatsApp: ${lastOrder.customerPhone}%0A`+
- `Service: ${lastOrder.serviceName}%0A`+
- `Quantity: ${lastOrder.quantity}%0A`+
- `Total: ${money(lastOrder.total)}`;
-
- window.open(
-  "https://wa.me/"+number+"?text="+message,
-  "_blank"
- );
-
-};
-
-
-window.goHome=function(){
-
- $("receiptModal").classList.remove("show");
-
- window.scrollTo({
-  top:0,
-  behavior:"smooth"
- });
+    document.getElementById(
+        "orderTotal"
+    ).textContent =
+        formatPKR(total);
 
 };
 
 
 /* =====================================================
-   ADMIN ROUTE
+   SUBMIT ORDER
 ===================================================== */
 
-function checkAdminRoute(){
+window.submitOrder =
+async function(){
 
- const path=
-  window.location.pathname
-   .replace(/\/+$/,"")
-   .toLowerCase();
+    if(!selectedService)
+        return;
 
- if(path==="/admin" || path.endsWith("/admin")){
+    const name =
+        document.getElementById(
+            "customerName"
+        ).value.trim();
 
-  $("loginScreen").classList.add("show");
+    const whatsapp =
+        document.getElementById(
+            "customerWhatsApp"
+        ).value.trim();
 
- }
+    const link =
+        document.getElementById(
+            "serviceLink"
+        ).value.trim();
+
+    let quantity =
+        Number(
+            document.getElementById(
+                "orderQuantity"
+            ).value
+        );
+
+    if(!name){
+
+        alert("Please enter your name.");
+
+        return;
+
+    }
+
+    if(!whatsapp){
+
+        alert(
+            "Please enter your WhatsApp number."
+        );
+
+        return;
+
+    }
+
+    if(!link){
+
+        alert(
+            "Please enter profile/post/page link."
+        );
+
+        return;
+
+    }
+
+    if(
+        !Number.isFinite(quantity)
+        ||
+        quantity < 1
+    ){
+
+        alert(
+            "Please enter valid quantity."
+        );
+
+        return;
+
+    }
+
+    const total =
+        selectedService.price *
+        quantity;
+
+    const orderId =
+        createOrderId();
+
+    const button =
+        document.querySelector(
+            "#orderModal .btn-primary"
+        );
+
+    button.disabled = true;
+
+    button.textContent =
+        "Submitting...";
+
+    const orderData = {
+
+        orderId:
+            orderId,
+
+        customerName:
+            name,
+
+        customerWhatsApp:
+            whatsapp,
+
+        serviceId:
+            selectedService.id,
+
+        serviceName:
+            selectedService.name,
+
+        quantity:
+            quantity,
+
+        unit:
+            selectedService.unit,
+
+        price:
+            selectedService.price,
+
+        total:
+            total,
+
+        link:
+            link,
+
+        status:
+            "New",
+
+        createdAt:
+            new Date().toISOString()
+
+    };
+
+    try{
+
+        await addDoc(
+            collection(
+                db,
+                "orders"
+            ),
+            orderData
+        );
+
+        closeOrder();
+
+        showReceipt(
+            orderData
+        );
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            "Order submit nahi hua. Firebase Firestore Rules check karein."
+        );
+
+    }
+
+    button.disabled = false;
+
+    button.textContent =
+        "🛒 Order Done";
+
+};
+
+
+/* =====================================================
+   SHOW RECEIPT
+===================================================== */
+
+function showReceipt(order){
+
+    document.getElementById(
+        "receiptId"
+    ).textContent =
+        order.orderId;
+
+    document.getElementById(
+        "receiptName"
+    ).textContent =
+        order.customerName;
+
+    document.getElementById(
+        "receiptWhatsApp"
+    ).textContent =
+        order.customerWhatsApp;
+
+    document.getElementById(
+        "receiptService"
+    ).textContent =
+        order.serviceName;
+
+    document.getElementById(
+        "receiptQuantity"
+    ).textContent =
+        order.quantity;
+
+    document.getElementById(
+        "receiptTotal"
+    ).textContent =
+        formatPKR(order.total);
+
+    const waButton =
+        document.getElementById(
+            "whatsappButton"
+        );
+
+    waButton.onclick =
+        function(){
+
+            if(!adminWhatsApp){
+
+                alert(
+                    "Admin WhatsApp number abhi set nahi hai."
+                );
+
+                return;
+
+            }
+
+            let number =
+                adminWhatsApp
+                .replace(/\D/g,"");
+
+            if(number.startsWith("0")){
+                number =
+                    "92" +
+                    number.substring(1);
+            }
+
+            const message =
+`Assalam o Alaikum Amar Social Hub,
+
+I want to place an order.
+
+Order ID: ${order.orderId}
+Name: ${order.customerName}
+WhatsApp: ${order.customerWhatsApp}
+
+Service: ${order.serviceName}
+Quantity: ${order.quantity}
+Price: ${formatPKR(order.price)}
+Total: ${formatPKR(order.total)}
+
+Link:
+${order.link}
+
+Please confirm my order.`;
+
+            const url =
+                "https://wa.me/" +
+                number +
+                "?text=" +
+                encodeURIComponent(
+                    message
+                );
+
+            window.open(
+                url,
+                "_blank"
+            );
+
+        };
+
+    document.getElementById(
+        "receipt"
+    ).classList.add("show");
 
 }
+
+
+/* =====================================================
+   HOME
+===================================================== */
+
+window.goHome =
+function(){
+
+    document.getElementById(
+        "receipt"
+    ).classList.remove("show");
+
+    document.getElementById(
+        "homePage"
+    ).style.display =
+        "block";
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+};
+
+
+window.openHome =
+function(){
+
+    document.getElementById(
+        "adminPage"
+    ).classList.remove("show");
+
+    document.getElementById(
+        "adminLogin"
+    ).classList.remove("show");
+
+    document.getElementById(
+        "homePage"
+    ).style.display =
+        "block";
+
+};
+
+
+window.scrollToServices =
+function(){
+
+    document.getElementById(
+        "servicesSection"
+    ).scrollIntoView({
+        behavior:"smooth"
+    });
+
+};
+
+
+window.openOrderHelp =
+function(){
+
+    document.getElementById(
+        "helpModal"
+    ).classList.add("show");
+
+};
+
+
+window.closeOrderHelp =
+function(){
+
+    document.getElementById(
+        "helpModal"
+    ).classList.remove("show");
+
+};
 
 
 /* =====================================================
    ADMIN LOGIN
 ===================================================== */
 
-window.adminLogin=function(){
+window.adminLogin =
+function(){
 
- const password=$("adminPassword").value;
+    const password =
+        document.getElementById(
+            "adminPassword"
+        ).value;
 
- if(password!==ADMIN_PASSWORD){
+    if(
+        password !==
+        ADMIN_PASSWORD
+    ){
 
-  $("loginError").textContent=
-   "Incorrect admin password.";
+        document.getElementById(
+            "loginError"
+        ).textContent =
+            "Incorrect admin password.";
 
-  return;
+        return;
 
- }
+    }
 
- $("loginError").textContent="";
- $("loginScreen").classList.remove("show");
- $("adminPanel").classList.add("show");
+    sessionStorage.setItem(
+        "ash_admin",
+        "1"
+    );
 
- loadAdminData();
+    document.getElementById(
+        "adminLogin"
+    ).classList.remove("show");
 
-};
+    document.getElementById(
+        "adminPage"
+    ).classList.add("show");
 
-$("adminPassword").addEventListener(
- "keydown",e=>{
-  if(e.key==="Enter")
-   window.adminLogin();
- }
-);
+    document.getElementById(
+        "homePage"
+    ).style.display =
+        "none";
 
-
-/* =====================================================
-   ADMIN DATA
-===================================================== */
-
-async function loadAdminData(){
-
- await loadSettings();
- await loadServices();
- await loadOrders();
-
-}
-
-
-/* =====================================================
-   SHOP NAME
-===================================================== */
-
-window.saveShopName=async function(){
-
- const name=$("shopNameInput").value.trim();
-
- if(!name){
-
-  alert("Shop name required.");
-  return;
-
- }
-
- try{
-
-  await setDoc(
-   doc(db,"settings","shop"),
-   {name:name},
-   {merge:true}
-  );
-
-  document.title=name;
-
-  alert("Shop name saved.");
-
- }catch(e){
-
-  console.error(e);
-  alert("Shop name save failed.");
-
- }
+    loadAdminData();
 
 };
 
 
 /* =====================================================
-   WHATSAPP SETTINGS
+   ADMIN LOGOUT
 ===================================================== */
 
-window.saveWhatsApp=async function(){
+window.adminLogout =
+function(){
 
- const number=$("adminWhatsApp").value.trim();
+    sessionStorage.removeItem(
+        "ash_admin"
+    );
 
- if(!number){
+    document.getElementById(
+        "adminPage"
+    ).classList.remove("show");
 
-  alert("WhatsApp number required.");
-  return;
-
- }
-
- try{
-
-  await setDoc(
-   doc(db,"settings","contact"),
-   {whatsapp:number},
-   {merge:true}
-  );
-
-  adminWhatsApp=number;
-
-  alert("WhatsApp number saved.");
-
- }catch(e){
-
-  console.error(e);
-  alert("WhatsApp number save failed.");
-
- }
+    document.getElementById(
+        "homePage"
+    ).style.display =
+        "block";
 
 };
 
@@ -1079,53 +2370,197 @@ window.saveWhatsApp=async function(){
    ADD SERVICE
 ===================================================== */
 
-window.addService=async function(){
+window.addService =
+async function(){
 
- const name=$("newServiceName").value.trim();
- const description=$("newServiceDescription").value.trim();
- const price=Number($("newServicePrice").value);
+    const name =
+        document.getElementById(
+            "serviceName"
+        ).value.trim();
 
- if(!name){
+    const price =
+        Number(
+            document.getElementById(
+                "servicePrice"
+            ).value
+        );
 
-  alert("Service name required.");
-  return;
+    const unit =
+        document.getElementById(
+            "serviceUnit"
+        ).value.trim();
 
- }
+    const icon =
+        document.getElementById(
+            "serviceIcon"
+        ).value.trim()
+        ||
+        "🚀";
 
- if(!Number.isFinite(price)||price<0){
+    const description =
+        document.getElementById(
+            "serviceDescription"
+        ).value.trim();
 
-  alert("Valid price enter karein.");
-  return;
+    if(!name){
 
- }
+        alert(
+            "Service name required."
+        );
 
- try{
+        return;
 
-  await addDoc(
-   collection(db,"services"),
-   {
-    name,
-    description,
-    price,
-    createdAt:new Date().toISOString()
-   }
-  );
+    }
 
-  $("newServiceName").value="";
-  $("newServiceDescription").value="";
-  $("newServicePrice").value="";
+    if(
+        !Number.isFinite(price)
+        ||
+        price < 0
+    ){
 
-  await loadServices();
+        alert(
+            "Valid price enter karein."
+        );
 
-  alert("Service added successfully.");
+        return;
 
- }catch(e){
+    }
 
-  console.error(e);
+    try{
 
-  alert("Service add failed.");
+        await addDoc(
+            collection(
+                db,
+                "services"
+            ),
+            {
 
- }
+                name:
+                    name,
+
+                price:
+                    price,
+
+                unit:
+                    unit || "Service",
+
+                icon:
+                    icon,
+
+                description:
+                    description,
+
+                createdAt:
+                    new Date().toISOString()
+
+            }
+        );
+
+        document.getElementById(
+            "serviceName"
+        ).value = "";
+
+        document.getElementById(
+            "servicePrice"
+        ).value = "";
+
+        document.getElementById(
+            "serviceUnit"
+        ).value = "";
+
+        document.getElementById(
+            "serviceDescription"
+        ).value = "";
+
+        await loadServices();
+
+        alert(
+            "Service added successfully."
+        );
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            "Service add failed."
+        );
+
+    }
+
+};
+
+
+/* =====================================================
+   SAVE SETTINGS
+===================================================== */
+
+window.saveSettings =
+async function(){
+
+    let number =
+        document.getElementById(
+            "adminWhatsApp"
+        ).value.trim();
+
+    if(!number){
+
+        alert(
+            "WhatsApp number required."
+        );
+
+        return;
+
+    }
+
+    number =
+        number.replace(/\D/g,"");
+
+    if(number.startsWith("0")){
+
+        number =
+            "92" +
+            number.substring(1);
+
+    }
+
+    try{
+
+        await setDoc(
+            doc(
+                db,
+                "settings",
+                "store"
+            ),
+            {
+
+                whatsapp:
+                    number,
+
+                updatedAt:
+                    new Date().toISOString()
+
+            }
+        );
+
+        adminWhatsApp =
+            number;
+
+        alert(
+            "WhatsApp number saved."
+        );
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            "Settings save failed."
+        );
+
+    }
 
 };
 
@@ -1134,305 +2569,542 @@ window.addService=async function(){
    ADMIN SERVICES
 ===================================================== */
 
-window.renderAdminServices=function(){
+window.renderAdminServices =
+function(){
 
- const search=
-  $("adminSearch").value.toLowerCase().trim();
+    const container =
+        document.getElementById(
+            "adminServices"
+        );
 
- const list=services.filter(s=>
-  s.name.toLowerCase().includes(search)
- );
+    const search =
+        document.getElementById(
+            "adminSearch"
+        ).value
+        .toLowerCase()
+        .trim();
 
- if(!list.length){
+    const filtered =
+        services.filter(service=>
+            service.name
+                .toLowerCase()
+                .includes(search)
+        );
 
-  $("adminServices").innerHTML=
-   `<div class="empty">No services found.</div>`;
+    if(filtered.length === 0){
 
-  return;
+        container.innerHTML =
+            `<div class="empty">
+                No services found.
+            </div>`;
 
- }
+        return;
 
- $("adminServices").innerHTML=list.map(s=>`
+    }
 
-  <div class="admin-service">
+    container.innerHTML = "";
 
-   <div>
-    <strong>${escapeHTML(s.name)}</strong>
-    <div style="font-size:12px;color:#64748b">
-     ${escapeHTML(s.description)}
-    </div>
-   </div>
+    filtered.forEach(service=>{
 
-   <div>
-    <strong>${money(s.price)}</strong>
-   </div>
+        const row =
+            document.createElement("div");
 
-   <div class="admin-actions">
+        row.className =
+            "admin-service";
 
-    <button class="admin-btn"
-     onclick="editService('${s.id}')">
-     Edit
-    </button>
+        row.innerHTML = `
 
-    <button class="admin-btn red"
-     onclick="deleteService('${s.id}')">
-     Delete
-    </button>
+            <div class="admin-service-info">
 
-   </div>
+                <strong>
+                    ${escapeHTML(service.icon)}
+                    ${escapeHTML(service.name)}
+                </strong>
 
-  </div>
+                <span>
+                    ${formatPKR(service.price)}
+                    / ${escapeHTML(service.unit)}
+                </span>
 
- `).join("");
+            </div>
 
-};
+            <div class="admin-actions">
 
+                <button
+                    class="small-btn edit"
+                    data-edit-service="${service.id}"
+                >
+                    Edit
+                </button>
 
-/* =====================================================
-   EDIT SERVICE
-===================================================== */
+                <button
+                    class="small-btn delete"
+                    data-delete-service="${service.id}"
+                >
+                    Delete
+                </button>
 
-window.editService=async function(id){
+            </div>
 
- const service=services.find(x=>x.id===id);
+        `;
 
- if(!service)return;
+        container.appendChild(row);
 
- const name=prompt(
-  "Service name:",
-  service.name
- );
-
- if(name===null)return;
-
- const description=prompt(
-  "Description:",
-  service.description
- );
-
- if(description===null)return;
-
- const priceText=prompt(
-  "Price:",
-  service.price
- );
-
- if(priceText===null)return;
-
- const price=Number(priceText);
-
- if(
-  !name.trim()||
-  !Number.isFinite(price)||
-  price<0
- ){
-
-  alert("Invalid information.");
-  return;
-
- }
-
- try{
-
-  await updateDoc(
-   doc(db,"services",id),
-   {
-    name:name.trim(),
-    description:description.trim(),
-    price:price,
-    updatedAt:new Date().toISOString()
-   }
-  );
-
-  await loadServices();
-
- }catch(e){
-
-  console.error(e);
-  alert("Service update failed.");
-
- }
+    });
 
 };
 
 
 /* =====================================================
-   DELETE SERVICE
+   EDIT / DELETE SERVICES
 ===================================================== */
 
-window.deleteService=async function(id){
+document.getElementById(
+    "adminServices"
+)
+.addEventListener(
+    "click",
+    async event=>{
 
- const service=services.find(x=>x.id===id);
+        const edit =
+            event.target.dataset.editService;
 
- if(!service)return;
+        const del =
+            event.target.dataset.deleteService;
 
- if(!confirm(
-  'Delete "'+service.name+'"?'
- ))return;
 
- try{
+        if(edit){
 
-  await deleteDoc(
-   doc(db,"services",id)
-  );
+            const service =
+                services.find(
+                    item =>
+                        item.id === edit
+                );
 
-  await loadServices();
+            if(!service)
+                return;
 
- }catch(e){
+            const name =
+                prompt(
+                    "Service name:",
+                    service.name
+                );
 
-  console.error(e);
-  alert("Service delete failed.");
+            if(name === null)
+                return;
 
- }
+            const price =
+                prompt(
+                    "Price:",
+                    service.price
+                );
 
-};
+            if(price === null)
+                return;
+
+            const unit =
+                prompt(
+                    "Unit:",
+                    service.unit
+                );
+
+            if(unit === null)
+                return;
+
+            const description =
+                prompt(
+                    "Description:",
+                    service.description
+                );
+
+            if(description === null)
+                return;
+
+            const newPrice =
+                Number(price);
+
+            if(
+                !name.trim()
+                ||
+                !Number.isFinite(
+                    newPrice
+                )
+                ||
+                newPrice < 0
+            ){
+
+                alert(
+                    "Invalid data."
+                );
+
+                return;
+
+            }
+
+            try{
+
+                await setDoc(
+                    doc(
+                        db,
+                        "services",
+                        edit
+                    ),
+                    {
+
+                        name:
+                            name.trim(),
+
+                        price:
+                            newPrice,
+
+                        unit:
+                            unit.trim()
+                            ||
+                            "Service",
+
+                        icon:
+                            service.icon,
+
+                        description:
+                            description.trim(),
+
+                        updatedAt:
+                            new Date()
+                            .toISOString()
+
+                    }
+                );
+
+                await loadServices();
+
+            }
+            catch(error){
+
+                console.error(error);
+
+                alert(
+                    "Update failed."
+                );
+
+            }
+
+        }
+
+
+        if(del){
+
+            const service =
+                services.find(
+                    item =>
+                        item.id === del
+                );
+
+            if(!service)
+                return;
+
+            const confirmDelete =
+                confirm(
+                    'Delete "' +
+                    service.name +
+                    '"?'
+                );
+
+            if(!confirmDelete)
+                return;
+
+            try{
+
+                await deleteDoc(
+                    doc(
+                        db,
+                        "services",
+                        del
+                    )
+                );
+
+                await loadServices();
+
+            }
+            catch(error){
+
+                console.error(error);
+
+                alert(
+                    "Delete failed."
+                );
+
+            }
+
+        }
+
+    }
+);
 
 
 /* =====================================================
-   ORDERS
+   ADMIN ORDERS
 ===================================================== */
 
-async function loadOrders(){
+async function loadAdminOrders(){
 
- const box=$("ordersList");
+    const container =
+        document.getElementById(
+            "adminOrders"
+        );
 
- box.innerHTML="Loading orders...";
+    container.innerHTML =
+        `<div class="empty">
+            Loading orders...
+        </div>`;
 
- try{
+    try{
 
-  const q=query(
-   collection(db,"orders"),
-   orderBy("createdAt","desc"),
-   limit(100)
-  );
+        const q =
+            query(
+                collection(
+                    db,
+                    "orders"
+                ),
+                orderBy(
+                    "createdAt",
+                    "desc"
+                ),
+                limit(100)
+            );
 
-  const snap=await getDocs(q);
+        const snapshot =
+            await getDocs(q);
 
-  if(snap.empty){
+        if(snapshot.empty){
 
-   box.innerHTML=
-    `<div class="empty">No orders yet.</div>`;
+            container.innerHTML =
+                `<div class="empty">
+                    No orders yet.
+                </div>`;
 
-   return;
+            return;
 
-  }
+        }
 
-  box.innerHTML="";
+        container.innerHTML = "";
 
-  snap.forEach(d=>{
+        snapshot.forEach(orderDoc=>{
 
-   const o=d.data();
+            const order =
+                orderDoc.data();
 
-   const div=document.createElement("div");
+            const card =
+                document.createElement("div");
 
-   div.className="order";
+            card.className =
+                "order-card";
 
-   div.innerHTML=`
+            card.innerHTML = `
 
-    <strong>
-     ${escapeHTML(o.customerName||"Customer")}
-    </strong>
+                <div class="order-head">
 
-    <span style="
-     float:right;
-     color:#4ade80;
-     font-size:12px
-    ">
-     ${escapeHTML(o.status||"New")}
-    </span>
+                    <span>
+                        ${escapeHTML(
+                            order.customerName
+                            ||
+                            "Customer"
+                        )}
+                    </span>
 
-    <div style="
-     color:#94a3b8;
-     font-size:13px;
-     line-height:1.8;
-     margin-top:8px
-    ">
+                    <span>
+                        ${formatPKR(
+                            order.total
+                        )}
+                    </span>
 
-     📱 ${escapeHTML(o.customerPhone||"")}<br>
+                </div>
 
-     🛍 ${escapeHTML(o.serviceName||"")}<br>
+                <div
+                    style="
+                        color:#a8b1c7;
+                        margin-top:7px;
+                        font-size:12px
+                    "
+                >
 
-     🔢 Quantity: ${o.quantity||0}<br>
+                    Order ID:
+                    ${escapeHTML(
+                        order.orderId
+                    )}
 
-     💰 Total: ${money(o.total||0)}<br>
+                    <br>
 
-     🕐 ${escapeHTML(o.createdAt||"")}
+                    WhatsApp:
+                    ${escapeHTML(
+                        order.customerWhatsApp
+                    )}
 
-    </div>
+                </div>
 
-   `;
+                <div class="order-items">
 
-   box.appendChild(div);
+                    <b style="color:white">
+                        ${escapeHTML(
+                            order.serviceName
+                        )}
+                    </b>
 
-  });
+                    × ${order.quantity}
 
- }catch(e){
+                    <br>
 
-  console.error(e);
+                    Link:
+                    ${escapeHTML(
+                        order.link
+                    )}
 
-  box.innerHTML=`
-   <div style="color:#ef4444;padding:15px">
-    Orders load nahi ho rahe.
-    Firestore Rules check karein.
-   </div>
-  `;
+                    <br>
 
- }
+                    Status:
+                    ${escapeHTML(
+                        order.status
+                    )}
+
+                    <br>
+
+                    ${escapeHTML(
+                        order.createdAt
+                    )}
+
+                </div>
+
+            `;
+
+            container.appendChild(card);
+
+        });
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        container.innerHTML =
+            `<div class="empty">
+                Orders load failed.
+                Firestore Rules check karein.
+            </div>`;
+
+    }
 
 }
 
 
 /* =====================================================
-   ADMIN CLOSE / LOGOUT
+   ADMIN DATA
 ===================================================== */
 
-window.closeAdmin=function(){
+async function loadAdminData(){
 
- $("adminPanel").classList.remove("show");
+    await loadSettings();
 
- window.history.pushState({}, "", "/");
+    await loadServices();
 
-};
+    await loadAdminOrders();
 
-window.adminLogout=function(){
-
- $("adminPanel").classList.remove("show");
-
- window.history.pushState({}, "", "/");
-
-};
+}
 
 
 /* =====================================================
-   GENERAL
+   URL ROUTING
 ===================================================== */
 
-window.scrollToServices=function(){
+function checkAdminRoute(){
 
- document.getElementById("serviceSection")
-  .scrollIntoView({
-   behavior:"smooth"
-  });
+    const path =
+        window.location.pathname
+        .replace(/\/+$/,"");
 
-};
+    /*
+       Works with:
+       /admin
+       /admin/
+       /index.html/admin
+       ?admin=1
+    */
 
-window.showInfo=function(){
+    const isAdmin =
+        path === "/admin"
+        ||
+        path.endsWith("/admin")
+        ||
+        new URLSearchParams(
+            window.location.search
+        ).get("admin") === "1";
 
- alert(
-  "Amar Social Hub — Premium Social Media Services Store."
- );
+    if(isAdmin){
 
-};
+        document.getElementById(
+            "homePage"
+        ).style.display =
+            "none";
+
+        if(
+            sessionStorage.getItem(
+                "ash_admin"
+            ) === "1"
+        ){
+
+            document.getElementById(
+                "adminPage"
+            ).classList.add("show");
+
+            loadAdminData();
+
+        }
+        else{
+
+            document.getElementById(
+                "adminLogin"
+            ).classList.add("show");
+
+        }
+
+    }
+
+}
 
 
 /* =====================================================
-   START
+   ADMIN PASSWORD ENTER
 ===================================================== */
 
-$("year").textContent=
- new Date().getFullYear();
+document.getElementById(
+    "adminPassword"
+)
+.addEventListener(
+    "keydown",
+    event=>{
+
+        if(
+            event.key === "Enter"
+        ){
+
+            adminLogin();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+document.getElementById(
+    "year"
+).textContent =
+    new Date().getFullYear();
+
 
 loadSettings();
+
 loadServices();
 
 checkAdminRoute();
