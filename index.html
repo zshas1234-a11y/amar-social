@@ -1,953 +1,2679 @@
 <!DOCTYPE html>
-<html lang="ur" dir="ltr">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="siteTitleMeta">Ammar Social - Enterprise SMM Suite</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-    <!-- Firebase App & Firestore SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; color: #f8fafc; overflow-x: hidden; }
-        
-        .glass-panel { 
-            background: rgba(15, 23, 42, 0.8); 
-            backdrop-filter: blur(20px); 
-            border: 1px solid rgba(255, 255, 255, 0.08); 
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-            transition: all 0.3s ease;
-        }
-        .glass-panel:hover {
-            border-color: rgba(16, 185, 129, 0.3);
-            box-shadow: 0 20px 45px rgba(16, 185, 129, 0.1);
-        }
+<title>My Shop - Online Order</title>
 
-        .pro-gradient { background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%); }
-        .text-glow { text-shadow: 0 0 20px rgba(16, 185, 129, 0.5); }
-        
-        #introSplash {
-            position: fixed; inset: 0; background: #020617; z-index: 9999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
-        }
-        .loader-ring {
-            width: 70px; height: 70px; border: 4px solid rgba(16, 185, 129, 0.2);
-            border-top: 4px solid #10b981; border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+<style>
 
-        .marquee-container { overflow: hidden; white-space: nowrap; }
-        .marquee-content { display: inline-block; animation: marquee 25s linear infinite; }
-        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-    </style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --primary:#2563eb;
+    --primary-dark:#1d4ed8;
+    --dark:#020617;
+    --dark2:#111827;
+    --green:#16a34a;
+    --red:#dc2626;
+    --bg:#f1f5f9;
+    --card:#ffffff;
+    --border:#e2e8f0;
+    --muted:#64748b;
+    --text:#1f2937;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+}
+
+.header{
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(135deg,#020617 0%,#111827 50%,#1e293b 100%);
+    color:white;
+    text-align:center;
+    padding:34px 15px 25px;
+    box-shadow:0 8px 30px rgba(0,0,0,.20);
+}
+
+.header::before{
+    content:"";
+    position:absolute;
+    width:300px;
+    height:300px;
+    border-radius:50%;
+    background:rgba(37,99,235,.15);
+    top:-170px;
+    left:-100px;
+}
+
+.header::after{
+    content:"";
+    position:absolute;
+    width:270px;
+    height:270px;
+    border-radius:50%;
+    background:rgba(16,185,129,.10);
+    bottom:-170px;
+    right:-100px;
+}
+
+.shop-logo{
+    position:relative;
+    z-index:2;
+}
+
+.shop-name{
+    font-size:40px;
+    font-weight:900;
+    letter-spacing:1px;
+    background:linear-gradient(90deg,#ffffff,#93c5fd,#ffffff);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    text-shadow:0 4px 20px rgba(59,130,246,.25);
+    word-break:break-word;
+}
+
+.shop-line{
+    width:100px;
+    height:4px;
+    margin:10px auto 8px;
+    border-radius:50px;
+    background:linear-gradient(90deg,#2563eb,#22c55e);
+}
+
+.shop-tagline{
+    font-size:12px;
+    letter-spacing:4px;
+    font-weight:700;
+    color:#94a3b8;
+}
+
+.shop-contact{
+    position:relative;
+    z-index:2;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:20px auto 0;
+    max-width:1100px;
+}
+
+.contact-item{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.10);
+    padding:10px 14px;
+    border-radius:10px;
+    font-size:13px;
+    backdrop-filter:blur(8px);
+    box-shadow:0 5px 15px rgba(0,0,0,.10);
+}
+
+.contact-item strong{
+    color:#e2e8f0;
+}
+
+.contact-item a{
+    color:#93c5fd;
+    text-decoration:none;
+    font-weight:700;
+}
+
+.contact-item a:hover{
+    color:white;
+    text-decoration:underline;
+}
+
+.container{
+    width:min(1100px,calc(100% - 30px));
+    margin:25px auto;
+}
+
+.card{
+    background:var(--card);
+    border-radius:18px;
+    padding:22px;
+    margin-bottom:20px;
+    box-shadow:0 10px 35px rgba(0,0,0,.07);
+}
+
+.title{
+    font-size:20px;
+    font-weight:800;
+    margin-bottom:18px;
+}
+
+.customer-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.input-group{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+}
+
+.input-group label{
+    font-size:13px;
+    font-weight:700;
+}
+
+input,
+textarea{
+    width:100%;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:13px;
+    outline:none;
+    font-size:14px;
+    background:white;
+}
+
+input:focus,
+textarea:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 0 3px rgba(37,99,235,.08);
+}
+
+textarea{
+    min-height:90px;
+    resize:vertical;
+}
+
+.search{
+    margin-bottom:15px;
+}
+
+.product-header,
+.product-row{
+    display:grid;
+    grid-template-columns:1fr 150px 180px;
+    gap:10px;
+    align-items:center;
+}
+
+.product-header{
+    padding:13px 15px;
+    background:#f8fafc;
+    border:1px solid var(--border);
+    border-radius:11px 11px 0 0;
+    font-size:13px;
+    font-weight:800;
+}
+
+.products{
+    border:1px solid var(--border);
+    border-top:0;
+    border-radius:0 0 11px 11px;
+    overflow:hidden;
+}
+
+.product-row{
+    padding:14px 15px;
+    border-bottom:1px solid var(--border);
+}
+
+.product-row:last-child{
+    border-bottom:0;
+}
+
+.product-name{
+    font-weight:700;
+}
+
+.product-price{
+    font-weight:700;
+}
+
+.quantity{
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.qty-btn{
+    width:36px;
+    height:36px;
+    border:0;
+    border-radius:8px;
+    background:var(--dark2);
+    color:white;
+    font-size:20px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.qty-btn:hover{
+    background:var(--primary);
+    transform:translateY(-1px);
+}
+
+.qty{
+    width:52px;
+    height:36px;
+    text-align:center;
+    padding:5px;
+}
+
+.summary{
+    margin-top:18px;
+    padding:18px;
+    background:#f8fafc;
+    border:1px solid var(--border);
+    border-radius:13px;
+}
+
+.summary-line{
+    display:flex;
+    justify-content:space-between;
+    padding:6px 0;
+}
+
+.total{
+    margin-top:8px;
+    padding-top:13px;
+    border-top:1px solid var(--border);
+    font-size:22px;
+    font-weight:800;
+}
+
+.submit{
+    width:100%;
+    margin-top:18px;
+    padding:16px;
+    border:0;
+    border-radius:12px;
+    background:var(--green);
+    color:white;
+    font-size:17px;
+    font-weight:800;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.submit:hover{
+    background:#15803d;
+    transform:translateY(-1px);
+}
+
+.submit:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+.empty{
+    text-align:center;
+    padding:40px;
+    color:var(--muted);
+}
+
+.success{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    backdrop-filter:blur(5px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+}
+
+.success.show{
+    display:flex;
+}
+
+.success-box{
+    width:min(420px,90%);
+    background:white;
+    border-radius:22px;
+    padding:30px 25px;
+    text-align:center;
+    box-shadow:0 25px 70px rgba(0,0,0,.3);
+    animation:pop .25s ease;
+}
+
+@keyframes pop{
+    from{
+        transform:scale(.8);
+        opacity:0;
+    }
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+
+.success-icon{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    background:#dcfce7;
+    color:#16a34a;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:38px;
+    font-weight:bold;
+}
+
+.success-box h2{
+    margin-top:15px;
+    font-size:22px;
+}
+
+.success-box p{
+    margin-top:8px;
+    color:var(--muted);
+}
+
+.countdown{
+    margin-top:15px;
+    color:var(--muted);
+    font-size:13px;
+}
+
+.login{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.65);
+    backdrop-filter:blur(5px);
+    z-index:8000;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.login.show{
+    display:flex;
+}
+
+.login-box{
+    width:min(400px,100%);
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 25px 70px rgba(0,0,0,.3);
+}
+
+.login-box h2{
+    margin-bottom:8px;
+}
+
+.login-box p{
+    color:var(--muted);
+    font-size:13px;
+    margin-bottom:18px;
+}
+
+.login-buttons{
+    display:flex;
+    gap:8px;
+}
+
+.login-buttons button{
+    flex:1;
+}
+
+.admin{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:var(--bg);
+    z-index:5000;
+    overflow-y:auto;
+}
+
+.admin.show{
+    display:block;
+}
+
+.admin-header{
+    background:var(--dark2);
+    color:white;
+    padding:18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+}
+
+.admin-header button{
+    border:0;
+    background:#374151;
+    color:white;
+    padding:10px 15px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.admin-container{
+    width:min(1150px,calc(100% - 30px));
+    margin:25px auto;
+}
+
+.admin-grid{
+    display:grid;
+    grid-template-columns:330px 1fr;
+    gap:20px;
+}
+
+.admin-card{
+    background:white;
+    border-radius:16px;
+    padding:20px;
+    box-shadow:0 10px 35px rgba(0,0,0,.07);
+}
+
+.admin-card h3{
+    margin-bottom:15px;
+}
+
+.admin-input{
+    margin-bottom:12px;
+}
+
+.admin-btn{
+    border:0;
+    padding:11px 15px;
+    border-radius:9px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.blue{
+    background:var(--primary);
+    color:white;
+}
+
+.gray{
+    background:#e5e7eb;
+}
+
+.red{
+    background:#fee2e2;
+    color:#b91c1c;
+}
+
+.admin-list{
+    max-height:650px;
+    overflow:auto;
+}
+
+.admin-product{
+    display:grid;
+    grid-template-columns:1fr 120px 150px;
+    gap:10px;
+    align-items:center;
+    padding:13px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.admin-actions{
+    display:flex;
+    gap:6px;
+}
+
+.orders{
+    margin-top:20px;
+}
+
+.order-card{
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:15px;
+    margin-bottom:12px;
+}
+
+.order-top{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    font-weight:bold;
+}
+
+.order-items{
+    margin-top:10px;
+    color:#475569;
+    font-size:14px;
+    line-height:1.7;
+}
+
+.order-total{
+    margin-top:10px;
+    font-weight:800;
+}
+
+.footer{
+    text-align:center;
+    padding:25px;
+    color:var(--muted);
+    font-size:13px;
+}
+
+@media(max-width:750px){
+
+    .customer-grid{
+        grid-template-columns:1fr;
+    }
+
+    .product-header,
+    .product-row{
+        grid-template-columns:1fr 80px 125px;
+        font-size:12px;
+    }
+
+    .qty-btn{
+        width:29px;
+        height:30px;
+        font-size:17px;
+    }
+
+    .qty{
+        width:40px;
+        height:30px;
+    }
+
+    .admin-grid{
+        grid-template-columns:1fr;
+    }
+
+    .admin-product{
+        grid-template-columns:1fr 90px;
+    }
+
+    .admin-actions{
+        grid-column:1 / -1;
+    }
+
+    .shop-name{
+        font-size:29px;
+    }
+
+    .shop-tagline{
+        font-size:10px;
+        letter-spacing:3px;
+    }
+
+    .shop-contact{
+        flex-direction:column;
+        width:100%;
+        gap:7px;
+    }
+
+    .contact-item{
+        width:100%;
+        justify-content:center;
+        font-size:12px;
+    }
+
+}
+
+</style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-white">
 
-    <!-- Cinematic Intro Splash Screen -->
-    <div id="introSplash">
-        <div class="loader-ring mb-4"></div>
-        <h1 class="text-xl md:text-2xl font-black tracking-widest text-white uppercase mb-1">AMMAR <span class="text-emerald-400">SOCIAL</span></h1>
-        <p class="text-[11px] text-emerald-400 font-bold tracking-widest animate-pulse uppercase">Connecting Firebase Cloud...</p>
-    </div>
+<body>
 
-    <!-- Main Website View Container -->
-    <div id="mainWebsiteView">
-        
-        <!-- Top Live Ticker Bar -->
-        <div class="bg-slate-950 border-b border-emerald-500/20 py-2 px-4 text-xs font-semibold text-emerald-300 flex flex-wrap justify-between items-center">
-            <div class="flex items-center gap-2 mb-1 md:mb-0">
-                <span class="inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full border border-emerald-500/20 text-[11px] font-bold">
-                    <i class="fa-solid fa-cloud-arrow-up text-emerald-400"></i> Firebase Cloud Connected
-                </span>
-            </div>
-            <div class="marquee-container w-full md:w-1/2 overflow-hidden">
-                <div class="marquee-content text-slate-400">
-                    ⚡ Instant Automated Delivery &nbsp;&nbsp;|&nbsp;&nbsp; Use Code <span class="text-emerald-400 font-bold">AMMAR10</span> for 10% OFF &nbsp;&nbsp;|&nbsp;&nbsp; Pakistan's #1 Trusted SMM Panel.
-                </div>
-            </div>
+<header class="header">
+
+    <div class="shop-logo">
+
+        <div class="shop-name" id="shopName">
+            My Shop
         </div>
 
-        <!-- Top Navbar -->
-        <header class="glass-panel sticky top-0 z-40 border-b border-slate-800">
-            <div class="max-w-7xl mx-auto px-4 py-3.5 flex justify-between items-center">
-                <div class="flex items-center space-x-3">
-                    <div class="pro-gradient text-slate-950 p-2.5 rounded-2xl shadow-lg">
-                        <i class="fa-solid fa-bolt text-lg font-black"></i>
-                    </div>
-                    <div>
-                        <h1 id="brandHeaderName" class="text-lg font-black tracking-wider text-white uppercase">AMMAR <span class="text-emerald-400 text-glow">SOCIAL</span></h1>
-                        <p class="text-[10px] text-emerald-400 font-bold tracking-widest uppercase">Cloud Enterprise Suite</p>
-                    </div>
-                </div>
-                
-                <nav class="hidden md:flex items-center space-x-6 text-xs font-bold text-slate-300">
-                    <a href="#home" onclick="switchPage('home')" id="navHome" class="text-emerald-400 transition hover:text-emerald-300">Home</a>
-                    <a href="#services" onclick="switchPage('services')" id="navServices" class="transition hover:text-emerald-300">Services</a>
-                    <a href="#track" onclick="switchPage('track')" id="navTrack" class="transition hover:text-emerald-300">Track Order</a>
-                    <a href="#about" onclick="switchPage('about')" id="navAbout" class="transition hover:text-emerald-300">About Us</a>
-                </nav>
+        <div class="shop-line"></div>
 
-                <div class="flex items-center space-x-3">
-                    <button onclick="switchPage('track')" class="md:hidden text-xs font-bold text-emerald-400 bg-emerald-950/40 px-3 py-2 rounded-xl border border-emerald-500/30">
-                        <i class="fa-solid fa-magnifying-glass"></i> Track
-                    </button>
-                </div>
-            </div>
-        </header>
-
-        <!-- Dynamic Pages Container -->
-        <main class="max-w-7xl mx-auto px-4 py-8 w-full relative">
-            
-            <!-- HOME PAGE -->
-            <div id="pageHome" class="space-y-12">
-                <div class="glass-panel rounded-3xl p-8 md:p-14 text-center relative overflow-hidden border border-slate-700/80 shadow-2xl">
-                    <div class="absolute -right-20 -top-20 w-60 h-60 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-                    
-                    <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-bold px-4 py-1.5 rounded-full inline-flex items-center gap-2 mb-4">
-                        <i class="fa-solid fa-circle-check text-emerald-400"></i> Firebase-Powered Social Growth Platform
-                    </span>
-                    <h2 id="heroMainTitle" class="text-3xl md:text-5xl font-black text-white mb-4 tracking-tight">Supercharge Your Social Presence</h2>
-                    <p class="text-slate-400 max-w-2xl mx-auto text-sm md:text-base mb-8">High-performance automated growth engine backed by secure Firebase Cloud database storage.</p>
-                    
-                    <div class="flex flex-wrap justify-center gap-4">
-                        <button onclick="switchPage('services')" class="pro-gradient text-slate-950 font-black px-8 py-3.5 rounded-2xl text-xs uppercase tracking-wider shadow-lg shadow-emerald-900/40 transition hover:opacity-90">Explore Services</button>
-                        <button onclick="switchPage('track')" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-8 py-3.5 rounded-2xl text-xs uppercase tracking-wider border border-slate-700 transition flex items-center gap-2">
-                            <i class="fa-solid fa-magnifying-glass text-emerald-400"></i> Track My Order
-                        </button>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="glass-panel p-6 rounded-3xl border border-slate-800">
-                        <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center text-lg mb-4 border border-emerald-500/20"><i class="fa-solid fa-bolt"></i></div>
-                        <h3 class="font-bold text-white text-base mb-2">Instant Cloud Sync</h3>
-                        <p class="text-xs text-slate-400">Orders and services are instantly synchronized through Google Firebase Cloud.</p>
-                    </div>
-                    <div class="glass-panel p-6 rounded-3xl border border-slate-800">
-                        <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center text-lg mb-4 border border-emerald-500/20"><i class="fa-solid fa-shield-halved"></i></div>
-                        <h3 class="font-bold text-white text-base mb-2">100% Safe & Secure</h3>
-                        <p class="text-xs text-slate-400">Encrypted cloud database storage and complete data privacy for all users.</p>
-                    </div>
-                    <div class="glass-panel p-6 rounded-3xl border border-slate-800">
-                        <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center text-lg mb-4 border border-emerald-500/20"><i class="fa-solid fa-headset"></i></div>
-                        <h3 class="font-bold text-white text-base mb-2">24/7 Support</h3>
-                        <p class="text-xs text-slate-400">Dedicated support team available round the clock via WhatsApp.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SERVICES PAGE -->
-            <div id="pageServices" class="space-y-6 hidden">
-                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-                    <h3 class="text-xl font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-cubes text-emerald-400"></i> Professional Service Catalogs
-                    </h3>
-                    <div class="w-full md:w-72 relative">
-                        <input type="text" id="searchService" placeholder="Search services..." onkeyup="filterServices()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 pl-10 text-xs text-white focus:outline-none focus:border-emerald-500">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-500 text-xs"></i>
-                    </div>
-                </div>
-
-                <div id="servicesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-            </div>
-
-            <!-- TRACK ORDER PAGE -->
-            <div id="pageTrack" class="space-y-6 hidden">
-                <div class="glass-panel p-8 md:p-12 rounded-3xl border border-slate-800 max-w-2xl mx-auto space-y-6">
-                    <div class="text-center">
-                        <span class="bg-emerald-500/10 text-emerald-400 text-xs font-bold px-3.5 py-1.5 rounded-full border border-emerald-500/20">Live Cloud Status</span>
-                        <h2 class="text-2xl md:text-3xl font-black text-white mt-3">Track Your Order</h2>
-                        <p class="text-xs text-slate-400 mt-1">Enter your Order ID below to fetch live status from Firebase.</p>
-                    </div>
-                    
-                    <div class="flex gap-3">
-                        <input type="text" id="trackOrderIdInput" placeholder="Enter Order ID (e.g. ORD-123456)" class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white uppercase focus:outline-none focus:border-emerald-500">
-                        <button onclick="trackOrderQuery()" class="pro-gradient text-slate-950 font-black px-6 py-3 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-emerald-900/30">Track</button>
-                    </div>
-
-                    <div id="trackResultContainer" class="hidden bg-slate-950 p-6 rounded-2xl border border-slate-800 space-y-4">
-                        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                            <span class="text-xs text-slate-400">Order ID:</span>
-                            <span id="resTrackId" class="text-emerald-400 font-mono font-bold text-sm"></span>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4 text-xs">
-                            <div>
-                                <p class="text-slate-400 mb-1">Customer Name:</p>
-                                <p id="resTrackName" class="text-white font-bold"></p>
-                            </div>
-                            <div>
-                                <p class="text-slate-400 mb-1">WhatsApp Number:</p>
-                                <p id="resTrackWhatsapp" class="text-white font-mono"></p>
-                            </div>
-                        </div>
-                        <div class="text-xs">
-                            <p class="text-slate-400 mb-1">Service Selected:</p>
-                            <p id="resTrackService" class="text-white font-medium"></p>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4 text-xs pt-2 border-t border-slate-800">
-                            <div>
-                                <p class="text-slate-400 mb-1">Paid Amount:</p>
-                                <p id="resTrackPrice" class="text-emerald-400 font-extrabold text-sm"></p>
-                            </div>
-                            <div>
-                                <p class="text-slate-400 mb-1">Current Status:</p>
-                                <span id="resTrackStatus" class="bg-amber-500/20 text-amber-400 px-3 py-1 rounded-full text-[10px] font-bold uppercase">Pending</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ABOUT PAGE -->
-            <div id="pageAbout" class="space-y-6 hidden">
-                <div class="glass-panel p-8 md:p-12 rounded-3xl border border-slate-800 max-w-4xl mx-auto space-y-6">
-                    <div class="text-center">
-                        <span class="bg-emerald-500/10 text-emerald-400 text-xs font-bold px-3.5 py-1.5 rounded-full border border-emerald-500/20">About Our Company</span>
-                        <h2 id="aboutBrandName" class="text-2xl md:text-4xl font-black text-white mt-3">Welcome to Ammar Social</h2>
-                    </div>
-                    <p class="text-slate-300 text-sm md:text-base leading-relaxed">
-                        Ammar Social is Pakistan's leading automated cloud SMM platform. We help creators, businesses, and influencers grow their digital presence across Instagram, TikTok, YouTube, and other major social networks with high quality, speed, and reliability.
-                    </p>
-                </div>
-            </div>
-
-        </main>
-    </div>
-
-    <!-- Floating WhatsApp Button -->
-    <a id="floatingWhatsappBtn" href="https://wa.me/923714899865?text=Hello%20Ammar,%20I%20want%20to%20place%20an%20order%20for%20the%20SMM%20panel." 
-       target="_blank" 
-       class="fixed bottom-6 right-6 z-50 bg-emerald-600 hover:bg-emerald-500 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl transition transform hover:scale-110 border-2 border-slate-900"
-       title="Chat on WhatsApp">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
-
-    <!-- Secret Admin Login View -->
-    <div id="adminLoginView" class="hidden fixed inset-0 bg-slate-950 z-50 flex items-center justify-center p-4">
-        <div class="glass-panel rounded-3xl max-w-sm w-full p-6 relative border border-slate-700 shadow-2xl">
-            <div class="text-center mb-6">
-                <div class="w-12 h-12 bg-slate-900 border border-emerald-500/30 text-emerald-400 rounded-2xl mx-auto flex items-center justify-center text-lg mb-2 shadow-lg">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </div>
-                <h3 class="text-base font-bold text-white">Secret Admin Gateway</h3>
-                <p class="text-xs text-slate-400">Restricted Enterprise Node</p>
-            </div>
-            <form onsubmit="verifyAdmin(event)" class="space-y-4">
-                <div>
-                    <input type="password" id="adminPassInput" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 focus:outline-none text-center tracking-widest" placeholder="Enter Admin Password">
-                </div>
-                <button type="submit" class="w-full pro-gradient text-slate-950 font-black py-3 rounded-xl transition text-sm shadow-lg shadow-emerald-900/30">Authenticate</button>
-            </form>
-            <div class="text-center mt-4">
-                <a href="#" onclick="closeAdminView(event)" class="text-xs text-slate-500 hover:text-slate-300 underline">← Return to Main Store</a>
-            </div>
+        <div class="shop-tagline">
+            ONLINE ORDER FORM
         </div>
+
     </div>
 
-    <!-- Pro Admin Dashboard View -->
-    <div id="adminDashboardView" class="hidden fixed inset-0 bg-slate-950 z-50 overflow-y-auto p-4 md:p-8">
-        <div class="max-w-6xl mx-auto space-y-6">
-            <div class="flex justify-between items-center glass-panel p-5 rounded-3xl border border-slate-800">
-                <div class="flex items-center gap-3">
-                    <div class="pro-gradient text-slate-950 font-black p-3 rounded-2xl"><i class="fa-solid fa-gauge-high"></i></div>
-                    <div>
-                        <h2 class="text-lg font-black text-white">Cloud Admin Dashboard</h2>
-                        <p class="text-xs text-slate-400">Firebase Firestore Connected</p>
-                    </div>
-                </div>
-                <button onclick="logoutAdmin()" class="bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white px-4 py-2.5 rounded-xl text-xs font-bold transition border border-red-500/20">Lock Panel</button>
-            </div>
+    <div class="shop-contact">
 
-            <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-3">
-                <button onclick="switchAdminTab('settingsTab')" id="btnSettingsTab" class="pro-gradient text-slate-950 font-black px-5 py-2.5 rounded-xl text-xs transition shadow-md"><i class="fa-solid fa-gear mr-1.5"></i> Store Settings</button>
-                <button onclick="switchAdminTab('servicesTab')" id="btnServicesTab" class="bg-slate-900 text-slate-300 hover:bg-slate-800 px-5 py-2.5 rounded-xl text-xs font-bold transition border border-slate-800"><i class="fa-solid fa-box mr-1.5"></i> Services</button>
-                <button onclick="switchAdminTab('ordersTab')" id="btnOrdersTab" class="bg-slate-900 text-slate-300 hover:bg-slate-800 px-5 py-2.5 rounded-xl text-xs font-bold transition border border-slate-800"><i class="fa-solid fa-list-check mr-1.5"></i> Customer Orders</button>
-                <button onclick="switchAdminTab('couponsTab')" id="btnCouponsTab" class="bg-slate-900 text-slate-300 hover:bg-slate-800 px-5 py-2.5 rounded-xl text-xs font-bold transition border border-slate-800"><i class="fa-solid fa-ticket mr-1.5"></i> Coupons</button>
-            </div>
-
-            <!-- Settings Tab -->
-            <div id="settingsTab" class="admin-tab-content space-y-6">
-                <div class="glass-panel p-6 md:p-8 rounded-3xl border border-slate-800">
-                    <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2"><i class="fa-solid fa-sliders text-emerald-400"></i> Global Configurations</h3>
-                    <form onsubmit="saveStoreSettings(event)" class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div>
-                            <label class="block text-xs font-bold text-slate-300 mb-1.5">Brand / Store Name</label>
-                            <input type="text" id="settingBrandName" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-300 mb-1.5">WhatsApp Number</label>
-                            <input type="text" id="settingWhatsapp" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white" placeholder="923714899865">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-300 mb-1.5">Payment Account Number</label>
-                            <input type="text" id="settingPayNumber" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-300 mb-1.5">Account Title</label>
-                            <input type="text" id="settingPayTitle" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white">
-                        </div>
-                        <div class="md:col-span-2">
-                            <button type="submit" class="pro-gradient text-slate-950 font-black py-3 px-6 rounded-xl text-xs transition shadow-lg shadow-emerald-900/30">Save Configuration Changes to Cloud</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Services Tab -->
-            <div id="servicesTab" class="admin-tab-content space-y-6 hidden">
-                <div class="glass-panel p-6 rounded-3xl border border-slate-800">
-                    <h3 class="text-base font-bold text-white mb-4">Add Pro Service to Cloud</h3>
-                    <form onsubmit="addNewService(event)" class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <input type="text" id="newServiceName" placeholder="Service Name" required class="bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white">
-                        <input type="text" id="newServiceImage" placeholder="Image URL link" required class="bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white">
-                        <input type="number" id="newServicePrice" placeholder="Price in PKR" required class="bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white">
-                        <button type="submit" class="pro-gradient text-slate-950 font-black rounded-xl text-xs py-3 shadow-md">Add Service</button>
-                    </form>
-                </div>
-                <div class="glass-panel p-6 rounded-3xl border border-slate-800">
-                    <h3 class="text-base font-bold text-white mb-4">Active Cloud Services</h3>
-                    <div id="adminServicesList" class="space-y-3">Loading...</div>
-                </div>
-            </div>
-
-            <!-- Orders Tab -->
-            <div id="ordersTab" class="admin-tab-content space-y-6 hidden">
-                <div class="glass-panel p-6 rounded-3xl border border-slate-800">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-base font-bold text-white">Cloud Customer Orders</h3>
-                        <button onclick="loadAdminOrders()" class="bg-slate-900 hover:bg-slate-800 text-emerald-400 px-3 py-1.5 rounded-xl text-xs border border-slate-700"><i class="fa-solid fa-rotate mr-1"></i> Refresh</button>
-                    </div>
-                    <div id="adminOrdersList" class="space-y-4">Loading orders...</div>
-                </div>
-            </div>
-
-            <!-- Coupons Tab -->
-            <div id="couponsTab" class="admin-tab-content space-y-6 hidden">
-                <div class="glass-panel p-6 rounded-3xl border border-slate-800">
-                    <h3 class="text-base font-bold text-white mb-4">Create Cloud Coupon</h3>
-                    <form onsubmit="addNewCoupon(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <input type="text" id="newCouponCode" placeholder="Code (e.g. PRO20)" required class="bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white uppercase">
-                        <input type="number" id="newCouponDiscount" placeholder="Discount % (e.g. 10)" required class="bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white">
-                        <button type="submit" class="pro-gradient text-slate-950 font-black rounded-xl text-xs py-3 shadow-md">Save Coupon</button>
-                    </form>
-                </div>
-                <div class="glass-panel p-6 rounded-3xl border border-slate-800">
-                    <h3 class="text-base font-bold text-white mb-4">Active Cloud Coupons</h3>
-                    <div id="adminCouponsList" class="space-y-3">Loading...</div>
-                </div>
-            </div>
+        <div class="contact-item">
+            📞
+            <strong>Shoaib Muneer</strong>
+            <a href="tel:03334447215">
+                03334447215
+            </a>
         </div>
-    </div>
 
-    <!-- Screenshot Viewer Modal -->
-    <div id="screenshotModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="glass-panel rounded-3xl max-w-lg w-full p-6 relative border border-slate-700 shadow-2xl text-center space-y-4">
-            <h3 class="text-base font-bold text-white">Payment Screenshot Proof</h3>
-            <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 flex justify-center">
-                <img id="modalScreenshotImg" src="" alt="Payment Proof" class="max-h-[60vh] rounded-xl object-contain">
-            </div>
-            <button onclick="closeScreenshotModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-2.5 rounded-xl text-xs transition">Close Viewer</button>
+        <div class="contact-item">
+            📱
+            <strong>Irfan Ahmad</strong>
+            <a href="tel:03312570330">
+                03312570330
+            </a>
         </div>
-    </div>
 
-    <!-- Order Modal -->
-    <div id="orderModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="glass-panel rounded-3xl max-w-lg w-full p-6 md:p-8 relative border border-slate-700 my-6 shadow-2xl">
-            <button onclick="closeOrderModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
-            <div class="flex items-center gap-3 mb-4">
-                <div class="pro-gradient text-slate-950 p-2.5 rounded-xl font-bold"><i class="fa-solid fa-cart-shopping"></i></div>
-                <div>
-                    <h3 class="text-lg font-bold text-white">Secure Cloud Checkout</h3>
-                    <p id="modalServiceName" class="text-xs text-emerald-400 font-semibold"></p>
-                </div>
-            </div>
-            
-            <form id="orderForm" onsubmit="submitOrder(event)" class="space-y-4">
-                <input type="hidden" id="selectedServiceId">
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase">Your Full Name</label>
-                    <input type="text" id="custName" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="e.g. Muhammad Zain">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase">WhatsApp Number</label>
-                    <input type="text" id="custWhatsapp" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="e.g. 923714899865">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase">Target Profile / Post Link</label>
-                    <input type="text" id="custLink" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500" placeholder="Paste target URL here">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase">Coupon Code</label>
-                        <input type="text" id="couponInput" onblur="applyCoupon()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500 uppercase" placeholder="Optional">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase">Total Amount</label>
-                        <input type="text" id="modalPriceDisplay" readonly class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-emerald-400 font-extrabold">
-                    </div>
-                </div>
-
-                <div class="bg-emerald-950/20 p-4 rounded-2xl border border-emerald-500/30 text-xs space-y-1.5">
-                    <p class="font-bold text-white flex items-center gap-1.5"><i class="fa-solid fa-wallet text-emerald-400"></i> Transfer Payment To:</p>
-                    <p class="text-slate-300">Method / Number: <span id="payBoxNumber" class="text-emerald-400 font-mono font-bold">Loading...</span></p>
-                    <p class="text-slate-300">Account Title: <span id="payBoxTitle" class="text-emerald-400 font-bold">Loading...</span></p>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase">Payment Screenshot <span class="text-red-400">*Required</span></label>
-                    <input type="file" id="paymentProof" accept="image/*" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-300 file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-emerald-600 file:text-white cursor-pointer">
-                </div>
-
-                <button type="submit" class="w-full pro-gradient text-slate-950 font-black py-3.5 rounded-xl transition text-sm tracking-wide flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/30">
-                    Confirm & Submit to Cloud <i class="fa-solid fa-circle-check"></i>
-                </button>
-            </form>
+        <div class="contact-item">
+            💬
+            <strong>WhatsApp</strong>
+            <a
+                href="https://wa.me/923334447215"
+                target="_blank"
+                rel="noopener"
+            >
+                03334447215
+            </a>
         </div>
-    </div>
 
-    <!-- Receipt Modal -->
-    <div id="receiptModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="glass-panel rounded-3xl max-w-md w-full p-6 relative border border-slate-700 shadow-2xl" id="receiptContent">
-            
-            <div class="bg-amber-500/10 border border-amber-500/30 p-3 rounded-2xl mb-4 text-center text-xs text-amber-300 font-bold flex items-center gap-2">
-                <i class="fa-solid fa-triangle-exclamation text-amber-400 text-sm"></i>
-                <span>Apna Order ID lazmi save karein! Yeh baad mein order track karne ke kaam aayega.</span>
-            </div>
-
-            <div class="text-center pb-4 border-b border-slate-800">
-                <div class="w-12 h-12 pro-gradient text-slate-950 font-black rounded-2xl mx-auto flex items-center justify-center text-xl mb-2 shadow-md">
-                    <i class="fa-solid fa-receipt"></i>
-                </div>
-                <h3 id="recBrandTitle" class="text-xl font-black text-white">AMMAR SOCIAL</h3>
-                <p class="text-xs text-emerald-400 font-semibold">Firebase Cloud Receipt</p>
-            </div>
-            <div class="py-5 space-y-3 text-xs md:text-sm">
-                <div class="flex justify-between py-1 border-b border-slate-800/60"><span class="text-slate-400">Order ID:</span> <span id="recOrderId" class="font-mono font-bold text-emerald-400 text-base"></span></div>
-                <div class="flex justify-between py-1 border-b border-slate-800/60"><span class="text-slate-400">Customer Name:</span> <span id="recName" class="font-medium text-white"></span></div>
-                <div class="flex justify-between py-1 border-b border-slate-800/60"><span class="text-slate-400">WhatsApp:</span> <span id="recWhatsapp" class="text-white font-mono"></span></div>
-                <div class="flex justify-between py-1 border-b border-slate-800/60"><span class="text-slate-400">Service:</span> <span id="recService" class="text-white font-medium"></span></div>
-                <div class="flex justify-between py-1 border-b border-slate-800/60"><span class="text-slate-400">Paid Amount:</span> <span id="recPrice" class="text-emerald-400 font-extrabold"></span></div>
-                <div class="flex justify-between py-1"><span class="text-slate-400">Status:</span> <span class="bg-amber-500/20 text-amber-400 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase">Pending</span></div>
-            </div>
-            <div class="pt-4 border-t border-slate-800 flex gap-3">
-                <button onclick="downloadReceipt()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-xl text-xs transition border border-slate-700 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-download"></i> Save Image
-                </button>
-                <a id="whatsappChatBtn" href="#" target="_blank" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs transition text-center flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/30">
-                    <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp Support
-                </a>
-            </div>
-            <button onclick="closeReceiptModal()" class="w-full mt-3 bg-slate-900 text-slate-400 hover:text-white py-2.5 rounded-xl text-xs font-semibold">Close Window</button>
+        <div class="contact-item">
+            📍
+            <strong>Address:</strong>
+            Ibrahim Shah Complex
         </div>
+
     </div>
 
-    <!-- Footer -->
-    <footer class="glass-panel mt-16 py-8 border-t border-slate-800 text-center text-xs text-slate-400">
-        <p>&copy; 2026 <span id="footerBrandName" class="font-bold text-white">AMMAR SOCIAL</span>. Firebase Enterprise Edition.</p>
-    </footer>
+</header>
 
-    <!-- Firebase Configuration & Application Script -->
-    <script>
-        // --- FIREBASE CONFIGURATION ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyCM6ZvVOQEVBoNPJNCBJBOJP83WAX2O5lU",
-            authDomain: "amar-social-hub.firebaseapp.com",
-            projectId: "amar-social-hub",
-            storageBucket: "amar-social-hub.firebasestorage.app",
-            messagingSenderId: "12961893425",
-            appId: "1:12961893425:web:c74bba9ca1c9d4badad910",
-            measurementId: "G-F2DPY3DWG2"
-        };
+<main class="container">
 
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+<section class="card">
 
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const splash = document.getElementById('introSplash');
-                splash.style.opacity = '0';
-                splash.style.visibility = 'hidden';
-            }, 600);
+    <div class="title">
+        Customer Information
+    </div>
 
-            fetchGlobalSettings();
-            checkRoute();
+    <div class="customer-grid">
+
+        <div class="input-group">
+
+            <label>
+                Customer Name
+            </label>
+
+            <input
+                id="customerName"
+                placeholder="Enter your name"
+            >
+
+        </div>
+
+        <div class="input-group">
+
+            <label>
+                WhatsApp / Phone
+            </label>
+
+            <input
+                id="customerPhone"
+                type="tel"
+                placeholder="03XXXXXXXXX"
+            >
+
+        </div>
+
+    </div>
+
+    <br>
+
+    <div class="input-group">
+
+        <label>
+            Address / Delivery Details
+        </label>
+
+        <textarea
+            id="customerAddress"
+            placeholder="Enter your delivery address"
+        ></textarea>
+
+    </div>
+
+</section>
+
+<section class="card">
+
+    <div class="title">
+        Select Products
+    </div>
+
+    <input
+        id="search"
+        class="search"
+        placeholder="🔎 Search product..."
+    >
+
+    <div class="product-header">
+
+        <div>Product</div>
+        <div>Unit Price</div>
+        <div>Quantity</div>
+
+    </div>
+
+    <div
+        id="products"
+        class="products"
+    ></div>
+
+    <div class="summary">
+
+        <div class="summary-line">
+
+            <span>Total Products</span>
+
+            <strong id="totalItems">
+                0
+            </strong>
+
+        </div>
+
+        <div class="summary-line total">
+
+            <span>Grand Total</span>
+
+            <strong id="grandTotal">
+                PKR 0
+            </strong>
+
+        </div>
+
+    </div>
+
+    <button
+        id="submitButton"
+        class="submit"
+    >
+        🛒 Submit Order
+    </button>
+
+</section>
+
+</main>
+
+<footer class="footer">
+
+    ©
+    <span id="year"></span>
+
+    <span id="footerName">
+        My Shop
+    </span>
+
+    — All Rights Reserved
+
+</footer>
+
+<div id="success" class="success">
+
+    <div class="success-box">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <h2>
+            Your order has been submitted
+        </h2>
+
+        <p>
+            Thank you! Your order was successfully submitted.
+        </p>
+
+        <div class="countdown">
+
+            Closing in
+            <strong id="seconds">2</strong>
+            seconds...
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="login" class="login">
+
+    <div class="login-box">
+
+        <h2>
+            🔐 Admin Login
+        </h2>
+
+        <p>
+            Enter your admin password.
+        </p>
+
+        <input
+            id="adminPassword"
+            type="password"
+            placeholder="Admin password"
+        >
+
+        <div class="login-buttons">
+
+            <button
+                id="loginButton"
+                class="admin-btn blue"
+            >
+                Login
+            </button>
+
+            <button
+                id="cancelLogin"
+                class="admin-btn gray"
+            >
+                Cancel
+            </button>
+
+        </div>
+
+        <p
+            id="loginError"
+            style="color:#dc2626;margin-top:12px;"
+        ></p>
+
+    </div>
+
+</div>
+
+<div id="admin" class="admin">
+
+<div class="admin-header">
+
+    <h2>
+        ⚙️ Admin Panel
+    </h2>
+
+    <div>
+
+        <button id="logoutButton">
+            Logout
+        </button>
+
+        <button id="closeAdminButton">
+            Close
+        </button>
+
+    </div>
+
+</div>
+
+<div class="admin-container">
+
+<div class="admin-grid">
+
+<div class="admin-card">
+
+    <h3>
+        Shop Settings
+    </h3>
+
+    <input
+        id="adminShopName"
+        class="admin-input"
+        placeholder="Shop name"
+    >
+
+    <button
+        id="saveShopButton"
+        class="admin-btn blue"
+    >
+        Save Shop Name
+    </button>
+
+    <hr
+        style="
+            margin:20px 0;
+            border:0;
+            border-top:1px solid #e2e8f0;
+        "
+    >
+
+    <h3>
+        Add Product
+    </h3>
+
+    <input
+        id="productName"
+        class="admin-input"
+        placeholder="Product name"
+    >
+
+    <input
+        id="productPrice"
+        class="admin-input"
+        type="number"
+        min="0"
+        placeholder="Unit price"
+    >
+
+    <button
+        id="addProductButton"
+        class="admin-btn blue"
+    >
+        + Add Product
+    </button>
+
+    <p
+        style="
+            margin-top:12px;
+            color:#64748b;
+            font-size:12px;
+        "
+    >
+        Add as many products as you want.
+    </p>
+
+</div>
+
+<div class="admin-card">
+
+    <h3>
+        📦 Product Management
+    </h3>
+
+    <input
+        id="adminSearch"
+        class="admin-input"
+        placeholder="🔎 Search products..."
+    >
+
+    <div
+        id="adminProducts"
+        class="admin-list"
+    ></div>
+
+</div>
+
+</div>
+
+<div class="admin-card orders">
+
+    <h3>
+        📋 Customer Orders
+    </h3>
+
+    <div id="ordersList">
+        Loading...
+    </div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- =====================================================
+     UPDATED FIREBASE 12.19.0
+===================================================== -->
+
+<script type="module">
+
+import {
+    initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    doc,
+    setDoc,
+    deleteDoc,
+    query,
+    orderBy,
+    limit
+}
+from
+"https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+/* =====================================================
+   NEW FIREBASE CONFIG
+===================================================== */
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyBqkDPahbv24mCWZ6L62V5FxCwKNgApgNU",
+
+    authDomain:
+        "amar-social-18b48.firebaseapp.com",
+
+    projectId:
+        "amar-social-18b48",
+
+    storageBucket:
+        "amar-social-18b48.firebasestorage.app",
+
+    messagingSenderId:
+        "562759285262",
+
+    appId:
+        "1:562759285262:web:8996321fcf35a4d65b9a5f"
+
+};
+
+
+/* =====================================================
+   INITIALIZE FIREBASE
+===================================================== */
+
+const app =
+    initializeApp(firebaseConfig);
+
+const db =
+    getFirestore(app);
+
+
+/* =====================================================
+   ADMIN PASSWORD
+===================================================== */
+
+const ADMIN_PASSWORD =
+    "Admin@12345";
+
+
+/* =====================================================
+   GLOBAL DATA
+===================================================== */
+
+let products = [];
+
+let quantities = {};
+
+
+/* =====================================================
+   LOAD SHOP
+===================================================== */
+
+async function loadShop(){
+
+    try{
+
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "settings"
+                )
+            );
+
+        let name =
+            "My Shop";
+
+        snapshot.forEach(item=>{
+
+            if(item.id === "shop"){
+
+                name =
+                    item.data().name
+                    ||
+                    "My Shop";
+
+            }
+
         });
 
-        window.addEventListener('hashchange', checkRoute);
+        document.getElementById(
+            "shopName"
+        ).textContent =
+            name;
 
-        function checkRoute() {
-            if (window.location.hash === '#admin') {
-                document.getElementById('mainWebsiteView').classList.add('hidden');
-                if(localStorage.getItem('admin_logged') === 'true') {
-                    document.getElementById('adminDashboardView').classList.remove('hidden');
-                    loadAdminData();
-                } else {
-                    document.getElementById('adminLoginView').classList.remove('hidden');
-                }
-            } else {
-                document.getElementById('adminLoginView').classList.add('hidden');
-                document.getElementById('adminDashboardView').classList.add('hidden');
-                document.getElementById('mainWebsiteView').classList.remove('hidden');
-            }
-        }
+        document.getElementById(
+            "footerName"
+        ).textContent =
+            name;
 
-        function switchPage(pageName) {
-            document.getElementById('pageHome').classList.add('hidden');
-            document.getElementById('pageServices').classList.add('hidden');
-            document.getElementById('pageTrack').classList.add('hidden');
-            document.getElementById('pageAbout').classList.add('hidden');
-            
-            document.getElementById('navHome').className = "transition hover:text-emerald-300";
-            document.getElementById('navServices').className = "transition hover:text-emerald-300";
-            document.getElementById('navTrack').className = "transition hover:text-emerald-300";
-            document.getElementById('navAbout').className = "transition hover:text-emerald-300";
+        document.getElementById(
+            "adminShopName"
+        ).value =
+            name;
 
-            if(pageName === 'home') {
-                document.getElementById('pageHome').classList.remove('hidden');
-                document.getElementById('navHome').className = "text-emerald-400 transition hover:text-emerald-300";
-            } else if(pageName === 'services') {
-                document.getElementById('pageServices').classList.remove('hidden');
-                document.getElementById('navServices').className = "text-emerald-400 transition hover:text-emerald-300";
-                fetchServices();
-            } else if(pageName === 'track') {
-                document.getElementById('pageTrack').classList.remove('hidden');
-                document.getElementById('navTrack').className = "text-emerald-400 transition hover:text-emerald-300";
-            } else if(pageName === 'about') {
-                document.getElementById('pageAbout').classList.remove('hidden');
-                document.getElementById('navAbout').className = "text-emerald-400 transition hover:text-emerald-300";
-            }
-        }
+        document.title =
+            name +
+            " - Online Order";
 
-        function closeAdminView(e) {
-            e.preventDefault();
-            window.location.hash = '';
-            checkRoute();
-        }
+    }
+    catch(error){
 
-        let storeSettings = {
-            brandName: 'Ammar Social',
-            whatsapp: '923714899865',
-            payNumber: '0371-4899865',
-            payTitle: 'Ammar Social Store'
-        };
+        console.error(error);
 
-        let currentSelectedService = null;
-        let appliedDiscount = 0;
-        let cachedServices = [];
-        let cachedCoupons = [];
+    }
 
-        async function fetchGlobalSettings() {
-            try {
-                let doc = await db.collection('settings').doc('general').get();
-                if(doc.exists) {
-                    storeSettings = doc.data();
-                } else {
-                    await db.collection('settings').doc('general').set(storeSettings);
-                }
-                updateUIWithSettings();
-            } catch(err) {
-                console.error("Error fetching settings:", err);
-                updateUIWithSettings();
-            }
-        }
+}
 
-        function updateUIWithSettings() {
-            document.getElementById('brandHeaderName').innerHTML = `${storeSettings.brandName.split(' ')[0]} <span class="text-emerald-400 text-glow">${storeSettings.brandName.split(' ').slice(1).join(' ') || 'SOCIAL'}</span>`;
-            document.getElementById('siteTitleMeta').innerText = storeSettings.brandName + " - Enterprise SMM Suite";
-            document.getElementById('footerBrandName').innerText = storeSettings.brandName.toUpperCase();
-            document.getElementById('aboutBrandName').innerText = "Welcome to " + storeSettings.brandName;
-            document.getElementById('payBoxNumber').innerText = storeSettings.payNumber;
-            document.getElementById('payBoxTitle').innerText = storeSettings.payTitle;
-            document.getElementById('floatingWhatsappBtn').href = `https://wa.me/${storeSettings.whatsapp}?text=Hello%20Ammar,%20I%20want%20to%20place%20an%20order%20for%20the%20SMM%20panel.`;
-        }
 
-        async function fetchServices() {
-            const grid = document.getElementById('servicesGrid');
-            grid.innerHTML = '<p class="text-xs text-slate-400 col-span-3 text-center py-6">Loading services from Firebase Cloud...</p>';
-            try {
-                let snapshot = await db.collection('services').get();
-                cachedServices = [];
-                grid.innerHTML = '';
-                
-                if(snapshot.empty) {
-                    // Default services add agar empty ho
-                    let defaults = [
-                        { name: 'Instagram HQ Followers (1000)', price: 799, image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=500&auto=format&fit=crop' },
-                        { name: 'TikTok Real Views & Likes (5000)', price: 550, image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop' },
-                        { name: 'YouTube Monetization Watchtime Pack', price: 3499, image: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=500&auto=format&fit=crop' }
-                    ];
-                    for(let d of defaults) {
-                        let ref = await db.collection('services').add(d);
-                        cachedServices.push({ id: ref.id, ...d });
-                    }
-                } else {
-                    snapshot.forEach(doc => {
-                        cachedServices.push({ id: doc.id, ...doc.data() });
-                    });
-                }
+/* =====================================================
+   LOAD PRODUCTS
+===================================================== */
 
-                renderServicesGrid(cachedServices);
-            } catch(err) {
-                console.error(err);
-                grid.innerHTML = '<p class="text-xs text-red-400 col-span-3 text-center">Error connecting to Firebase Cloud.</p>';
-            }
-        }
+async function loadProducts(){
 
-        function renderServicesGrid(list) {
-            const grid = document.getElementById('servicesGrid');
-            grid.innerHTML = '';
-            list.forEach(service => {
-                grid.innerHTML += `
-                    <div class="glass-panel rounded-3xl overflow-hidden border border-slate-800 flex flex-col justify-between hover:border-emerald-500/40 transition duration-300 group shadow-lg">
-                        <div>
-                            <div class="relative overflow-hidden h-48">
-                                <img src="${service.image}" alt="${service.name}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
-                            </div>
-                            <div class="p-6">
-                                <h4 class="font-bold text-white text-base mb-2">${service.name}</h4>
-                                <div class="text-emerald-400 font-black text-xl">Rs. ${service.price}</div>
-                            </div>
-                        </div>
-                        <div class="p-6 pt-0">
-                            <button onclick="openOrderModal('${service.id}')" class="w-full bg-slate-900 hover:bg-emerald-500 hover:text-slate-950 text-white font-bold py-3 rounded-2xl text-xs transition flex items-center justify-center gap-2 border border-slate-700 shadow-md">
-                                <i class="fa-solid fa-cart-plus text-emerald-400 group-hover:text-slate-950"></i> Instant Order
-                            </button>
-                        </div>
-                    </div>
-                `;
+    try{
+
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "products"
+                )
+            );
+
+        products = [];
+
+        snapshot.forEach(item=>{
+
+            const data =
+                item.data();
+
+            products.push({
+
+                id:
+                    item.id,
+
+                name:
+                    data.name
+                    ||
+                    "",
+
+                price:
+                    Number(
+                        data.price
+                        ||
+                        0
+                    )
+
             });
+
+        });
+
+        products.sort(
+            (a,b)=>
+                a.name.localeCompare(
+                    b.name
+                )
+        );
+
+        renderProducts();
+
+        renderAdminProducts();
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        document.getElementById(
+            "products"
+        ).innerHTML = `
+
+            <div class="empty">
+                Products load nahi ho rahe.
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   CUSTOMER PRODUCTS
+===================================================== */
+
+function renderProducts(){
+
+    const container =
+        document.getElementById(
+            "products"
+        );
+
+    const search =
+        document.getElementById(
+            "search"
+        )
+        .value
+        .toLowerCase()
+        .trim();
+
+    const filtered =
+        products.filter(product=>
+
+            product.name
+                .toLowerCase()
+                .includes(search)
+
+        );
+
+    if(filtered.length === 0){
+
+        container.innerHTML = `
+
+            <div class="empty">
+                No products found.
+            </div>
+
+        `;
+
+        updateTotal();
+
+        return;
+
+    }
+
+    container.innerHTML = "";
+
+    filtered.forEach(product=>{
+
+        const quantity =
+            quantities[
+                product.id
+            ]
+            ||
+            0;
+
+        const row =
+            document.createElement(
+                "div"
+            );
+
+        row.className =
+            "product-row";
+
+        row.innerHTML = `
+
+            <div class="product-name">
+
+                ${escapeHTML(
+                    product.name
+                )}
+
+            </div>
+
+            <div class="product-price">
+
+                PKR
+                ${product.price.toLocaleString()}
+
+            </div>
+
+            <div class="quantity">
+
+                <button
+                    class="qty-btn"
+                    data-action="minus"
+                    data-id="${product.id}"
+                >
+                    −
+                </button>
+
+                <input
+                    class="qty"
+                    type="number"
+                    min="0"
+                    value="${quantity}"
+                    data-input-id="${product.id}"
+                >
+
+                <button
+                    class="qty-btn"
+                    data-action="plus"
+                    data-id="${product.id}"
+                >
+                    +
+                </button>
+
+            </div>
+
+        `;
+
+        container.appendChild(
+            row
+        );
+
+    });
+
+    updateTotal();
+
+}
+
+
+/* =====================================================
+   QUANTITY BUTTONS
+===================================================== */
+
+document.getElementById(
+    "products"
+)
+.addEventListener(
+    "click",
+    event=>{
+
+        const button =
+            event.target.closest(
+                ".qty-btn"
+            );
+
+        if(!button)
+            return;
+
+        const id =
+            button.dataset.id;
+
+        let quantity =
+            quantities[id]
+            ||
+            0;
+
+        if(
+            button.dataset.action
+            ===
+            "plus"
+        ){
+
+            quantity++;
+
         }
 
-        function filterServices() {
-            let query = document.getElementById('searchService').value.toLowerCase();
-            let filtered = cachedServices.filter(s => s.name.toLowerCase().includes(query));
-            renderServicesGrid(filtered);
+        if(
+            button.dataset.action
+            ===
+            "minus"
+        ){
+
+            quantity--;
+
         }
 
-        async function trackOrderQuery() {
-            let searchId = document.getElementById('trackOrderIdInput').value.trim().toUpperCase();
-            let container = document.getElementById('trackResultContainer');
-            
-            try {
-                let snapshot = await db.collection('orders').where('orderId', '==', searchId).get();
-                if(!snapshot.empty) {
-                    let foundOrder = snapshot.docs[0].data();
-                    document.getElementById('resTrackId').innerText = foundOrder.orderId;
-                    document.getElementById('resTrackName').innerText = foundOrder.name;
-                    document.getElementById('resTrackWhatsapp').innerText = foundOrder.whatsapp;
-                    document.getElementById('resTrackService').innerText = foundOrder.serviceName;
-                    document.getElementById('resTrackPrice').innerText = 'Rs. ' + foundOrder.price;
-                    document.getElementById('resTrackStatus').innerText = foundOrder.status || 'Pending';
-                    container.classList.remove('hidden');
-                } else {
-                    container.classList.add('hidden');
-                    alert('No order found with this ID in Firebase Cloud.');
-                }
-            } catch(err) {
-                console.error(err);
-                alert('Error querying cloud database.');
-            }
-        }
+        if(quantity < 0)
+            quantity = 0;
 
-        function openOrderModal(id) {
-            currentSelectedService = cachedServices.find(s => s.id === id);
-            document.getElementById('selectedServiceId').value = id;
-            document.getElementById('modalServiceName').innerText = currentSelectedService.name;
-            document.getElementById('modalPriceDisplay').value = 'Rs. ' + currentSelectedService.price;
-            appliedDiscount = 0;
-            document.getElementById('couponInput').value = '';
-            document.getElementById('orderModal').classList.remove('hidden');
-        }
+        quantities[id] =
+            quantity;
 
-        function closeOrderModal() { document.getElementById('orderModal').classList.add('hidden'); }
+        renderProducts();
 
-        async function applyCoupon() {
-            let code = document.getElementById('couponInput').value.trim().toUpperCase();
-            try {
-                let snapshot = await db.collection('coupons').where('code', '==', code).get();
-                if(!snapshot.empty) {
-                    let found = snapshot.docs[0].data();
-                    appliedDiscount = found.discount;
-                    let discountedPrice = currentSelectedService.price - (currentSelectedService.price * appliedDiscount / 100);
-                    document.getElementById('modalPriceDisplay').value = 'Rs. ' + discountedPrice + ` (${appliedDiscount}% OFF)`;
-                    alert('Coupon applied successfully!');
-                } else if(code !== '') {
-                    alert('Invalid Coupon Code!');
-                }
-            } catch(err) {
-                console.error(err);
-            }
-        }
+    }
+);
 
-        function submitOrder(e) {
-            e.preventDefault();
-            let name = document.getElementById('custName').value;
-            let whatsapp = document.getElementById('custWhatsapp').value;
-            let link = document.getElementById('custLink').value;
-            let finalPrice = currentSelectedService.price - (currentSelectedService.price * appliedDiscount / 100);
-            let orderId = 'ORD-' + Math.floor(100000 + Math.random() * 900000);
 
-            let fileInput = document.getElementById('paymentProof');
-            if (fileInput.files && fileInput.files[0]) {
-                let reader = new FileReader();
-                reader.onload = function (e) {
-                    let img = new Image();
-                    img.src = e.target.result;
-                    img.onload = function() {
-                        let canvas = document.createElement('canvas');
-                        let ctx = canvas.getContext('2d');
-                        canvas.width = 400; canvas.height = 400;
-                        ctx.drawImage(img, 0, 0, 400, 400);
-                        let compressedData = canvas.toDataURL('image/jpeg', 0.5);
-                        saveOrderToFirebase(orderId, name, whatsapp, link, finalPrice, compressedData);
-                    }
-                };
-                reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                saveOrderToFirebase(orderId, name, whatsapp, link, finalPrice, '');
-            }
-        }
+document.getElementById(
+    "products"
+)
+.addEventListener(
+    "change",
+    event=>{
 
-        async function saveOrderToFirebase(orderId, name, whatsapp, link, finalPrice, screenshot) {
-            let newOrder = {
-                orderId, name, whatsapp, link,
-                serviceName: currentSelectedService.name,
-                price: finalPrice,
-                screenshot: screenshot,
-                status: 'Pending',
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            };
+        if(
+            !event.target.dataset.inputId
+        )
+            return;
 
-            try {
-                await db.collection('orders').add(newOrder);
-                closeOrderModal();
+        const id =
+            event.target.dataset.inputId;
 
-                document.getElementById('recOrderId').innerText = orderId;
-                document.getElementById('recName').innerText = name;
-                document.getElementById('recWhatsapp').innerText = whatsapp;
-                document.getElementById('recService').innerText = currentSelectedService.name;
-                document.getElementById('recPrice').innerText = 'Rs. ' + finalPrice;
+        let quantity =
+            parseInt(
+                event.target.value
+            )
+            ||
+            0;
 
-                let waMsg = `Hello ${storeSettings.brandName}, New Order.%0AOrder ID: ${orderId}%0AName: ${name}%0AService: ${currentSelectedService.name}%0APrice: Rs. ${finalPrice}`;
-                document.getElementById('whatsappChatBtn').href = `https://wa.me/${storeSettings.whatsapp}?text=${waMsg}`;
-                document.getElementById('receiptModal').classList.remove('hidden');
-            } catch(err) {
-                alert('Error saving order to Firebase Cloud: ' + err.message);
-            }
-        }
+        if(quantity < 0)
+            quantity = 0;
 
-        function closeReceiptModal() { document.getElementById('receiptModal').classList.add('hidden'); }
+        quantities[id] =
+            quantity;
 
-        function downloadReceipt() {
-            html2canvas(document.getElementById('receiptContent')).then(canvas => {
-                let link = document.createElement('a');
-                link.download = 'Receipt.png';
-                link.href = canvas.toDataURL();
-                link.click();
+        updateTotal();
+
+    }
+);
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+document.getElementById(
+    "search"
+)
+.addEventListener(
+    "input",
+    renderProducts
+);
+
+
+/* =====================================================
+   TOTAL
+===================================================== */
+
+function updateTotal(){
+
+    let total = 0;
+
+    let items = 0;
+
+    products.forEach(product=>{
+
+        const quantity =
+            quantities[
+                product.id
+            ]
+            ||
+            0;
+
+        items +=
+            quantity;
+
+        total +=
+            product.price *
+            quantity;
+
+    });
+
+    document.getElementById(
+        "totalItems"
+    ).textContent =
+        items;
+
+    document.getElementById(
+        "grandTotal"
+    ).textContent =
+        "PKR " +
+        total.toLocaleString();
+
+}
+
+
+/* =====================================================
+   SUBMIT ORDER
+===================================================== */
+
+document.getElementById(
+    "submitButton"
+)
+.addEventListener(
+    "click",
+    submitOrder
+);
+
+
+async function submitOrder(){
+
+    const name =
+        document.getElementById(
+            "customerName"
+        )
+        .value
+        .trim();
+
+    const phone =
+        document.getElementById(
+            "customerPhone"
+        )
+        .value
+        .trim();
+
+    const address =
+        document.getElementById(
+            "customerAddress"
+        )
+        .value
+        .trim();
+
+    if(!name){
+
+        alert(
+            "Please enter your name."
+        );
+
+        return;
+
+    }
+
+    if(!phone){
+
+        alert(
+            "Please enter your WhatsApp / phone number."
+        );
+
+        return;
+
+    }
+
+    const items = [];
+
+    let grandTotal = 0;
+
+    products.forEach(product=>{
+
+        const quantity =
+            quantities[
+                product.id
+            ]
+            ||
+            0;
+
+        if(quantity > 0){
+
+            const itemTotal =
+                product.price *
+                quantity;
+
+            items.push({
+
+                productId:
+                    product.id,
+
+                product:
+                    product.name,
+
+                unitPrice:
+                    product.price,
+
+                quantity:
+                    quantity,
+
+                total:
+                    itemTotal
+
             });
+
+            grandTotal +=
+                itemTotal;
+
         }
 
-        function viewScreenshot(base64Image) {
-            if(!base64Image) {
-                alert('No screenshot provided for this order.');
+    });
+
+    if(items.length === 0){
+
+        alert(
+            "Please select at least one product."
+        );
+
+        return;
+
+    }
+
+    const button =
+        document.getElementById(
+            "submitButton"
+        );
+
+    button.disabled = true;
+
+    button.textContent =
+        "Submitting...";
+
+    try{
+
+        await addDoc(
+            collection(
+                db,
+                "orders"
+            ),
+            {
+
+                customerName:
+                    name,
+
+                customerPhone:
+                    phone,
+
+                customerAddress:
+                    address,
+
+                items:
+                    items,
+
+                grandTotal:
+                    grandTotal,
+
+                status:
+                    "New",
+
+                createdAt:
+                    new Date()
+                    .toISOString()
+
+            }
+        );
+
+        quantities = {};
+
+        document.getElementById(
+            "customerName"
+        ).value = "";
+
+        document.getElementById(
+            "customerPhone"
+        ).value = "";
+
+        document.getElementById(
+            "customerAddress"
+        ).value = "";
+
+        renderProducts();
+
+        showSuccess();
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            "Order submit nahi hua. Firebase Firestore Rules check karein."
+        );
+
+    }
+
+    button.disabled = false;
+
+    button.textContent =
+        "🛒 Submit Order";
+
+}
+
+
+/* =====================================================
+   SUCCESS POPUP
+===================================================== */
+
+function showSuccess(){
+
+    const popup =
+        document.getElementById(
+            "success"
+        );
+
+    const seconds =
+        document.getElementById(
+            "seconds"
+        );
+
+    let time = 2;
+
+    seconds.textContent =
+        time;
+
+    popup.classList.add(
+        "show"
+    );
+
+    const timer =
+        setInterval(()=>{
+
+            time--;
+
+            seconds.textContent =
+                time;
+
+            if(time <= 0){
+
+                clearInterval(
+                    timer
+                );
+
+                popup.classList.remove(
+                    "show"
+                );
+
+            }
+
+        },1000);
+
+}
+
+
+/* =====================================================
+   ADMIN LOGIN
+===================================================== */
+
+function openLogin(){
+
+    document.getElementById(
+        "login"
+    )
+    .classList.add(
+        "show"
+    );
+
+    document.getElementById(
+        "adminPassword"
+    ).focus();
+
+}
+
+
+function closeLogin(){
+
+    document.getElementById(
+        "login"
+    )
+    .classList.remove(
+        "show"
+    );
+
+    document.getElementById(
+        "adminPassword"
+    ).value = "";
+
+    document.getElementById(
+        "loginError"
+    ).textContent = "";
+
+}
+
+
+document.getElementById(
+    "loginButton"
+)
+.addEventListener(
+    "click",
+    ()=>{
+
+        const password =
+            document.getElementById(
+                "adminPassword"
+            ).value;
+
+        if(
+            password !==
+            ADMIN_PASSWORD
+        ){
+
+            document.getElementById(
+                "loginError"
+            ).textContent =
+                "Incorrect admin password.";
+
+            return;
+
+        }
+
+        closeLogin();
+
+        openAdmin();
+
+    }
+);
+
+
+document.getElementById(
+    "adminPassword"
+)
+.addEventListener(
+    "keydown",
+    event=>{
+
+        if(
+            event.key ===
+            "Enter"
+        ){
+
+            document.getElementById(
+                "loginButton"
+            ).click();
+
+        }
+
+    }
+);
+
+
+document.getElementById(
+    "cancelLogin"
+)
+.addEventListener(
+    "click",
+    closeLogin
+);
+
+
+/* =====================================================
+   ADMIN PANEL
+===================================================== */
+
+function openAdmin(){
+
+    document.getElementById(
+        "admin"
+    )
+    .classList.add(
+        "show"
+    );
+
+    document.getElementById(
+        "adminShopName"
+    ).value =
+        document.getElementById(
+            "shopName"
+        ).textContent;
+
+    renderAdminProducts();
+
+    loadOrders();
+
+}
+
+
+document.getElementById(
+    "closeAdminButton"
+)
+.addEventListener(
+    "click",
+    ()=>{
+
+        document.getElementById(
+            "admin"
+        )
+        .classList.remove(
+            "show"
+        );
+
+    }
+);
+
+
+document.getElementById(
+    "logoutButton"
+)
+.addEventListener(
+    "click",
+    ()=>{
+
+        document.getElementById(
+            "admin"
+        )
+        .classList.remove(
+            "show"
+        );
+
+    }
+);
+
+
+/* =====================================================
+   SAVE SHOP NAME
+===================================================== */
+
+document.getElementById(
+    "saveShopButton"
+)
+.addEventListener(
+    "click",
+    async()=>{
+
+        const name =
+            document.getElementById(
+                "adminShopName"
+            )
+            .value
+            .trim();
+
+        if(!name){
+
+            alert(
+                "Shop name required."
+            );
+
+            return;
+
+        }
+
+        try{
+
+            await setDoc(
+                doc(
+                    db,
+                    "settings",
+                    "shop"
+                ),
+                {
+
+                    name:
+                        name
+
+                }
+            );
+
+            document.getElementById(
+                "shopName"
+            ).textContent =
+                name;
+
+            document.getElementById(
+                "footerName"
+            ).textContent =
+                name;
+
+            document.title =
+                name +
+                " - Online Order";
+
+            alert(
+                "Shop name saved successfully."
+            );
+
+        }
+        catch(error){
+
+            console.error(error);
+
+            alert(
+                "Shop name save nahi hua."
+            );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   ADD PRODUCT
+===================================================== */
+
+document.getElementById(
+    "addProductButton"
+)
+.addEventListener(
+    "click",
+    async()=>{
+
+        const name =
+            document.getElementById(
+                "productName"
+            )
+            .value
+            .trim();
+
+        const price =
+            Number(
+                document.getElementById(
+                    "productPrice"
+                ).value
+            );
+
+        if(!name){
+
+            alert(
+                "Product name required."
+            );
+
+            return;
+
+        }
+
+        if(
+            !Number.isFinite(price)
+            ||
+            price < 0
+        ){
+
+            alert(
+                "Valid price enter karein."
+            );
+
+            return;
+
+        }
+
+        try{
+
+            await addDoc(
+                collection(
+                    db,
+                    "products"
+                ),
+                {
+
+                    name:
+                        name,
+
+                    price:
+                        price,
+
+                    createdAt:
+                        new Date()
+                        .toISOString()
+
+                }
+            );
+
+            document.getElementById(
+                "productName"
+            ).value = "";
+
+            document.getElementById(
+                "productPrice"
+            ).value = "";
+
+            await loadProducts();
+
+            alert(
+                "Product added successfully."
+            );
+
+        }
+        catch(error){
+
+            console.error(error);
+
+            alert(
+                "Product add nahi hua."
+            );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   ADMIN PRODUCTS
+===================================================== */
+
+function renderAdminProducts(){
+
+    const container =
+        document.getElementById(
+            "adminProducts"
+        );
+
+    const search =
+        document.getElementById(
+            "adminSearch"
+        )
+        .value
+        .toLowerCase()
+        .trim();
+
+    const filtered =
+        products.filter(product=>
+
+            product.name
+                .toLowerCase()
+                .includes(search)
+
+        );
+
+    if(filtered.length === 0){
+
+        container.innerHTML = `
+
+            <div class="empty">
+                No products found.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+    container.innerHTML = "";
+
+    filtered.forEach(product=>{
+
+        const row =
+            document.createElement(
+                "div"
+            );
+
+        row.className =
+            "admin-product";
+
+        row.innerHTML = `
+
+            <div>
+
+                <strong>
+                    ${escapeHTML(
+                        product.name
+                    )}
+                </strong>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    PKR
+                    ${product.price.toLocaleString()}
+                </strong>
+
+            </div>
+
+            <div class="admin-actions">
+
+                <button
+                    class="admin-btn gray"
+                    data-edit="${product.id}"
+                >
+                    Edit
+                </button>
+
+                <button
+                    class="admin-btn red"
+                    data-delete="${product.id}"
+                >
+                    Delete
+                </button>
+
+            </div>
+
+        `;
+
+        container.appendChild(
+            row
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   ADMIN SEARCH
+===================================================== */
+
+document.getElementById(
+    "adminSearch"
+)
+.addEventListener(
+    "input",
+    renderAdminProducts
+);
+
+
+/* =====================================================
+   EDIT / DELETE
+===================================================== */
+
+document.getElementById(
+    "adminProducts"
+)
+.addEventListener(
+    "click",
+    async event=>{
+
+        const edit =
+            event.target.dataset.edit;
+
+        const del =
+            event.target.dataset.delete;
+
+        if(edit){
+
+            const product =
+                products.find(
+                    p =>
+                    p.id === edit
+                );
+
+            if(!product)
                 return;
+
+            const name =
+                prompt(
+                    "Product name:",
+                    product.name
+                );
+
+            if(name === null)
+                return;
+
+            const price =
+                prompt(
+                    "Unit price:",
+                    product.price
+                );
+
+            if(price === null)
+                return;
+
+            const newPrice =
+                Number(price);
+
+            if(
+                !name.trim()
+                ||
+                !Number.isFinite(
+                    newPrice
+                )
+                ||
+                newPrice < 0
+            ){
+
+                alert(
+                    "Invalid information."
+                );
+
+                return;
+
             }
-            document.getElementById('modalScreenshotImg').src = base64Image;
-            document.getElementById('screenshotModal').classList.remove('hidden');
-        }
 
-        function closeScreenshotModal() {
-            document.getElementById('screenshotModal').classList.add('hidden');
-        }
+            try{
 
-        function verifyAdmin(e) {
-            e.preventDefault();
-            let pass = document.getElementById('adminPassInput').value;
-            if(pass === 'admin10') {
-                localStorage.setItem('admin_logged', 'true');
-                document.getElementById('adminLoginView').classList.add('hidden');
-                document.getElementById('adminDashboardView').classList.remove('hidden');
-                loadAdminData();
-            } else {
-                alert('Incorrect Security Password!');
+                await setDoc(
+                    doc(
+                        db,
+                        "products",
+                        edit
+                    ),
+                    {
+
+                        name:
+                            name.trim(),
+
+                        price:
+                            newPrice,
+
+                        updatedAt:
+                            new Date()
+                            .toISOString()
+
+                    }
+                );
+
+                await loadProducts();
+
             }
+            catch(error){
+
+                console.error(error);
+
+                alert(
+                    "Product update failed."
+                );
+
+            }
+
         }
 
-        function logoutAdmin() {
-            localStorage.removeItem('admin_logged');
-            window.location.hash = '';
-            checkRoute();
+        if(del){
+
+            const product =
+                products.find(
+                    p =>
+                    p.id === del
+                );
+
+            if(!product)
+                return;
+
+            if(
+                !confirm(
+                    'Delete "' +
+                    product.name +
+                    '"?'
+                )
+            )
+                return;
+
+            try{
+
+                await deleteDoc(
+                    doc(
+                        db,
+                        "products",
+                        del
+                    )
+                );
+
+                delete quantities[
+                    del
+                ];
+
+                await loadProducts();
+
+            }
+            catch(error){
+
+                console.error(error);
+
+                alert(
+                    "Product delete failed."
+                );
+
+            }
+
         }
 
-        function switchAdminTab(tabId) {
-            document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('#adminDashboardView button[id^="btn"]').forEach(btn => {
-                btn.className = "bg-slate-900 text-slate-300 hover:bg-slate-800 px-5 py-2.5 rounded-xl text-xs font-bold transition border border-slate-800";
-            });
-            document.getElementById(tabId).classList.remove('hidden');
-            document.getElementById('btn' + tabId.charAt(0).toUpperCase() + tabId.slice(1)).className = "pro-gradient text-slate-950 font-black px-5 py-2.5 rounded-xl text-xs transition shadow-md";
+    }
+);
+
+
+/* =====================================================
+   LOAD ORDERS
+===================================================== */
+
+async function loadOrders(){
+
+    const container =
+        document.getElementById(
+            "ordersList"
+        );
+
+    container.innerHTML =
+        "Loading orders...";
+
+    try{
+
+        const q =
+            query(
+
+                collection(
+                    db,
+                    "orders"
+                ),
+
+                orderBy(
+                    "createdAt",
+                    "desc"
+                ),
+
+                limit(100)
+
+            );
+
+        const snapshot =
+            await getDocs(q);
+
+        if(snapshot.empty){
+
+            container.innerHTML = `
+
+                <div class="empty">
+                    No orders yet.
+                </div>
+
+            `;
+
+            return;
+
         }
 
-        async function loadAdminData() {
-            document.getElementById('settingBrandName').value = storeSettings.brandName;
-            document.getElementById('settingWhatsapp').value = storeSettings.whatsapp;
-            document.getElementById('settingPayNumber').value = storeSettings.payNumber;
-            document.getElementById('settingPayTitle').value = storeSettings.payTitle;
+        container.innerHTML = "";
 
-            // Load Admin Services
-            let sList = document.getElementById('adminServicesList');
-            sList.innerHTML = 'Loading...';
-            try {
-                let sSnap = await db.collection('services').get();
-                sList.innerHTML = '';
-                sSnap.forEach(doc => {
-                    let s = doc.data();
-                    sList.innerHTML += `
-                        <div class="flex justify-between items-center bg-slate-950 p-3.5 rounded-2xl border border-slate-800 text-xs">
-                            <div><strong class="text-white">${s.name}</strong> - <span class="text-emerald-400 font-bold">Rs. ${s.price}</span></div>
-                            <button onclick="deleteService('${doc.id}')" class="text-red-400 bg-red-500/10 px-3 py-1.5 rounded-xl border border-red-500/20"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    `;
-                });
-            } catch(err) { sList.innerHTML = 'Error loading services.'; }
+        snapshot.forEach(
+            orderDoc=>{
 
-            loadAdminOrders();
+                const order =
+                    orderDoc.data();
 
-            // Load Admin Coupons
-            let cList = document.getElementById('adminCouponsList');
-            cList.innerHTML = 'Loading...';
-            try {
-                let cSnap = await db.collection('coupons').get();
-                cList.innerHTML = '';
-                cSnap.forEach(doc => {
-                    let c = doc.data();
-                    cList.innerHTML += `
-                        <div class="flex justify-between items-center bg-slate-950 p-3.5 rounded-2xl border border-slate-800 text-xs">
-                            <div><strong class="text-white">${c.code}</strong> - <span class="text-emerald-400 font-bold">${c.discount}% OFF</span></div>
-                            <button onclick="deleteCoupon('${doc.id}')" class="text-red-400 bg-red-500/10 px-3 py-1.5 rounded-xl border border-red-500/20"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    `;
-                });
-            } catch(err) { cList.innerHTML = 'Error loading coupons.'; }
-        }
+                let itemHTML =
+                    "";
 
-        async function loadAdminOrders() {
-            let oList = document.getElementById('adminOrdersList');
-            oList.innerHTML = '<p class="text-xs text-slate-500">Loading orders from cloud...</p>';
-            try {
-                let oSnap = await db.collection('orders').orderBy('createdAt', 'desc').get();
-                oList.innerHTML = '';
-                if(oSnap.empty) {
-                    oList.innerHTML = '<p class="text-xs text-slate-500">No orders placed yet.</p>';
-                    return;
-                }
-                oSnap.forEach(doc => {
-                    let o = doc.data();
-                    let docId = doc.id;
-                    oList.innerHTML += `
-                        <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs space-y-2">
-                            <div class="flex justify-between"><strong class="text-emerald-400 font-mono">${o.orderId}</strong> <span class="text-slate-400">${o.serviceName}</span></div>
-                            <p class="text-slate-300">Customer: <b>${o.name}</b> | WhatsApp: <b>${o.whatsapp}</b></p>
-                            <p class="text-slate-300">Link: <a href="${o.link}" target="_blank" class="text-teal-400 underline">${o.link}</a></p>
-                            <div class="flex justify-between items-center pt-2 border-t border-slate-800">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-white font-extrabold text-sm">Rs. ${o.price}</span>
-                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold ${o.status === 'Completed' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'}">${o.status || 'Pending'}</span>
-                                </div>
-                                <div class="flex gap-2">
-                                    <button onclick="viewScreenshot('${o.screenshot}')" class="bg-teal-500/20 text-teal-300 hover:bg-teal-500 hover:text-slate-950 px-3 py-1 rounded-lg font-bold transition flex items-center gap-1"><i class="fa-solid fa-image"></i> Proof</button>
-                                    <button onclick="updateOrderStatus('${docId}', 'Completed')" class="bg-emerald-600 hover:bg-emerald-500 text-slate-950 px-3 py-1 rounded-lg font-bold">Complete</button>
-                                    <button onclick="deleteOrder('${docId}')" class="bg-red-500/20 text-red-400 px-3 py-1 rounded-lg font-bold"><i class="fa-solid fa-trash"></i></button>
-                                </div>
+                (
+                    order.items
+                    ||
+                    []
+                ).forEach(
+                    item=>{
+
+                        itemHTML += `
+
+                            <div>
+
+                                ${escapeHTML(
+                                    item.product
+                                )}
+
+                                ×
+
+                                ${item.quantity}
+
+                                —
+
+                                PKR
+                                ${Number(
+                                    item.total
+                                ).toLocaleString()}
+
                             </div>
-                        </div>
-                    `;
-                });
-            } catch(err) {
-                oList.innerHTML = '<p class="text-xs text-red-400">Error loading cloud orders.</p>';
+
+                        `;
+
+                    }
+                );
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+                card.className =
+                    "order-card";
+
+                card.innerHTML = `
+
+                    <div class="order-top">
+
+                        <span>
+
+                            ${escapeHTML(
+                                order.customerName
+                                ||
+                                "Customer"
+                            )}
+
+                        </span>
+
+                        <span>
+
+                            ${escapeHTML(
+                                order.status
+                                ||
+                                "New"
+                            )}
+
+                        </span>
+
+                    </div>
+
+                    <div
+                        style="
+                            margin-top:8px;
+                            color:#64748b;
+                            font-size:13px;
+                        "
+                    >
+
+                        📞
+                        ${escapeHTML(
+                            order.customerPhone
+                            ||
+                            ""
+                        )}
+
+                        <br>
+
+                        📍
+                        ${escapeHTML(
+                            order.customerAddress
+                            ||
+                            ""
+                        )}
+
+                    </div>
+
+                    <div class="order-items">
+
+                        ${itemHTML}
+
+                    </div>
+
+                    <div class="order-total">
+
+                        Grand Total:
+
+                        PKR
+
+                        ${Number(
+                            order.grandTotal
+                            ||
+                            0
+                        ).toLocaleString()}
+
+                    </div>
+
+                    <div
+                        style="
+                            margin-top:8px;
+                            color:#94a3b8;
+                            font-size:12px;
+                        "
+                    >
+
+                        ${escapeHTML(
+                            order.createdAt
+                            ||
+                            ""
+                        )}
+
+                    </div>
+
+                `;
+
+                container.appendChild(
+                    card
+                );
+
             }
-        }
+        );
 
-        async function saveStoreSettings(e) {
-            e.preventDefault();
-            storeSettings.brandName = document.getElementById('settingBrandName').value;
-            storeSettings.whatsapp = document.getElementById('settingWhatsapp').value;
-            storeSettings.payNumber = document.getElementById('settingPayNumber').value;
-            storeSettings.payTitle = document.getElementById('settingPayTitle').value;
-            
-            try {
-                await db.collection('settings').doc('general').set(storeSettings);
-                updateUIWithSettings();
-                alert('Store settings successfully updated to Firebase Cloud!');
-            } catch(err) {
-                alert('Error saving settings: ' + err.message);
-            }
-        }
+    }
+    catch(error){
 
-        async function addNewService(e) {
-            e.preventDefault();
-            let name = document.getElementById('newServiceName').value;
-            let image = document.getElementById('newServiceImage').value;
-            let price = Number(document.getElementById('newServicePrice').value);
-            try {
-                await db.collection('services').add({ name, image, price });
-                loadAdminData();
-                alert('Service added to Cloud successfully!');
-            } catch(err) {
-                alert('Error adding service: ' + err.message);
-            }
-        }
+        console.error(error);
 
-        async function deleteService(id) {
-            if(confirm('Delete this service from cloud?')) {
-                try {
-                    await db.collection('services').doc(id).delete();
-                    loadAdminData();
-                } catch(err) { alert('Error deleting service.'); }
-            }
-        }
+        container.innerHTML = `
 
-        async function addNewCoupon(e) {
-            e.preventDefault();
-            let code = document.getElementById('newCouponCode').value.toUpperCase();
-            let discount = Number(document.getElementById('newCouponDiscount').value);
-            try {
-                await db.collection('coupons').add({ code, discount });
-                loadAdminData();
-                alert('Coupon added to Cloud successfully!');
-            } catch(err) { alert('Error adding coupon.'); }
-        }
+            <div
+                style="
+                    color:#dc2626;
+                    padding:15px;
+                "
+            >
 
-        async function deleteCoupon(id) {
-            try {
-                await db.collection('coupons').doc(id).delete();
-                loadAdminData();
-            } catch(err) { alert('Error deleting coupon.'); }
-        }
+                Orders load nahi ho rahe.
+                Firestore Rules check karein.
 
-        async function updateOrderStatus(docId, status) {
-            try {
-                await db.collection('orders').doc(docId).update({ status: status });
-                loadAdminOrders();
-            } catch(err) { alert('Error updating order status.'); }
-        }
+            </div>
 
-        async function deleteOrder(docId) {
-            if(confirm('Delete this order from cloud?')) {
-                try {
-                    await db.collection('orders').doc(docId).delete();
-                    loadAdminOrders();
-                } catch(err) { alert('Error deleting order.'); }
-            }
-        }
-    </script>
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   SECURITY
+===================================================== */
+
+function escapeHTML(value){
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =====================================================
+   HIDDEN ADMIN ACCESS
+===================================================== */
+
+function checkAdmin(){
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    if(
+        params.get("admin")
+        ===
+        "1"
+    ){
+
+        setTimeout(
+            openLogin,
+            400
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+document.getElementById(
+    "year"
+).textContent =
+    new Date()
+    .getFullYear();
+
+loadShop();
+
+loadProducts();
+
+checkAdmin();
+
+</script>
+
 </body>
 </html>
