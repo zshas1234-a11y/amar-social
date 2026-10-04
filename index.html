@@ -1,935 +1,810 @@
-```html
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="ur-PK">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AMAR Social Hub - SMM Panel & Digital Growth Platform</title>
-    
+    <title>AMAR Social Hub - Professional SMM Panel & Digital Services</title>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --primary: #6C5CE7;
-            --primary-glow: #81ecec;
+            --primary-dark: #5A4AD1;
             --secondary: #00CEC9;
+            --bg-dark: #0F0C20;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-light: #F1F2F6;
+            --text-muted: #A4B0BE;
             --accent: #FF7675;
-            --bg-dark: #090714;
-            --card-bg: rgba(255, 255, 255, 0.04);
-            --border-glow: rgba(108, 92, 231, 0.3);
+            --success: #00b894;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
             background-color: var(--bg-dark);
-            color: #F1F2F6;
-            font-family: 'Poppins', sans-serif;
+            color: var(--text-light);
             overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 15% 15%, rgba(108, 92, 231, 0.25) 0%, transparent 45%),
-                radial-gradient(circle at 85% 85%, rgba(0, 206, 201, 0.2) 0%, transparent 45%),
-                radial-gradient(circle at 50% 50%, rgba(15, 12, 32, 1) 0%, #05030a 100%);
-            background-attachment: fixed;
+            background: radial-gradient(circle at top left, #1e133a, #0f0c20, #080511);
             min-height: 100vh;
         }
 
-        .font-rajdhani {
-            font-family: 'Rajdhani', sans-serif;
-        }
-
-        /* 3D Glassmorphism Cards */
+        /* --- 3D Effects & Glassmorphism --- */
         .glass-card {
-            background: rgba(20, 16, 41, 0.6);
+            background: var(--card-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
             transform-style: preserve-3d;
         }
 
         .glass-card:hover {
-            transform: translateY(-8px) rotateX(3deg) rotateY(-2deg) scale(1.01);
-            border-color: rgba(108, 92, 231, 0.5);
-            box-shadow: 0 20px 40px rgba(108, 92, 231, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+            transform: translateY(-8px) rotateX(2deg) rotateY(-2deg);
+            box-shadow: 0 25px 45px rgba(108, 92, 231, 0.3);
         }
 
-        .glass-modal {
-            background: rgba(15, 11, 33, 0.92);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(108, 92, 231, 0.3);
-            box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 40px rgba(108, 92, 231, 0.2);
+        /* --- Navbar --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 12, 32, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* 3D Buttons */
-        .btn-3d-primary {
-            background: linear-gradient(135deg, #6C5CE7, #4834d4);
-            box-shadow: 0 6px 0 #3c2bb5, 0 12px 20px rgba(108, 92, 231, 0.4);
-            transition: all 0.2s ease;
-        }
-        .btn-3d-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 0 #3c2bb5, 0 15px 25px rgba(108, 92, 231, 0.6);
-        }
-        .btn-3d-primary:active {
-            transform: translateY(4px);
-            box-shadow: 0 2px 0 #3c2bb5, 0 5px 10px rgba(108, 92, 231, 0.4);
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 0 20px rgba(108, 92, 231, 0.5);
         }
 
-        .btn-3d-success {
-            background: linear-gradient(135deg, #00b894, #00876c);
-            box-shadow: 0 6px 0 #00634f, 0 12px 20px rgba(0, 184, 148, 0.4);
-            transition: all 0.2s ease;
-        }
-        .btn-3d-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 0 #00634f, 0 15px 25px rgba(0, 184, 148, 0.6);
-        }
-        .btn-3d-success:active {
-            transform: translateY(4px);
-            box-shadow: 0 2px 0 #00634f, 0 5px 10px rgba(0, 184, 148, 0.4);
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
         }
 
-        /* Text Glow */
-        .glow-text {
-            text-shadow: 0 0 15px rgba(108, 92, 231, 0.6), 0 0 30px rgba(0, 206, 201, 0.4);
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
         }
 
-        /* Floating 3D Graphic Animation */
-        @keyframes floatSlow {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(3deg); }
-        }
-        .animate-float {
-            animation: floatSlow 6s ease-in-out infinite;
+        nav a:hover {
+            color: var(--secondary);
+            text-shadow: 0 0 10px var(--secondary);
         }
 
-        /* Receipt Thermal Paper Style */
-        .receipt-paper {
-            background: #ffffff;
-            color: #1e293b;
-            font-family: 'Courier New', Courier, monospace;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        /* --- Hero Section --- */
+        .hero {
+            padding: 160px 8% 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 85vh;
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .hero-content h1 {
+            font-size: 50px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .hero-content h1 span {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p {
+            color: var(--text-muted);
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .btn-3d {
+            padding: 14px 32px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.4), inset 0 2px 2px rgba(255, 255, 255, 0.3);
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn-3d:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(108, 92, 231, 0.6);
+        }
+
+        /* --- Services Section --- */
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 50px;
             position: relative;
         }
-        .receipt-paper::after {
-            content: "";
+
+        .section-title::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
             position: absolute;
             bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .services-container {
+            padding: 60px 8%;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .service-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .service-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .service-desc {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .service-price {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        /* --- About Section --- */
+        .about-section {
+            padding: 80px 8%;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .about-card {
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* --- Modals & Popups --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
             left: 0;
             width: 100%;
-            height: 10px;
-            background: linear-gradient(-45deg, transparent 5px, #ffffff 5px), linear-gradient(45deg, transparent 5px, #ffffff 5px);
-            background-size: 10px 10px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
+        .modal-content {
+            width: 90%;
+            max-width: 500px;
+            padding: 35px;
+            position: relative;
         }
-        ::-webkit-scrollbar-track {
-            background: #090714;
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-muted);
         }
-        ::-webkit-scrollbar-thumb {
-            background: #2d2654;
-            border-radius: 4px;
+
+        .form-group {
+            margin-bottom: 18px;
+            text-align: left;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #6C5CE7;
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--text-muted);
         }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(108, 92, 231, 0.3);
+        }
+
+        /* --- Receipt Design --- */
+        .receipt-box {
+            background: #ffffff;
+            color: #2d3436;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .receipt-header {
+            text-align: center;
+            border-bottom: 2px dashed #ccc;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .receipt-row strong {
+            color: #000;
+        }
+
+        /* --- Admin Panel --- */
+        .admin-page {
+            display: none;
+            padding: 120px 8% 60px;
+            min-height: 100vh;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .admin-grid { grid-template-columns: 1fr; }
+            .hero { flex-direction: column; text-align: center; padding-top: 130px; }
+            .hero-content h1 { font-size: 36px; }
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--secondary);
+        }
+
+        .hidden { display: none !important; }
     </style>
-
-    <!-- Firebase SDK (v8 for direct RTDB & global usage) -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 </head>
-<body class="flex flex-col min-h-screen">
+<body>
 
-    <header class="fixed top-0 left-0 w-full z-50 bg-opacity-80 bg-[#090714] backdrop-blur-md border-b border-white/10 px-4 md:px-12 py-4 flex justify-between items-center">
-        <a href="#home" class="flex items-center gap-3 group">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-400 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-purple-500/30 group-hover:scale-105 transition-transform">
-                <i class="fa-solid fa-bolt"></i>
-            </div>
-            <div>
-                <span class="font-rajdhani text-2xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-cyan-300 to-white">AMAR SOCIAL HUB</span>
-                <span class="block text-[10px] text-purple-300 tracking-widest uppercase font-semibold">SMM & Growth Solutions</span>
-            </div>
-        </a>
-
-        <nav class="hidden md:flex items-center gap-8 font-medium text-sm">
-            <a href="#home" class="hover:text-cyan-400 transition-colors flex items-center gap-2"><i class="fa-solid fa-house text-purple-400"></i> होम (Home)</a>
-            <a href="#services" class="hover:text-cyan-400 transition-colors flex items-center gap-2"><i class="fa-solid fa-cubes text-purple-400"></i> सर्विसेज (Services)</a>
-            <a href="#about" class="hover:text-cyan-400 transition-colors flex items-center gap-2"><i class="fa-solid fa-circle-info text-purple-400"></i> अबाउट (About)</a>
-            <a href="#admin" onclick="triggerAdminRoute(event)" class="px-4 py-2 rounded-xl bg-purple-900/40 border border-purple-500/40 hover:bg-purple-600/30 text-purple-200 transition-all flex items-center gap-2">
-                <i class="fa-solid fa-user-shield text-cyan-400"></i> एडमिन (Admin)
-            </a>
+    <!-- Header / Navigation (Note: Admin link complete hidden hai) -->
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-rocket"></i> AMAR Social Hub
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About Us</a></li>
+            </ul>
         </nav>
-
-        <!-- Mobile Menu Toggle Button -->
-        <button onclick="toggleMobileMenu()" class="md:hidden text-2xl text-white focus:outline-none">
-            <i class="fa-solid fa-bars-staggered"></i>
-        </button>
     </header>
 
-    <!-- Mobile Nav Menu -->
-    <div id="mobileMenu" class="hidden fixed inset-x-0 top-[73px] z-40 bg-[#0c091f]/95 border-b border-purple-500/20 p-6 backdrop-blur-xl flex flex-col gap-4 md:hidden">
-        <a href="#home" onclick="toggleMobileMenu()" class="text-lg py-2 border-b border-white/5 flex items-center gap-3"><i class="fa-solid fa-house text-purple-400"></i> होम (Home)</a>
-        <a href="#services" onclick="toggleMobileMenu()" class="text-lg py-2 border-b border-white/5 flex items-center gap-3"><i class="fa-solid fa-cubes text-purple-400"></i> सर्विसेज (Services)</a>
-        <a href="#about" onclick="toggleMobileMenu()" class="text-lg py-2 border-b border-white/5 flex items-center gap-3"><i class="fa-solid fa-circle-info text-purple-400"></i> अबाउट (About)</a>
-        <a href="#admin" onclick="toggleMobileMenu(); triggerAdminRoute(event)" class="text-lg py-2 text-cyan-400 flex items-center gap-3"><i class="fa-solid fa-user-shield"></i> एडमिन पेज (Admin Panel)</a>
+    <!-- ================= USER VIEW ================= -->
+    <div id="userView">
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <h1>Apna <span>Social Media</span> Tezi Se Grow Karein!</h1>
+                <p>AMAR Social Hub par paayein sab se sasti aur fast SMM services. Instagram, YouTube, Facebook, TikTok aur Web Growth ke liye No.1 platform.</p>
+                <a href="#services" class="btn-3d">Services Dekhein <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section class="services-container" id="services">
+            <h2 class="section-title">Hamari Services</h2>
+            <div class="services-grid" id="servicesGrid">
+                <!-- Dynamic Services loaded via JavaScript -->
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about-section" id="about">
+            <h2 class="section-title">Hamare Baare Mein (About Us)</h2>
+            <div class="glass-card about-card">
+                <p style="font-size: 16px; line-height: 1.8; color: var(--text-muted);">
+                    AMAR Social Hub Behtareen aur Trusted SMM Service Provider Agency hai. Hum Digital Marketing, Social Media Followers, Likes, Views aur Brand Promotion ke liye 100% safe aur High-Quality Services provide karte hain. Hamara maqsad apne customers ko sab se kam keemat mein top-class service dena hai.
+                </p>
+            </div>
+        </section>
     </div>
 
-    <!-- MAIN CONTAINER -->
-    <main class="flex-grow pt-24">
-
-        <div id="userView" class="space-y-20 pb-20">
-            <!-- Hero Section -->
-            <section id="home" class="min-h-[80vh] px-4 md:px-12 flex flex-col md:flex-row items-center justify-between gap-12 max-w-7xl mx-auto pt-8">
-                <div class="md:w-1/2 space-y-6 text-center md:text-left">
-                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/30 text-cyan-300 text-xs font-semibold uppercase tracking-wider">
-                        <i class="fa-solid fa-fire text-amber-400 animate-bounce"></i> #1 Trusted SMM Panel
-                    </div>
-                    <h1 class="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight">
-                        अपने <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 glow-text">सोशल मीडिया</span> को दें सुपरफ़ास्ट ग्रोथ!
-                    </h1>
-                    <p class="text-gray-300 text-base md:text-lg max-w-xl font-light leading-relaxed">
-                        AMAR Social Hub पर पाएं इंस्टाग्राम फॉलोअर्स, यूट्यूब सब्सक्राइबर्स, वॉच-टाइम और व्यूज सबसे सस्ते और भरोसेमंद रेट्स में। गारंटीड ऑटोमेटेड सर्विसेज!
-                    </p>
-
-                    <div class="flex flex-wrap gap-4 justify-center md:justify-start pt-2">
-                        <a href="#services" class="btn-3d-primary px-8 py-4 rounded-2xl text-white font-bold flex items-center gap-3 text-base">
-                            <i class="fa-solid fa-cart-shopping"></i> सर्विसेज देखें (Explore Services)
-                        </a>
-                        <a href="#about" class="px-8 py-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 font-semibold text-white transition-all flex items-center gap-2">
-                            हमारे बारे में <i class="fa-solid fa-arrow-right text-xs"></i>
-                        </a>
-                    </div>
-
-                    <!-- Trust Stats -->
-                    <div class="grid grid-cols-3 gap-4 pt-8 border-t border-white/10 max-w-md mx-auto md:mx-0">
-                        <div>
-                            <div class="font-rajdhani text-2xl font-bold text-cyan-400">100%</div>
-                            <div class="text-xs text-gray-400">सुरक्षित पेमेंट</div>
-                        </div>
-                        <div>
-                            <div class="font-rajdhani text-2xl font-bold text-purple-400">24/7</div>
-                            <div class="text-xs text-gray-400">व्हाट्सएप सपोर्ट</div>
-                        </div>
-                        <div>
-                            <div class="font-rajdhani text-2xl font-bold text-pink-400">Instant</div>
-                            <div class="text-xs text-gray-400">फ़ास्ट डिलीवरी</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 3D Graphic Feature -->
-                <div class="md:w-1/2 flex justify-center relative">
-                    <div class="absolute -inset-4 bg-gradient-to-r from-purple-600 to-cyan-500 rounded-full blur-3xl opacity-30 animate-pulse"></div>
-                    <div class="glass-card p-8 w-full max-w-md animate-float relative z-10 border border-purple-500/30">
-                        <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
-                            <div class="flex items-center gap-3">
-                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                            </div>
-                            <span class="text-xs text-purple-300 font-mono">LIVE_STATISTICS_V2.0</span>
-                        </div>
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between p-3 rounded-xl bg-white/5">
-                                <div class="flex items-center gap-3">
-                                    <i class="fa-brands fa-instagram text-2xl text-pink-500"></i>
-                                    <div>
-                                        <div class="font-bold text-sm">Instagram Followers</div>
-                                        <div class="text-[10px] text-gray-400">Speed: Instant Fast</div>
-                                    </div>
-                                </div>
-                                <span class="text-xs font-bold text-green-400"><i class="fa-solid fa-circle-check"></i> Active</span>
-                            </div>
-                            <div class="flex items-center justify-between p-3 rounded-xl bg-white/5">
-                                <div class="flex items-center gap-3">
-                                    <i class="fa-brands fa-youtube text-2xl text-red-500"></i>
-                                    <div>
-                                        <div class="font-bold text-sm">YouTube Subscribers</div>
-                                        <div class="text-[10px] text-gray-400">Real & Non-Drop</div>
-                                    </div>
-                                </div>
-                                <span class="text-xs font-bold text-green-400"><i class="fa-solid fa-circle-check"></i> Active</span>
-                            </div>
-                            <div class="flex items-center justify-between p-3 rounded-xl bg-white/5">
-                                <div class="flex items-center gap-3">
-                                    <i class="fa-brands fa-facebook text-2xl text-blue-500"></i>
-                                    <div>
-                                        <div class="font-bold text-sm">Facebook Page Likes</div>
-                                        <div class="text-[10px] text-gray-400">Organic Growth</div>
-                                    </div>
-                                </div>
-                                <span class="text-xs font-bold text-green-400"><i class="fa-solid fa-circle-check"></i> Active</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Services Section -->
-            <section id="services" class="max-w-7xl mx-auto px-4 md:px-12 pt-12">
-                <div class="text-center space-y-3 mb-12">
-                    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight">
-                        हमारी <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">प्रीमियम सर्विसेज</span>
-                    </h2>
-                    <p class="text-gray-400 text-sm md:text-base max-w-xl mx-auto">
-                        अपनी आवश्यकता के अनुसार सर्विस सेलेक्ट करें और सिर्फ एक क्लिक में बाय करके अपना सोशल मीडिया अकाउंट बूस्ट करें।
-                    </p>
-                </div>
-
-                <!-- Dynamic Services Grid -->
-                <div id="servicesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Services Loaded Dynamically via JS -->
-                </div>
-            </section>
-
-            <!-- About Section -->
-            <section id="about" class="max-w-5xl mx-auto px-4 md:px-12 pt-12">
-                <div class="glass-card p-8 md:p-12 relative overflow-hidden">
-                    <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-purple-600/20 rounded-full blur-3xl"></div>
-                    <div class="relative z-10 space-y-6">
-                        <div class="inline-block px-3 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 text-xs font-bold uppercase tracking-wider">
-                            About AMAR Social Hub
-                        </div>
-                        <h2 class="text-2xl md:text-4xl font-bold">भारत का सबसे विश्वसनीय डिजिटल ग्रोथ प्लेटफॉर्म</h2>
-                        <p class="text-gray-300 leading-relaxed text-sm md:text-base">
-                            <strong>AMAR Social Hub (एएमएआर सोशल हब)</strong> आपको सोशल मीडिया के सभी प्रमुख प्लेटफॉर्म्स जैसे इंस्टाग्राम, यूट्यूब, फेसबुक, और टेलीग्राम के लिए 100% सेफ और इंस्टेंट सर्विसेज प्रदान करता है। हम कंटेंट क्रिएटर्स, इन्फ्लुएंसर्स और बिज़नेस ओनर को उनके डिजिटल प्रेजेंस को बढ़ाने में मदद करते हैं।
-                        </p>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-white/10">
-                            <div class="flex items-start gap-4">
-                                <div class="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-400 shrink-0">
-                                    <i class="fa-solid fa-headset text-lg"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-sm">24/7 कस्टमर सपोर्ट</h4>
-                                    <p class="text-xs text-gray-400 mt-1">व्हाट्सएप पर तुरंत रिप्लाई और सहायता।</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-4">
-                                <div class="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-400 shrink-0">
-                                    <i class="fa-solid fa-shield-halved text-lg"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-sm">सुरक्षित पेमेंट</h4>
-                                    <p class="text-xs text-gray-400 mt-1">UPI व QR स्कैन से आसान पेमेंट।</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-4">
-                                <div class="w-10 h-10 rounded-xl bg-pink-500/20 flex items-center justify-center text-pink-400 shrink-0">
-                                    <i class="fa-solid fa-rocket text-lg"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-sm">सुपरफ़ास्ट प्रोसेस</h4>
-                                    <p class="text-xs text-gray-400 mt-1">ऑर्डर सबमिट होते ही काम शुरू।</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+    <!-- ================= ADMIN VIEW (Hidden from normal UI) ================= -->
+    <div id="adminView" class="admin-page">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2><i class="fa-solid fa-user-shield"></i> Admin Dashboard</h2>
+            <button class="btn-3d" onclick="logoutAdmin()" style="background: var(--accent);">Logout Karein</button>
         </div>
 
-        <div id="adminView" class="hidden max-w-7xl mx-auto px-4 md:px-12 pb-20 space-y-8">
-            <div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-white/10">
-                <div>
-                    <h1 class="text-2xl md:text-3xl font-extrabold flex items-center gap-3">
-                        <i class="fa-solid fa-user-shield text-cyan-400"></i> एडमिन कंट्रोल पैनल (Admin Panel)
-                    </h1>
-                    <p class="text-xs text-gray-400 mt-1">यहाँ से आप अपनी नई सर्विसेज ऐड कर सकते हैं और कस्टमर ऑर्डर्स मैनेज कर सकते हैं।</p>
+        <div class="admin-grid">
+            <!-- Add New Service Form -->
+            <div class="glass-card" style="padding: 25px;">
+                <h3><i class="fa-solid fa-plus-circle"></i> Nayi Service Add Karein</h3>
+                <form id="addServiceForm" style="margin-top: 15px;">
+                    <div class="form-group">
+                        <label>Service Ka Naam</label>
+                        <input type="text" id="srvTitle" class="form-control" placeholder="E.g. 1000 Instagram Real Followers" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Price (Rs / ₹)</label>
+                        <input type="number" id="srvPrice" class="form-control" placeholder="199" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Picture Image URL</label>
+                        <input type="url" id="srvImg" class="form-control" placeholder="https://example.com/image.jpg" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Service Ki Details</label>
+                        <textarea id="srvDesc" class="form-control" rows="3" placeholder="Service ke features aur details..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-3d" style="width: 100%;">Add Service</button>
+                </form>
+
+                <!-- Admin WhatsApp Settings -->
+                <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+                    <h4><i class="fa-solid fa-gear"></i> WhatsApp Number Settings</h4>
+                    <div class="form-group" style="margin-top: 10px;">
+                        <input type="text" id="adminWhatsappInput" class="form-control" placeholder="923001234567 ya 919876543210">
+                    </div>
+                    <button class="btn-3d" onclick="saveWhatsappNumber()" style="width: 100%; background: var(--secondary); color:#000;">WhatsApp Number Save Karein</button>
                 </div>
-                <button onclick="logoutAdmin()" class="px-5 py-2.5 rounded-xl bg-red-500/20 border border-red-500/40 text-red-300 hover:bg-red-500 hover:text-white transition-all text-sm font-semibold flex items-center gap-2">
-                    <i class="fa-solid fa-right-from-bracket"></i> लॉगआउट (Logout)
-                </button>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Add New Service Form -->
-                <div class="glass-card p-6 space-y-6 lg:col-span-1">
-                    <h3 class="text-lg font-bold flex items-center gap-2 border-b border-white/10 pb-3">
-                        <i class="fa-solid fa-plus-circle text-purple-400"></i> नई सर्विस ऐड करें (Add Service)
-                    </h3>
-                    <form id="addServiceForm" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-300 mb-1">सर्विस टाइटल (Title)</label>
-                            <input type="text" id="srvTitle" placeholder="उदा. 1000 Real Instagram Followers" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 text-sm" required>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-300 mb-1">प्राइस (Price in ₹)</label>
-                            <input type="number" id="srvPrice" placeholder="199" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 text-sm" required>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-300 mb-1">सर्विस इमेज URL (Picture Link)</label>
-                            <input type="url" id="srvImg" placeholder="https://images.unsplash.com/photo-..." class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 text-sm" required>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-300 mb-1">सर्विस डिटेल्स (Description)</label>
-                            <textarea id="srvDesc" rows="3" placeholder="उदा. 100% Real, Non-Drop, Instant Start, Lifetime Guarantee" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 text-sm" required></textarea>
-                        </div>
-                        <button type="submit" class="btn-3d-primary w-full py-3.5 rounded-xl text-white font-bold text-sm tracking-wide flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-cloud-arrow-up"></i> ऐड सर्विसेज (Add Service Button)
-                        </button>
-                    </form>
-
-                    <!-- WhatsApp Admin Setting -->
-                    <div class="pt-6 border-t border-white/10 space-y-3">
-                        <h4 class="text-sm font-bold flex items-center gap-2 text-cyan-300">
-                            <i class="fa-brands fa-whatsapp"></i> एडमिन व्हाट्सएप नंबर (WhatsApp Setting)
-                        </h4>
-                        <div class="flex gap-2">
-                            <input type="text" id="adminPhoneInput" placeholder="919876543210" class="flex-grow px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm">
-                            <button onclick="saveAdminPhone()" class="px-4 py-2.5 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-bold text-xs hover:bg-cyan-500 hover:text-black transition-all">
-                                सेव करें
-                            </button>
-                        </div>
-                        <p class="text-[11px] text-gray-400">कस्टमर ऑर्डर रिसीप्ट पर "Go to WhatsApp" क्लिक करने पर इसी नंबर पर रिडायरेक्ट होगा।</p>
-                    </div>
-                </div>
-
-                <!-- Received Customer Orders Table -->
-                <div class="glass-card p-6 lg:col-span-2 space-y-4">
-                    <div class="flex items-center justify-between pb-3 border-b border-white/10">
-                        <h3 class="text-lg font-bold flex items-center gap-2">
-                            <i class="fa-solid fa-box-open text-cyan-400"></i> कस्टमर ऑर्डर्स लिस्ट (Customer Orders)
-                        </h3>
-                        <button onclick="loadOrders()" class="text-xs text-purple-300 hover:text-white flex items-center gap-1">
-                            <i class="fa-solid fa-arrows-rotate"></i> रिफ्रेश (Refresh)
-                        </button>
-                    </div>
-
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm text-gray-300">
-                            <thead class="bg-white/5 text-purple-300 uppercase text-[11px] tracking-wider">
-                                <tr>
-                                    <th class="p-3 rounded-l-lg">डेट / Order ID</th>
-                                    <th class="p-3">कस्टमर नाम</th>
-                                    <th class="p-3">व्हाट्सएप</th>
-                                    <th class="p-3">सर्विस & अमाउंट</th>
-                                    <th class="p-3 rounded-r-lg text-center">पेमेंट स्क्रीनशॉट</th>
-                                </tr>
-                            </thead>
-                            <tbody id="adminOrdersTable" class="divide-y divide-white/5">
-                                <!-- Dynamic Orders Array Loading -->
-                            </tbody>
-                        </table>
-                    </div>
+            <!-- Customer Orders Received -->
+            <div class="glass-card" style="padding: 25px;">
+                <h3><i class="fa-solid fa-cart-shopping"></i> Customers Ke Orders</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Naam</th>
+                                <th>WhatsApp</th>
+                                <th>Service</th>
+                                <th>Amount</th>
+                                <th>Payment Proof</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody">
+                            <!-- Dynamic Orders list -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
-    </main>
-
-    <!-- Admin Auth Modal -->
-    <div id="adminAuthModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="glass-modal rounded-3xl p-8 w-full max-w-md relative space-y-6">
-            <button onclick="closeModal('adminAuthModal')" class="absolute top-5 right-5 text-gray-400 hover:text-white text-xl">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <div class="text-center space-y-2">
-                <div class="w-16 h-16 rounded-2xl bg-purple-500/20 border border-purple-500/40 flex items-center justify-center text-purple-400 text-2xl mx-auto">
-                    <i class="fa-solid fa-lock"></i>
-                </div>
-                <h3 class="text-2xl font-bold">एडमिन वेरिफिकेशन</h3>
-                <p class="text-xs text-gray-400">एडमिन पेज एक्सेस करने के लिए पासवर्ड दर्ज करें</p>
-            </div>
-            <form onsubmit="verifyAdminPassword(event)" class="space-y-4">
-                <div>
-                    <input type="password" id="adminPasswordInput" placeholder="पासवर्ड डालें (admin@12345)" class="w-full px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 text-center tracking-widest text-lg" required>
-                </div>
-                <button type="submit" class="btn-3d-primary w-full py-3.5 rounded-xl text-white font-bold text-sm">
-                    लॉगिन करें (Login)
-                </button>
-            </form>
         </div>
     </div>
 
-    <!-- Buy Service Modal Step 1 -->
-    <div id="buyModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-        <div class="glass-modal rounded-3xl p-6 md:p-8 w-full max-w-lg relative space-y-5 my-8">
-            <button onclick="closeModal('buyModal')" class="absolute top-5 right-5 text-gray-400 hover:text-white text-xl">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+    <!-- ================= MODALS & POPUPS ================= -->
+
+    <!-- Admin Security Password Modal -->
+    <div class="modal-overlay" id="adminAuthModal">
+        <div class="glass-card modal-content">
+            <span class="modal-close" onclick="closeModal('adminAuthModal')">&times;</span>
+            <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-lock"></i> Secure Admin Access</h3>
+            <div class="form-group">
+                <label>Admin Secret Password Darj Karein</label>
+                <input type="password" id="adminPassInput" class="form-control" placeholder="Password enter karein...">
+            </div>
+            <button class="btn-3d" onclick="verifyAdminPassword()" style="width: 100%;">Login Karein</button>
+        </div>
+    </div>
+
+    <!-- Buy Service Modal (Step 1) -->
+    <div class="modal-overlay" id="buyModal">
+        <div class="glass-card modal-content">
+            <span class="modal-close" onclick="closeModal('buyModal')">&times;</span>
+            <h3>Order Mukammal Karein</h3>
+            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 15px;" id="buyServiceTitle"></p>
             
-            <div class="border-b border-white/10 pb-4">
-                <span class="text-[10px] font-bold uppercase tracking-wider text-cyan-400">Order Step 1/2</span>
-                <h3 id="buyModalTitle" class="text-xl font-bold text-white mt-1">सर्विस खरीदें</h3>
-            </div>
-
-            <form id="orderForm" onsubmit="processOrderSubmit(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs text-gray-300 font-medium mb-1">आपका नाम (Customer Name)</label>
-                    <input type="text" id="custName" placeholder="उदा. Rahul Kumar" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-purple-500" required>
+            <form id="orderForm">
+                <div class="form-group">
+                    <label>Aap Ka Poora Naam</label>
+                    <input type="text" id="custName" class="form-control" placeholder="Apna naam daalein" required>
                 </div>
-
-                <div>
-                    <label class="block text-xs text-gray-300 font-medium mb-1">व्हाट्सएप नंबर (WhatsApp Number)</label>
-                    <input type="tel" id="custWhatsapp" placeholder="उदा. 9876543210" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-purple-500" required>
+                <div class="form-group">
+                    <label>WhatsApp Number</label>
+                    <input type="tel" id="custPhone" class="form-control" placeholder="923001234567" required>
                 </div>
-
-                <div>
-                    <label class="block text-xs text-gray-300 font-medium mb-1">रिक्वायरमेंट डिटेल या लिंक (Profile Link / Details)</label>
-                    <textarea id="custRequirement" rows="2" placeholder="अपनी इंस्टाग्राम आईडी / रील्स लिंक यहाँ पेस्ट करें..." class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-purple-500" required></textarea>
+                <div class="form-group">
+                    <label>Kya Chahiye / Profile Link Details</label>
+                    <textarea id="custReq" class="form-control" rows="2" placeholder="Apni profile link ya details yahan likhein" required></textarea>
                 </div>
-
-                <div class="p-4 rounded-xl bg-purple-950/40 border border-purple-500/30 flex items-center justify-between">
-                    <div>
-                        <div class="text-xs text-gray-400">सबटोटल अमाउंट (Subtotal)</div>
-                        <div class="text-xs text-purple-300 font-semibold">18% GST Included</div>
+                
+                <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Total Amount:</span>
+                        <strong id="buyTotalAmount" style="color: var(--secondary); font-size: 18px;">Rs. 0</strong>
                     </div>
-                    <div id="buyModalAmount" class="font-rajdhani text-2xl font-bold text-cyan-400">₹0</div>
                 </div>
 
-                <!-- Payment Screenshot Uploader -->
-                <div>
-                    <label class="block text-xs text-gray-300 font-medium mb-1">पेमेंट का स्क्रीनशॉट अपलोड करें (Payment Screenshot)</label>
-                    <input type="file" id="payScreenshot" accept="image/*" class="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-xs text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-purple-600 file:text-white hover:file:bg-purple-700 cursor-pointer" required>
+                <div class="form-group">
+                    <label>Payment Ka Screenshot Upload Karein</label>
+                    <input type="file" id="payScreenshot" class="form-control" accept="image/*" required>
                 </div>
 
-                <button type="submit" class="btn-3d-success w-full py-3.5 rounded-xl text-white font-bold text-sm tracking-wide flex items-center justify-center gap-2 mt-2">
-                    नेक्स्ट / रसीद देखें (Next Step) <i class="fa-solid fa-arrow-right"></i>
-                </button>
+                <button type="submit" class="btn-3d" style="width: 100%;">Next (Aage Badhein) <i class="fa-solid fa-arrow-right"></i></button>
             </form>
         </div>
     </div>
 
-    <!-- Printable Receipt Modal Step 2 -->
-    <div id="receiptModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-        <div class="w-full max-w-md my-8 space-y-4">
-            <!-- Thermal Receipt -->
-            <div class="receipt-paper p-6 rounded-t-2xl space-y-4 text-xs">
-                <div class="text-center border-b border-dashed border-gray-400 pb-4">
-                    <h2 class="text-xl font-extrabold tracking-wider font-rajdhani text-gray-900">AMAR SOCIAL HUB</h2>
-                    <p class="text-[10px] text-gray-600 uppercase font-sans">Official Payment Receipt</p>
-                    <div id="rcpOrderId" class="mt-2 font-mono font-bold text-purple-700">ORD-000000</div>
-                </div>
-
-                <div class="space-y-2 font-mono text-[11px]">
-                    <div class="flex justify-between"><span class="text-gray-500">दिनांक (Date):</span><span id="rcpDate">--</span></div>
-                    <div class="flex justify-between"><span class="text-gray-500">कस्टमर (Name):</span><span id="rcpName" class="font-bold">--</span></div>
-                    <div class="flex justify-between"><span class="text-gray-500">व्हाट्सएप (Phone):</span><span id="rcpPhone">--</span></div>
-                    <div class="flex justify-between border-t border-gray-200 pt-2"><span class="text-gray-500">सर्विस (Service):</span><span id="rcpService" class="font-bold text-right max-w-[200px]">--</span></div>
-                </div>
-
-                <div class="border-t-2 border-b-2 border-gray-900 py-3 my-2 flex justify-between items-center font-bold text-sm">
-                    <span>कुल भुक्तान (Total Amount):</span>
-                    <span id="rcpAmount" class="text-lg text-purple-800">₹0</span>
-                </div>
-
-                <div class="text-center text-[10px] text-gray-500 space-y-1">
-                    <p>घोषणा: आपका ऑर्डर सिस्टम में रजिस्टर हो गया है।</p>
-                    <p class="font-bold text-gray-700">Thank you for choosing AMAR Social Hub!</p>
-                </div>
+    <!-- Printable Receipt Modal (Step 2) -->
+    <div class="modal-overlay" id="receiptModal">
+        <div class="glass-card modal-content" style="max-width: 450px;">
+            <div class="receipt-box" id="receiptContent">
+                <!-- Dynamic Receipt generated via JS -->
             </div>
-
-            <!-- Receipt Action Buttons -->
-            <div class="flex gap-3">
-                <button onclick="goHomeFromReceipt()" class="flex-1 py-3.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold text-xs flex items-center justify-center gap-2 border border-white/10">
-                    <i class="fa-solid fa-house"></i> गो होम (Go Home)
-                </button>
-                <button onclick="goToWhatsappFromReceipt()" class="flex-1 btn-3d-success py-3.5 rounded-xl text-white font-bold text-xs flex items-center justify-center gap-2">
-                    <i class="fa-brands fa-whatsapp text-lg"></i> गो टू व्हाट्सएप (Go to WhatsApp)
-                </button>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-3d" onclick="goHome()" style="flex: 1; background: #6c757d;">Go Home</button>
+                <button class="btn-3d" onclick="goToWhatsapp()" style="flex: 1; background: #25D366; color: #fff;"><i class="fa-brands fa-whatsapp"></i> Go to WhatsApp</button>
             </div>
         </div>
     </div>
 
-    <!-- Image Zoom Modal for Admin -->
-    <div id="imageModal" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4" onclick="closeModal('imageModal')">
-        <div class="relative max-w-3xl max-h-[90vh]">
-            <img id="modalFullImage" src="" class="max-w-full max-h-[85vh] rounded-2xl border border-purple-500/50 shadow-2xl">
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="mt-auto border-t border-white/10 bg-[#06040f] py-8 text-center text-xs text-gray-500 space-y-2">
-        <p>© 2026 AMAR Social Hub. All Rights Reserved.</p>
-        <p class="text-[10px] text-gray-600">Fastest SMM Panel & Digital Growth Solutions</p>
-    </footer>
+    <!-- Firebase SDK Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        // FIREBASE CONFIGURATION
+        // ================= AAP KI FIREBASE CONFIGURATION =================
         const firebaseConfig = {
             apiKey: "AIzaSyBqkDPahbv24mCWZ6L62V5FxCwKNgApgNU",
             authDomain: "amar-social-18b48.firebaseapp.com",
             projectId: "amar-social-18b48",
             storageBucket: "amar-social-18b48.firebasestorage.app",
             messagingSenderId: "562759285262",
-            appId: "1:562759285262:web:8996321fcf35a4d65b9a5f",
-            databaseURL: "https://amar-social-18b48-default-rtdb.firebaseio.com"
+            appId: "1:562759285262:web:8996321fcf35a4d65b9a5f"
         };
 
-        let db = null;
-        let isFirebaseConnected = false;
+        // Firebase Initialization
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.database();
 
-        // Initialize Firebase with fallback strategy
-        try {
-            if (!firebase.apps.length) {
-                firebase.initializeApp(firebaseConfig);
-            }
-            db = firebase.database();
-            isFirebaseConnected = true;
-            console.log("Firebase Realtime Database initialized successfully.");
-        } catch (err) {
-            console.warn("Firebase Init fallback to LocalStorage mode:", err.message);
-            isFirebaseConnected = false;
+        // Secure SHA-256 Hash for Admin Password (admin@12345)
+        const SECURE_ADMIN_HASH = "bc1d13db798b5ef8ee5a51016e7dd7f44d858eb8bdc9e2246b142436ddff3fb2";
+
+        // Global Variables
+        let selectedService = null;
+        let lastOrderData = null;
+        let adminWhatsapp = "923001234567"; // Default Admin WhatsApp
+
+        // Helper function for SHA-256 Hashing
+        async function sha256(str) {
+            const buffer = new TextEncoder().encode(str);
+            const digest = await crypto.subtle.digest('SHA-256', buffer);
+            return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
-        // DEFAULT DEMO DATA
-        const defaultServices = [
-            {
-                id: "srv_1",
-                title: "1000 Instagram Followers",
-                price: "199",
-                img: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=500&q=80",
-                desc: "100% Real High Quality Followers. Instant Start with Refill Guarantee."
-            },
-            {
-                id: "srv_2",
-                title: "1000 YouTube Subscribers",
-                price: "899",
-                img: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=500&q=80",
-                desc: "Non-Drop Subscribers to complete channel monetization criteria quickly."
-            },
-            {
-                id: "srv_3",
-                title: "10,000 Instagram Reels Views",
-                price: "99",
-                img: "https://images.unsplash.com/photo-1611262588024-d12430b98920?w=500&q=80",
-                desc: "Superfast viral views boost for Instagram Reels. Increases explore page reach."
-            }
-        ];
-
-        // GLOBAL APP STATE
-        let appState = {
-            services: JSON.parse(localStorage.getItem('amar_services')) || defaultServices,
-            orders: JSON.parse(localStorage.getItem('amar_orders')) || [],
-            adminPhone: localStorage.getItem('amar_admin_phone') || "919876543210",
-            currentSelectedService: null,
-            lastOrder: null
-        };
-
-        // APPLICATION INITIALIZATION
-        window.addEventListener('DOMContentLoaded', () => {
-            syncWhatsappNumber();
-            bindRouting();
+        // ================= ROUTING & ADMIN ACCESS =================
+        window.addEventListener('hashchange', handleRouting);
+        window.addEventListener('load', () => {
+            handleRouting();
             loadServices();
-            if (isFirebaseConnected) {
-                attachFirebaseListeners();
-            }
+            loadWhatsappNumber();
         });
 
-        // ROUTING SYSTEM (#admin & /admin)
-        function bindRouting() {
-            window.addEventListener('hashchange', handleRoute);
-            handleRoute();
-        }
-
-        function handleRoute() {
+        function handleRouting() {
             const hash = window.location.hash;
-            if (hash === '#admin' || window.location.pathname.endsWith('/admin')) {
-                if (sessionStorage.getItem('isAdminAuthenticated') === 'true') {
-                    showAdminDashboard();
+            const path = window.location.pathname;
+
+            if (hash === '#admin' || path.endsWith('/admin')) {
+                if (sessionStorage.getItem('isAdminLoggedIn') === 'true') {
+                    showAdminPage();
                 } else {
-                    document.getElementById('adminAuthModal').classList.remove('hidden');
+                    document.getElementById('adminAuthModal').style.display = 'flex';
                 }
             } else {
-                showUserStorefront();
+                showUserPage();
             }
         }
 
-        function triggerAdminRoute(e) {
-            e.preventDefault();
-            window.location.hash = 'admin';
-        }
+        async function verifyAdminPassword() {
+            const passInput = document.getElementById('adminPassInput').value;
+            const hashedInput = await sha256(passInput);
 
-        function verifyAdminPassword(e) {
-            e.preventDefault();
-            const inputPass = document.getElementById('adminPasswordInput').value;
-            if (inputPass === 'admin@12345') {
-                sessionStorage.setItem('isAdminAuthenticated', 'true');
+            if (hashedInput === SECURE_ADMIN_HASH) {
+                sessionStorage.setItem('isAdminLoggedIn', 'true');
                 closeModal('adminAuthModal');
-                document.getElementById('adminPasswordInput').value = '';
-                showAdminDashboard();
+                showAdminPage();
             } else {
-                alert('गलत एडमिन पासवर्ड! कृपया सही पासवर्ड दर्ज करें।');
+                alert('Ghalat Password! Baraye meharbani sahi Admin Password darj karein.');
             }
         }
 
-        function showAdminDashboard() {
+        function showAdminPage() {
             document.getElementById('userView').classList.add('hidden');
-            document.getElementById('adminView').classList.remove('hidden');
+            document.getElementById('adminView').style.display = 'block';
             loadOrders();
         }
 
-        function showUserStorefront() {
-            document.getElementById('adminView').classList.add('hidden');
+        function showUserPage() {
             document.getElementById('userView').classList.remove('hidden');
+            document.getElementById('adminView').style.display = 'none';
         }
 
         function logoutAdmin() {
-            sessionStorage.removeItem('isAdminAuthenticated');
+            sessionStorage.removeItem('isAdminLoggedIn');
             window.location.hash = '';
-            showUserStorefront();
+            showUserPage();
         }
 
-        // SERVICE MANAGEMENT (ADD & DISPLAY)
+        // ================= SERVICES MANAGEMENT =================
+        document.getElementById('addServiceForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const serviceData = {
+                title: document.getElementById('srvTitle').value,
+                price: document.getElementById('srvPrice').value,
+                img: document.getElementById('srvImg').value,
+                desc: document.getElementById('srvDesc').value,
+                createdAt: Date.now()
+            };
+
+            db.ref('services').push(serviceData).then(() => {
+                alert('Nayi Service kamyabi se add ho gayi hai!');
+                document.getElementById('addServiceForm').reset();
+            }).catch(err => alert('Error: ' + err.message));
+        });
+
         function loadServices() {
-            const grid = document.getElementById('servicesGrid');
-            grid.innerHTML = '';
+            db.ref('services').on('value', (snapshot) => {
+                const grid = document.getElementById('servicesGrid');
+                grid.innerHTML = '';
+                const data = snapshot.val();
+                
+                if (!data) {
+                    grid.innerHTML = '<p style="color:var(--text-muted); grid-column: 1/-1; text-align:center;">Filhal koi service maujood nahi hai.</p>';
+                    return;
+                }
 
-            if (appState.services.length === 0) {
-                grid.innerHTML = '<div class="col-span-full text-center text-gray-400 py-12">कोई सर्विस मौजूद नहीं है। एडमिन पैनल से ऐड करें।</div>';
-                return;
-            }
-
-            appState.services.forEach(srv => {
-                const cardHtml = `
-                    <div class="glass-card p-6 flex flex-col justify-between space-y-5 border border-white/10 group">
-                        <div class="space-y-4">
-                            <div class="relative overflow-hidden rounded-2xl h-48 border border-white/10">
-                                <img src="${srv.img}" alt="${srv.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/500x300/1a103c/ffffff?text=AMAR+Service'">
-                                <div class="absolute top-3 right-3 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-cyan-400/40 font-rajdhani text-cyan-300 font-bold text-lg">
-                                    ₹${srv.price}
-                                </div>
-                            </div>
-                            <h3 class="text-xl font-bold text-white group-hover:text-purple-300 transition-colors">${srv.title}</h3>
-                            <p class="text-xs text-gray-400 leading-relaxed">${srv.desc}</p>
+                Object.keys(data).forEach(key => {
+                    const srv = data[key];
+                    grid.innerHTML += `
+                        <div class="glass-card service-card">
+                            <img src="${srv.img}" alt="${srv.title}" class="service-img" onerror="this.src='https://via.placeholder.com/300x180?text=AMAR+Service'">
+                            <div class="service-title">${srv.title}</div>
+                            <div class="service-desc">${srv.desc}</div>
+                            <div class="service-price">Rs. ${srv.price}</div>
+                            <button class="btn-3d" onclick="openBuyModal('${key}', '${srv.title}', '${srv.price}')">Buy Service (Khareedein)</button>
                         </div>
-
-                        <button onclick="openBuyModal('${srv.id}')" class="btn-3d-primary w-full py-3.5 rounded-xl text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-bag-shopping"></i> बाय सर्विसेज (Buy Service)
-                        </button>
-                    </div>
-                `;
-                grid.innerHTML += cardHtml;
+                    `;
+                });
             });
         }
 
-        document.getElementById('addServiceForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const newSrv = {
-                id: 'srv_' + Date.now(),
-                title: document.getElementById('srvTitle').value.trim(),
-                price: document.getElementById('srvPrice').value.trim(),
-                img: document.getElementById('srvImg').value.trim(),
-                desc: document.getElementById('srvDesc').value.trim()
-            };
-
-            if (isFirebaseConnected) {
-                db.ref('services/' + newSrv.id).set(newSrv).then(() => {
-                    alert('सर्विस सफलता से ऐड हो गई!');
-                    document.getElementById('addServiceForm').reset();
-                }).catch(err => {
-                    console.error('Firebase save error:', err);
-                    saveServiceLocal(newSrv);
-                });
-            } else {
-                saveServiceLocal(newSrv);
-            }
-        });
-
-        function saveServiceLocal(srv) {
-            appState.services.unshift(srv);
-            localStorage.setItem('amar_services', JSON.stringify(appState.services));
-            loadServices();
-            alert('सर्विस सफलता से ऐड हो गई!');
-            document.getElementById('addServiceForm').reset();
+        // ================= ORDER PROCESSING =================
+        function openBuyModal(id, title, price) {
+            selectedService = { id, title, price };
+            document.getElementById('buyServiceTitle').innerText = title;
+            document.getElementById('buyTotalAmount').innerText = 'Rs. ' + price;
+            document.getElementById('buyModal').style.display = 'flex';
         }
 
-        // ORDER FLOW & RECEIPT GENERATION
-        function openBuyModal(srvId) {
-            const srv = appState.services.find(s => s.id === srvId);
-            if (!srv) return;
-            appState.currentSelectedService = srv;
-
-            document.getElementById('buyModalTitle').innerText = srv.title;
-            document.getElementById('buyModalAmount').innerText = '₹' + srv.price;
-            document.getElementById('buyModal').classList.remove('hidden');
-        }
-
-        function processOrderSubmit(e) {
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
             e.preventDefault();
+
             const fileInput = document.getElementById('payScreenshot');
             const file = fileInput.files[0];
 
             if (!file) {
-                alert('कृपया पेमेंट का स्क्रीनशॉट अपलोड करें।');
+                alert('Baraye meharbani payment ka screenshot select karein.');
                 return;
             }
 
+            // Convert image screenshot to Base64 for DB & Receipt preview
             const reader = new FileReader();
             reader.onload = function(evt) {
-                const base64Img = evt.target.result;
-                const orderData = {
+                const imgData = evt.target.result;
+
+                const orderPayload = {
+                    serviceTitle: selectedService.title,
+                    amount: selectedService.price,
+                    customerName: document.getElementById('custName').value,
+                    customerPhone: document.getElementById('custPhone').value,
+                    requirement: document.getElementById('custReq').value,
+                    screenshot: imgData,
                     orderId: 'AMAR-' + Math.floor(100000 + Math.random() * 900000),
-                    date: new Date().toLocaleString('hi-IN'),
-                    customerName: document.getElementById('custName').value.trim(),
-                    customerPhone: document.getElementById('custWhatsapp').value.trim(),
-                    requirement: document.getElementById('custRequirement').value.trim(),
-                    serviceTitle: appState.currentSelectedService.title,
-                    amount: appState.currentSelectedService.price,
-                    screenshot: base64Img
+                    timestamp: new Date().toLocaleString()
                 };
 
-                if (isFirebaseConnected) {
-                    db.ref('orders/' + orderData.orderId).set(orderData).then(() => {
-                        finalizeOrderCreation(orderData);
-                    }).catch(err => {
-                        console.error('Order save error:', err);
-                        finalizeOrderLocal(orderData);
-                    });
-                } else {
-                    finalizeOrderLocal(orderData);
-                }
+                // Save Order into Firebase
+                db.ref('orders').push(orderPayload).then(() => {
+                    lastOrderData = orderPayload;
+                    closeModal('buyModal');
+                    showReceipt(orderPayload);
+                    document.getElementById('orderForm').reset();
+                });
             };
             reader.readAsDataURL(file);
+        });
+
+        // Show Printable Receipt
+        function showReceipt(order) {
+            const html = `
+                <div class="receipt-header">
+                    <h2>AMAR Social Hub</h2>
+                    <p style="font-size:12px; color:#666;">Order Payment Receipt</p>
+                </div>
+                <div class="receipt-row"><span>Order ID:</span> <strong>${order.orderId}</strong></div>
+                <div class="receipt-row"><span>Tareekh:</span> <span>${order.timestamp}</span></div>
+                <div class="receipt-row"><span>Customer:</span> <strong>${order.customerName}</strong></div>
+                <div class="receipt-row"><span>WhatsApp:</span> <span>${order.customerPhone}</span></div>
+                <div class="receipt-row"><span>Service:</span> <span>${order.serviceTitle}</span></div>
+                <div class="receipt-row" style="border-top:1px solid #eee; padding-top:8px;"><span>Total Amount:</span> <strong style="color:var(--primary); font-size:16px;">Rs. ${order.amount}</strong></div>
+            `;
+            document.getElementById('receiptContent').innerHTML = html;
+            document.getElementById('receiptModal').style.display = 'flex';
         }
 
-        function finalizeOrderLocal(orderData) {
-            appState.orders.unshift(orderData);
-            localStorage.setItem('amar_orders', JSON.stringify(appState.orders));
-            finalizeOrderCreation(orderData);
-        }
-
-        function finalizeOrderCreation(orderData) {
-            appState.lastOrder = orderData;
-            closeModal('buyModal');
-            document.getElementById('orderForm').reset();
-            renderReceipt(orderData);
-        }
-
-        function renderReceipt(ord) {
-            document.getElementById('rcpOrderId').innerText = ord.orderId;
-            document.getElementById('rcpDate').innerText = ord.date;
-            document.getElementById('rcpName').innerText = ord.customerName;
-            document.getElementById('rcpPhone').innerText = ord.customerPhone;
-            document.getElementById('rcpService').innerText = ord.serviceTitle;
-            document.getElementById('rcpAmount').innerText = '₹' + ord.amount;
-
-            document.getElementById('receiptModal').classList.remove('hidden');
-        }
-
-        function goHomeFromReceipt() {
+        function goHome() {
             closeModal('receiptModal');
-            window.location.hash = 'home';
+            window.location.hash = '';
         }
 
-        function goToWhatsappFromReceipt() {
-            if (!appState.lastOrder) return;
-            const ord = appState.lastOrder;
-            const msg = `नमस्कार AMAR Social Hub! 👋\nमैंने नया ऑर्डर प्लेस किया है:\n\n📌 *ऑर्डर ID:* ${ord.orderId}\n👤 *नाम:* ${ord.customerName}\n📞 *व्हाट्सएप:* ${ord.customerPhone}\n🚀 *सर्विस:* ${ord.serviceTitle}\n💰 *अमाउंट:* ₹${ord.amount}\n📝 *रिक्वायरमेंट:* ${ord.requirement}\n\nकृपया मेरा ऑर्डर चेक करें और कन्फर्म करें।`;
-            const waUrl = `https://wa.me/${appState.adminPhone}?text=${encodeURIComponent(msg)}`;
-            window.open(waUrl, '_blank');
+        function goToWhatsapp() {
+            if (!lastOrderData) return;
+            const message = `Assalam-o-Alaikum AMAR Social Hub! 👋\nMain ne abhi ek naya order place kiya hai:\n\n*Order ID:* ${lastOrderData.orderId}\n*Naam:* ${lastOrderData.customerName}\n*Service:* ${lastOrderData.serviceTitle}\n*Amount:* Rs. ${lastOrderData.amount}\n\nBaraye meharbani mera order confirm karein. Shukriya!`;
+            const url = `https://wa.me/${adminWhatsapp}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
         }
 
-        // ADMIN ORDERS LIST FETCHING
+        // ================= ADMIN ORDERS & SETTINGS =================
         function loadOrders() {
-            const tbody = document.getElementById('adminOrdersTable');
-            tbody.innerHTML = '';
+            db.ref('orders').on('value', (snapshot) => {
+                const tbody = document.getElementById('ordersTableBody');
+                tbody.innerHTML = '';
+                const data = snapshot.val();
 
-            if (appState.orders.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-gray-500">अभी तक कोई ऑर्डर नहीं आया है।</td></tr>';
-                return;
-            }
+                if (!data) {
+                    tbody.innerHTML = '<tr><td colspan="5">Filhal koi order hasil nahi hua.</td></tr>';
+                    return;
+                }
 
-            appState.orders.forEach(ord => {
-                const tr = `
-                    <tr class="hover:bg-white/5 transition-colors">
-                        <td class="p-3 font-mono">
-                            <div class="font-bold text-purple-300 text-xs">${ord.orderId}</div>
-                            <div class="text-[10px] text-gray-500">${ord.date}</div>
-                        </td>
-                        <td class="p-3 font-semibold text-white">${ord.customerName}</td>
-                        <td class="p-3 text-cyan-300 font-mono text-xs">${ord.customerPhone}</td>
-                        <td class="p-3">
-                            <div class="text-xs text-gray-200">${ord.serviceTitle}</div>
-                            <div class="font-bold text-green-400 font-rajdhani text-sm">₹${ord.amount}</div>
-                        </td>
-                        <td class="p-3 text-center">
-                            <button onclick="viewFullImage('${ord.screenshot}')" class="px-2 py-1 rounded bg-purple-500/20 border border-purple-500/40 text-purple-300 text-[10px] hover:bg-purple-500 hover:text-white transition-all">
-                                <i class="fa-solid fa-eye"></i> देखें
-                            </button>
-                        </td>
-                    </tr>
-                `;
-                tbody.innerHTML += tr;
+                Object.keys(data).reverse().forEach(key => {
+                    const ord = data[key];
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${ord.customerName}</td>
+                            <td>${ord.customerPhone}</td>
+                            <td>${ord.serviceTitle}</td>
+                            <td>Rs. ${ord.amount}</td>
+                            <td>
+                                <a href="${ord.screenshot}" target="_blank">
+                                    <img src="${ord.screenshot}" style="width:40px; height:40px; border-radius:5px; object-fit:cover;">
+                                </a>
+                            </td>
+                        </tr>
+                    `;
+                });
             });
         }
 
-        function saveAdminPhone() {
-            const input = document.getElementById('adminPhoneInput').value.trim();
-            if (input) {
-                appState.adminPhone = input;
-                localStorage.setItem('amar_admin_phone', input);
-                if (isFirebaseConnected) {
-                    db.ref('settings/adminPhone').set(input);
-                }
-                alert('व्हाट्सएप नंबर सफलता से अपडेट हो गया!');
+        function saveWhatsappNumber() {
+            const num = document.getElementById('adminWhatsappInput').value.trim();
+            if (num) {
+                db.ref('settings/whatsapp').set(num).then(() => {
+                    alert('WhatsApp number kamyabi se update ho gaya hai!');
+                });
             }
         }
 
-        function syncWhatsappNumber() {
-            document.getElementById('adminPhoneInput').value = appState.adminPhone;
-        }
-
-        // FIREBASE REALTIME LISTENERS
-        function attachFirebaseListeners() {
-            // Listen Services
-            db.ref('services').on('value', snapshot => {
-                const val = snapshot.val();
-                if (val) {
-                    appState.services = Object.values(val);
-                    localStorage.setItem('amar_services', JSON.stringify(appState.services));
-                    loadServices();
-                }
-            });
-
-            // Listen Orders
-            db.ref('orders').on('value', snapshot => {
-                const val = snapshot.val();
-                if (val) {
-                    appState.orders = Object.values(val).reverse();
-                    localStorage.setItem('amar_orders', JSON.stringify(appState.orders));
-                    if (!document.getElementById('adminView').classList.contains('hidden')) {
-                        loadOrders();
-                    }
-                }
-            });
-
-            // Listen Admin Phone
-            db.ref('settings/adminPhone').on('value', snapshot => {
-                const val = snapshot.val();
-                if (val) {
-                    appState.adminPhone = val;
-                    localStorage.setItem('amar_admin_phone', val);
-                    document.getElementById('adminPhoneInput').value = val;
+        function loadWhatsappNumber() {
+            db.ref('settings/whatsapp').on('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    adminWhatsapp = snapshot.val();
+                    document.getElementById('adminWhatsappInput').value = adminWhatsapp;
                 }
             });
         }
 
-        // UI HELPER UTILITIES
+        // Helper Modal Close
         function closeModal(modalId) {
-            document.getElementById(modalId).classList.add('hidden');
-        }
-
-        function viewFullImage(src) {
-            document.getElementById('modalFullImage').src = src;
-            document.getElementById('imageModal').classList.remove('hidden');
-        }
-
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('hidden');
+            document.getElementById(modalId).style.display = 'none';
         }
     </script>
 </body>
 </html>
-```
