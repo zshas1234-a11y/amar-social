@@ -1,203 +1,405 @@
+```html
 <!DOCTYPE html>
-<html lang="ur-PK">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AMAR Social Hub - SMM Panel & Digital Services</title>
-    <!-- FontAwesome Icons -->
+    <title>AMAR Social Hub - Next-Gen SMM Panel & Digital Growth Platform</title>
+    
+    <!-- FontAwesome 6.4.0 Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Plus Jakarta Sans & Space Grotesk -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary: #6C5CE7;
-            --primary-dark: #5A4AD1;
-            --secondary: #00CEC9;
-            --bg-dark: #0F0C20;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --text-light: #F1F2F6;
-            --text-muted: #A4B0BE;
-            --accent: #FF7675;
-            --success: #00b894;
+            --primary: #8B5CF6;
+            --primary-glow: #A78BFA;
+            --secondary: #06B6D4;
+            --secondary-glow: #22D3EE;
+            --accent: #EC4899;
+            --bg-dark: #070913;
+            --bg-card: rgba(18, 24, 43, 0.55);
+            --bg-glass: rgba(255, 255, 255, 0.03);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(139, 92, 246, 0.3);
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-sm: 10px;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
         }
 
         body {
             background-color: var(--bg-dark);
-            color: var(--text-light);
+            color: var(--text-main);
             overflow-x: hidden;
-            background: radial-gradient(circle at top left, #1e133a, #0f0c20, #080511);
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 40%, rgba(6, 182, 212, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 50% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+            background-attachment: fixed;
             min-height: 100vh;
         }
 
-        /* --- 3D Effects & Glassmorphism --- */
+        /* --- Custom Scrollbar --- */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* --- 3D Glassmorphism Cards --- */
         .glass-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            transform-style: preserve-3d;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transition: 0.6s;
+        }
+
+        .glass-card:hover::before {
+            left: 100%;
         }
 
         .glass-card:hover {
-            transform: translateY(-8px) rotateX(2deg) rotateY(-2deg);
-            box-shadow: 0 25px 45px rgba(108, 92, 231, 0.3);
+            transform: translateY(-10px) scale(1.01) rotateX(2deg);
+            border-color: var(--border-glow);
+            box-shadow: 0 30px 60px rgba(139, 92, 246, 0.25);
         }
 
-        /* --- Navbar (Admin Option Completely Hidden) --- */
+        /* --- Header / Navigation --- */
         header {
             position: fixed;
             top: 0;
+            left: 0;
             width: 100%;
             z-index: 1000;
-            padding: 20px 8%;
+            padding: 18px 8%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(15, 12, 32, 0.85);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(7, 9, 19, 0.75);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border-glass);
         }
 
         .logo {
-            font-size: 24px;
-            font-weight: 800;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFF 20%, var(--primary-glow) 50%, var(--secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             display: flex;
             align-items: center;
-            gap: 10px;
-            text-shadow: 0 0 20px rgba(108, 92, 231, 0.5);
+            gap: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
         }
 
         nav ul {
             display: flex;
             list-style: none;
-            gap: 30px;
+            gap: 32px;
+            align-items: center;
         }
 
         nav a {
-            color: var(--text-light);
+            color: var(--text-muted);
             text-decoration: none;
             font-weight: 500;
+            font-size: 15px;
             transition: 0.3s;
         }
 
         nav a:hover {
-            color: var(--secondary);
-            text-shadow: 0 0 10px var(--secondary);
+            color: var(--text-main);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        /* --- 3D Buttons --- */
+        .btn-3d {
+            padding: 14px 32px;
+            background: linear-gradient(135deg, var(--primary), #6D28D9);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-3d:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(139, 92, 246, 0.6);
+            background: linear-gradient(135deg, #9333EA, var(--primary));
+        }
+
+        .btn-3d:active {
+            transform: translateY(1px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
         }
 
         /* --- Hero Section --- */
         .hero {
-            padding: 160px 8% 80px;
+            padding: 170px 8% 90px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            min-height: 85vh;
+            min-height: 90vh;
+            gap: 40px;
         }
 
         .hero-content {
             max-width: 650px;
         }
 
-        .hero-content h1 {
-            font-size: 50px;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            font-weight: 800;
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 30px;
+            color: var(--primary-glow);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 24px;
         }
 
-        .hero-content h1 span {
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
+        .hero-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 58px;
+            line-height: 1.15;
+            font-weight: 700;
+            margin-bottom: 24px;
+            letter-spacing: -1.5px;
+        }
+
+        .hero-title span {
+            background: linear-gradient(135deg, var(--primary-glow), var(--secondary-glow));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .hero-content p {
+        .hero-subtitle {
             color: var(--text-muted);
             font-size: 18px;
-            margin-bottom: 30px;
+            line-height: 1.6;
+            margin-bottom: 36px;
         }
 
-        .btn-3d {
-            padding: 14px 32px;
-            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.4), inset 0 2px 2px rgba(255, 255, 255, 0.3);
-            transition: 0.3s;
-            text-decoration: none;
-            display: inline-flex;
+        .hero-actions {
+            display: flex;
+            gap: 18px;
             align-items: center;
-            gap: 10px;
+        }
+
+        /* Hero Stats Grid */
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-glass);
+        }
+
+        .stat-item h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 32px;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .stat-item p {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .hero-visual {
+            flex: 1;
+            display: flex;
             justify-content: center;
-        }
-
-        .btn-3d:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 12px 30px rgba(108, 92, 231, 0.6);
-        }
-
-        /* --- Services Section --- */
-        .section-title {
-            text-align: center;
-            font-size: 36px;
-            margin-bottom: 50px;
             position: relative;
         }
 
-        .section-title::after {
-            content: '';
-            width: 80px;
-            height: 4px;
-            background: var(--secondary);
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 2px;
+        .hero-card-3d {
+            width: 100%;
+            max-width: 440px;
+            padding: 35px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.4));
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-glow);
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), 0 0 40px rgba(139, 92, 246, 0.2);
+            animation: float3D 6s ease-in-out infinite;
         }
 
-        .services-container {
-            padding: 60px 8%;
+        @keyframes float3D {
+            0%, 100% { transform: translateY(0px) rotateY(-5deg) rotateX(5deg); }
+            50% { transform: translateY(-20px) rotateY(5deg) rotateX(-5deg); }
+        }
+
+        /* --- Section Titles --- */
+        .section-header {
+            text-align: center;
+            max-width: 650px;
+            margin: 0 auto 50px;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        /* --- Services Section --- */
+        .services-section {
+            padding: 100px 8%;
+        }
+
+        .category-filter {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 22px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-glass);
+            border-radius: 30px;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary-glow);
+            box-shadow: 0 5px 20px rgba(139, 92, 246, 0.4);
         }
 
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 30px;
         }
 
         .service-card {
-            padding: 25px;
+            padding: 28px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
 
-        .service-img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .service-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-hot { background: rgba(236, 72, 153, 0.2); color: #F472B6; border: 1px solid rgba(236, 72, 153, 0.4); }
+        .badge-popular { background: rgba(6, 182, 212, 0.2); color: var(--secondary-glow); border: 1px solid rgba(6, 182, 212, 0.4); }
+        .badge-fast { background: rgba(16, 185, 129, 0.2); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.4); }
+
+        .service-icon-box {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: var(--secondary-glow);
+            margin-bottom: 20px;
         }
 
         .service-title {
@@ -209,63 +411,166 @@
         .service-desc {
             color: var(--text-muted);
             font-size: 14px;
-            margin-bottom: 15px;
             line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .service-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 18px;
+            border-top: 1px solid var(--border-glass);
+            margin-bottom: 20px;
         }
 
         .service-price {
-            font-size: 22px;
-            font-weight: 800;
-            color: var(--secondary);
-            margin-bottom: 15px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--secondary-glow);
         }
 
-        /* --- About Section --- */
-        .about-section {
+        .service-speed {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* --- Calculator Section --- */
+        .calculator-section {
             padding: 80px 8%;
+        }
+
+        .calc-box {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        /* --- How It Works Section --- */
+        .works-section {
+            padding: 100px 8%;
             background: rgba(0, 0, 0, 0.2);
         }
 
-        .about-card {
-            padding: 40px;
-            max-width: 900px;
-            margin: 0 auto;
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .step-card {
+            padding: 30px;
             text-align: center;
         }
 
-        /* --- Modals & Popups --- */
+        .step-num {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 20px;
+            margin: 0 auto 20px;
+            box-shadow: 0 0 25px rgba(139, 92, 246, 0.5);
+        }
+
+        /* --- Testimonials & FAQ --- */
+        .testimonials-section, .faq-section {
+            padding: 100px 8%;
+        }
+
+        .faq-accordion {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .faq-item {
+            padding: 22px 28px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            font-size: 17px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, margin-top 0.3s ease;
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            margin-top: 14px;
+        }
+
+        /* --- Modals --- */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
+            background: rgba(3, 5, 12, 0.88);
+            backdrop-filter: blur(12px);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 2000;
+            padding: 20px;
         }
 
         .modal-content {
-            width: 90%;
-            max-width: 500px;
+            width: 100%;
+            max-width: 520px;
             padding: 35px;
             position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-close {
             position: absolute;
-            top: 15px;
+            top: 20px;
             right: 20px;
-            font-size: 24px;
+            font-size: 22px;
             cursor: pointer;
             color: var(--text-muted);
+            transition: 0.3s;
+        }
+
+        .modal-close:hover {
+            color: white;
         }
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
             text-align: left;
         }
 
@@ -273,15 +578,16 @@
             display: block;
             margin-bottom: 8px;
             font-size: 14px;
+            font-weight: 500;
             color: var(--text-muted);
         }
 
         .form-control {
             width: 100%;
-            padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-sm);
             color: white;
             font-size: 15px;
             outline: none;
@@ -289,59 +595,65 @@
         }
 
         .form-control:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 10px rgba(108, 92, 231, 0.3);
+            border-color: var(--primary-glow);
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+            background: rgba(255, 255, 255, 0.08);
         }
 
-        /* --- Receipt Design --- */
-        .receipt-box {
-            background: #ffffff;
-            color: #2d3436;
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            text-align: left;
+        /* --- Order Receipt Modal Styling --- */
+        .receipt-card {
+            background: #FFFFFF;
+            color: #0F172A;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         .receipt-header {
             text-align: center;
-            border-bottom: 2px dashed #ccc;
-            padding-bottom: 15px;
-            margin-bottom: 15px;
+            border-bottom: 2px dashed #E2E8F0;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
         }
 
         .receipt-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             font-size: 14px;
         }
 
         .receipt-row strong {
-            color: #000;
+            color: #0F172A;
         }
 
-        /* --- Admin Panel --- */
+        /* --- Admin Panel Styling --- */
         .admin-page {
             display: none;
-            padding: 120px 8% 60px;
+            padding: 130px 8% 80px;
             min-height: 100vh;
+        }
+
+        .admin-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .metric-card {
+            padding: 24px;
+            border-left: 4px solid var(--primary);
         }
 
         .admin-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-top: 30px;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 35px;
         }
 
-        @media (max-width: 900px) {
-            .admin-grid { grid-template-columns: 1fr; }
-            .hero { flex-direction: column; text-align: center; padding-top: 130px; }
-            .hero-content h1 { font-size: 36px; }
-        }
-
-        .table-container {
+        .table-responsive {
             width: 100%;
             overflow-x: auto;
         }
@@ -353,123 +665,380 @@
         }
 
         th, td {
-            padding: 12px;
+            padding: 14px;
             text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid var(--border-glass);
             font-size: 14px;
         }
 
         th {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--secondary);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--secondary-glow);
+            font-weight: 600;
+        }
+
+        .status-pill {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-completed { background: rgba(16, 185, 129, 0.2); color: #34D399; }
+        .status-pending { background: rgba(245, 158, 11, 0.2); color: #FBBF24; }
+
+        /* Footer */
+        footer {
+            padding: 50px 8% 30px;
+            background: rgba(3, 5, 12, 0.95);
+            border-top: 1px solid var(--border-glass);
+            text-align: center;
         }
 
         .hidden { display: none !important; }
+
+        @media (max-width: 992px) {
+            .hero { flex-direction: column; text-align: center; padding-top: 140px; }
+            .hero-content { max-width: 100%; }
+            .hero-actions { justify-content: center; }
+            .hero-stats { justify-content: center; }
+            .admin-grid { grid-template-columns: 1fr; }
+            .calc-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Header / Navigation (Admin Link Bilkul Gayab Hai) -->
+    <!-- Navigation Bar -->
     <header>
         <div class="logo">
-            <i class="fa-solid fa-rocket"></i> AMAR Social Hub
+            <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
+            AMAR Social Hub
         </div>
         <nav>
             <ul>
                 <li><a href="#home">Home</a></li>
                 <li><a href="#services">Services</a></li>
-                <li><a href="#about">About Us</a></li>
+                <li><a href="#calculator">Calculator</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#services" class="btn-3d" style="padding: 10px 22px; font-size: 14px;">Order Now</a></li>
             </ul>
         </nav>
     </header>
 
     <!-- ================= USER VIEW ================= -->
     <div id="userView">
+        
         <!-- Hero Section -->
         <section class="hero" id="home">
             <div class="hero-content">
-                <h1>Apna <span>Social Media</span> Tezi Se Grow Karein!</h1>
-                <p>AMAR Social Hub par paayein sab se sasti aur fast SMM services. Instagram, YouTube, Facebook, aur Website growth ke liye 100% reliable platform.</p>
-                <a href="#services" class="btn-3d">Services Dekhein <i class="fa-solid fa-arrow-right"></i></a>
+                <div class="hero-badge">
+                    <i class="fa-solid fa-sparkles"></i> #1 Trusted Social Growth Agency
+                </div>
+                <h1 class="hero-title">Elevate Your <span>Digital Presence</span> In Seconds</h1>
+                <p class="hero-subtitle">
+                    Supercharge your Instagram, YouTube, TikTok, and Website with high-retention, real social media growth services. Instant delivery with lifetime refill guarantee.
+                </p>
+                <div class="hero-actions">
+                    <a href="#services" class="btn-3d">
+                        Explore Services <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <a href="#calculator" class="btn-3d btn-secondary">
+                        <i class="fa-solid fa-calculator"></i> Price Calculator
+                    </a>
+                </div>
+                
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <h3 id="counterOrders">150K+</h3>
+                        <p>Orders Completed</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>99.9%</h3>
+                        <p>Satisfaction Rate</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>24/7</h3>
+                        <p>Instant Support</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="glass-card hero-card-3d">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div class="logo-icon" style="width: 36px; height: 36px; font-size: 16px;"><i class="fa-brands fa-instagram"></i></div>
+                            <div>
+                                <h4 style="font-size: 15px; font-weight: 700;">Viral Campaign</h4>
+                                <p style="font-size: 12px; color: var(--text-muted);">Real-time Growth</p>
+                            </div>
+                        </div>
+                        <span class="status-pill status-completed">Live Active</span>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px;">
+                            <span style="color: var(--text-muted);">Delivery Progress</span>
+                            <span style="color: var(--secondary-glow); font-weight: 700;">94%</span>
+                        </div>
+                        <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden;">
+                            <div style="width: 94%; height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); border-radius: 4px;"></div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: center;">
+                        <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-glass);">
+                            <p style="font-size: 11px; color: var(--text-muted);">Followers Delivered</p>
+                            <h4 style="font-size: 18px; color: var(--text-main); font-family: 'Space Grotesk';">+25,400</h4>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-glass);">
+                            <p style="font-size: 11px; color: var(--text-muted);">Avg. Delivery Time</p>
+                            <h4 style="font-size: 18px; color: var(--text-main); font-family: 'Space Grotesk';">2.5 Mins</h4>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- Services Section -->
-        <section class="services-container" id="services">
-            <h2 class="section-title">Hamari Services</h2>
+        <section class="services-section" id="services">
+            <div class="section-header">
+                <h2 class="section-title">Our Premium Services</h2>
+                <p class="section-desc">Choose from our top-tier, instant-delivery social media packages tailored for creators and businesses.</p>
+            </div>
+
+            <div class="category-filter">
+                <button class="filter-btn active" onclick="filterCategory('all', this)">All Platforms</button>
+                <button class="filter-btn" onclick="filterCategory('instagram', this)"><i class="fa-brands fa-instagram"></i> Instagram</button>
+                <button class="filter-btn" onclick="filterCategory('youtube', this)"><i class="fa-brands fa-youtube"></i> YouTube</button>
+                <button class="filter-btn" onclick="filterCategory('facebook', this)"><i class="fa-brands fa-facebook"></i> Facebook</button>
+                <button class="filter-btn" onclick="filterCategory('tiktok', this)"><i class="fa-brands fa-tiktok"></i> TikTok</button>
+                <button class="filter-btn" onclick="filterCategory('website', this)"><i class="fa-solid fa-globe"></i> Web Traffic</button>
+            </div>
+
             <div class="services-grid" id="servicesGrid">
-                <!-- Dynamic Services JS se render hongi -->
+                <!-- Services will be populated dynamically from Database/State -->
             </div>
         </section>
 
-        <!-- About Section -->
-        <section class="about-section" id="about">
-            <h2 class="section-title">Hamare Baare Mein (About Us)</h2>
-            <div class="glass-card about-card">
-                <p style="font-size: 16px; line-height: 1.8; color: var(--text-muted);">
-                    AMAR Social Hub Behtareen aur Trusted SMM Service Provider Agency hai. Hum Digital Marketing, Social Media Followers, Likes, Views aur Brand Promotion ke liye 100% safe aur High-Quality Services provide karte hain.
-                </p>
+        <!-- Price Calculator Section -->
+        <section class="calculator-section" id="calculator">
+            <div class="glass-card calc-box">
+                <div class="section-header" style="margin-bottom: 25px;">
+                    <h2 class="section-title" style="font-size: 30px;"><i class="fa-solid fa-calculator" style="color: var(--primary-glow);"></i> Dynamic Cost Estimator</h2>
+                    <p class="section-desc">Calculate your exact campaign cost before placing an order.</p>
+                </div>
+
+                <div class="calc-grid">
+                    <div class="form-group">
+                        <label>Select Target Platform</label>
+                        <select id="calcPlatform" class="form-control" onchange="calculateEstimate()">
+                            <option value="instagram">Instagram Followers / Likes</option>
+                            <option value="youtube">YouTube Subscribers / Views</option>
+                            <option value="tiktok">TikTok Followers / Likes</option>
+                            <option value="facebook">Facebook Page Likes</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Target Quantity</label>
+                        <input type="number" id="calcQuantity" class="form-control" value="1000" min="100" step="100" oninput="calculateEstimate()">
+                    </div>
+                </div>
+
+                <div style="background: rgba(139, 92, 246, 0.1); border: 1px solid var(--border-glow); padding: 20px; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                    <div>
+                        <p style="font-size: 13px; color: var(--text-muted);">Estimated Campaign Price:</p>
+                        <h3 id="calcPriceDisplay" style="font-family: 'Space Grotesk'; font-size: 32px; color: var(--secondary-glow);">$2.99</h3>
+                    </div>
+                    <a href="#services" class="btn-3d"><i class="fa-solid fa-cart-shopping"></i> Order Package</a>
+                </div>
             </div>
         </section>
+
+        <!-- How It Works -->
+        <section class="works-section" id="how-it-works">
+            <div class="section-header">
+                <h2 class="section-title">How It Works</h2>
+                <p class="section-desc">Get your campaigns up and running in 3 simple steps.</p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="glass-card step-card">
+                    <div class="step-num">1</div>
+                    <h3 style="font-size: 20px; margin-bottom: 12px;">Select Package</h3>
+                    <p style="color: var(--text-muted); font-size: 14px;">Browse our real-time services catalog and choose the package that fits your goal.</p>
+                </div>
+                <div class="glass-card step-card">
+                    <div class="step-num">2</div>
+                    <h3 style="font-size: 20px; margin-bottom: 12px;">Provide Link & Pay</h3>
+                    <p style="color: var(--text-muted); font-size: 14px;">Enter your username/profile link and complete payment safely with proof upload.</p>
+                </div>
+                <div class="glass-card step-card">
+                    <div class="step-num">3</div>
+                    <h3 style="font-size: 20px; margin-bottom: 12px;">Instant Delivery</h3>
+                    <p style="color: var(--text-muted); font-size: 14px;">Sit back as our high-speed automated engine starts delivering your order immediately.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section" id="faq">
+            <div class="section-header">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <p class="section-desc">Got questions? We've got answers.</p>
+            </div>
+
+            <div class="faq-accordion">
+                <div class="glass-card faq-item active" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>Are these social media services safe for my account?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, 100%! We use high-quality organic delivery methods that comply strictly with platform algorithms. We never ask for your password or sensitive account credentials.
+                    </div>
+                </div>
+
+                <div class="glass-card faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>How long does delivery take after ordering?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Most orders start delivering within 2 to 15 minutes of payment verification. Larger packages are delivered naturally over a gradual period to ensure max safety.
+                    </div>
+                </div>
+
+                <div class="glass-card faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>What if my followers or views drop?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        All our premium services come with a 30-day automatic refill policy. If you notice any drop, simply contact our WhatsApp team for an instant top-up.
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </div>
 
-    <!-- ================= ADMIN VIEW (Hidden from Normal Users) ================= -->
+    <!-- ================= ADMIN VIEW (Hidden From Navigation) ================= -->
     <div id="adminView" class="admin-page">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h2><i class="fa-solid fa-user-shield"></i> Admin Dashboard</h2>
-            <button class="btn-3d" onclick="logoutAdmin()" style="background: var(--accent);">Logout Karein</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <div>
+                <h2 style="font-family: 'Space Grotesk'; font-size: 32px;"><i class="fa-solid fa-shield-halved" style="color: var(--primary-glow);"></i> Admin Control Center</h2>
+                <p style="color: var(--text-muted);">Manage real-time services, pricing, customer orders, and system settings.</p>
+            </div>
+            <button class="btn-3d" onclick="logoutAdmin()" style="background: linear-gradient(135deg, #EF4444, #B91C1C);">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout Admin
+            </button>
+        </div>
+
+        <!-- Metrics Cards -->
+        <div class="admin-metrics">
+            <div class="glass-card metric-card">
+                <p style="color: var(--text-muted); font-size: 13px;">Total Live Orders</p>
+                <h3 id="admMetricOrders" style="font-family: 'Space Grotesk'; font-size: 28px; margin-top: 5px;">0</h3>
+            </div>
+            <div class="glass-card metric-card" style="border-left-color: var(--secondary);">
+                <p style="color: var(--text-muted); font-size: 13px;">Total Active Services</p>
+                <h3 id="admMetricServices" style="font-family: 'Space Grotesk'; font-size: 28px; margin-top: 5px;">0</h3>
+            </div>
+            <div class="glass-card metric-card" style="border-left-color: var(--success);">
+                <p style="color: var(--text-muted); font-size: 13px;">Estimated Revenue</p>
+                <h3 id="admMetricRevenue" style="font-family: 'Space Grotesk'; font-size: 28px; margin-top: 5px;">$0.00</h3>
+            </div>
         </div>
 
         <div class="admin-grid">
-            <!-- Add New Service Form -->
-            <div class="glass-card" style="padding: 25px;">
-                <h3><i class="fa-solid fa-plus-circle"></i> Nayi Service Add Karein</h3>
-                <form id="addServiceForm" style="margin-top: 15px;">
+            <!-- Add Service Panel -->
+            <div class="glass-card" style="padding: 30px;">
+                <h3 style="font-size: 20px; margin-bottom: 20px;"><i class="fa-solid fa-plus-circle" style="color: var(--secondary-glow);"></i> Add New Service</h3>
+                
+                <form id="addServiceForm">
                     <div class="form-group">
-                        <label>Service Ka Naam</label>
-                        <input type="text" id="srvTitle" class="form-control" placeholder="E.g. 1000 Instagram Followers" required>
+                        <label>Service Title</label>
+                        <input type="text" id="srvTitle" class="form-control" placeholder="e.g. 1,000 Real Instagram Followers" required>
                     </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="srvCategory" class="form-control" required>
+                                <option value="instagram">Instagram</option>
+                                <option value="youtube">YouTube</option>
+                                <option value="facebook">Facebook</option>
+                                <option value="tiktok">TikTok</option>
+                                <option value="website">Web Traffic</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Price ($ / USD)</label>
+                            <input type="number" step="0.01" id="srvPrice" class="form-control" placeholder="3.99" required>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Badge</label>
+                            <select id="srvBadge" class="form-control">
+                                <option value="HOT">HOT</option>
+                                <option value="POPULAR">POPULAR</option>
+                                <option value="INSTANT">INSTANT</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Delivery Speed</label>
+                            <input type="text" id="srvSpeed" class="form-control" placeholder="Instant (0-15 mins)" required>
+                        </div>
+                    </div>
+
                     <div class="form-group">
-                        <label>Price (Rs / ₹)</label>
-                        <input type="number" id="srvPrice" class="form-control" placeholder="199" required>
+                        <label>Icon / Image Class or URL</label>
+                        <input type="text" id="srvIcon" class="form-control" placeholder="fa-brands fa-instagram" required>
                     </div>
+
                     <div class="form-group">
-                        <label>Picture Image URL</label>
-                        <input type="url" id="srvImg" class="form-control" placeholder="https://via.placeholder.com/300x180" required>
+                        <label>Description Details</label>
+                        <textarea id="srvDesc" class="form-control" rows="3" placeholder="High quality non-drop profile followers..." required></textarea>
                     </div>
-                    <div class="form-group">
-                        <label>Service Ki Details</label>
-                        <textarea id="srvDesc" class="form-control" rows="3" placeholder="Service ke features aur details..." required></textarea>
-                    </div>
-                    <button type="submit" class="btn-3d" style="width: 100%;">Add Service</button>
+
+                    <button type="submit" class="btn-3d" style="width: 100%;">
+                        <i class="fa-solid fa-floppy-disk"></i> Publish Service Live
+                    </button>
                 </form>
 
-                <!-- Admin WhatsApp Settings -->
-                <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
-                    <h4><i class="fa-solid fa-gear"></i> WhatsApp Number Settings</h4>
-                    <div class="form-group" style="margin-top: 10px;">
-                        <input type="text" id="adminWhatsappInput" class="form-control" placeholder="E.g. 923001234567">
+                <!-- Admin Settings -->
+                <div style="margin-top: 35px; padding-top: 25px; border-top: 1px solid var(--border-glass);">
+                    <h4 style="font-size: 16px; margin-bottom: 15px;"><i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> Admin WhatsApp Receiver Number</h4>
+                    <div class="form-group">
+                        <input type="text" id="adminWhatsappInput" class="form-control" placeholder="e.g. 923001234567 or 919876543210">
                     </div>
-                    <button class="btn-3d" onclick="saveWhatsappNumber()" style="width: 100%; background: var(--secondary); color:#000;">WhatsApp Number Save Karein</button>
+                    <button class="btn-3d btn-secondary" onclick="saveWhatsappNumber()" style="width: 100%;">Save Settings</button>
                 </div>
             </div>
 
-            <!-- Customer Orders List -->
-            <div class="glass-card" style="padding: 25px;">
-                <h3><i class="fa-solid fa-cart-shopping"></i> Customers Ke Orders</h3>
-                <div class="table-container">
+            <!-- Customer Orders Management -->
+            <div class="glass-card" style="padding: 30px;">
+                <h3 style="font-size: 20px; margin-bottom: 20px;"><i class="fa-solid fa-list-check" style="color: var(--primary-glow);"></i> Customer Order Logs</h3>
+                
+                <div class="table-responsive">
                     <table>
                         <thead>
                             <tr>
-                                <th>Naam</th>
-                                <th>WhatsApp</th>
+                                <th>Customer</th>
                                 <th>Service</th>
-                                <th>Amount</th>
-                                <th>Action / Proof</th>
+                                <th>Price</th>
+                                <th>Proof</th>
                             </tr>
                         </thead>
                         <tbody id="ordersTableBody">
-                            <!-- Dynamic Orders -->
+                            <!-- Populated dynamically -->
                         </tbody>
                     </table>
                 </div>
@@ -479,76 +1048,94 @@
 
     <!-- ================= MODALS & POPUPS ================= -->
 
-    <!-- Admin Password Security Modal -->
+    <!-- Admin Authentication Modal -->
     <div class="modal-overlay" id="adminAuthModal">
         <div class="glass-card modal-content">
             <span class="modal-close" onclick="closeModal('adminAuthModal')">&times;</span>
-            <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-lock"></i> Secure Admin Access</h3>
-            <div class="form-group">
-                <label>Admin Secret Password Darj Karein</label>
-                <input type="password" id="adminPassInput" class="form-control" placeholder="Password enter karein...">
+            <div style="text-align: center; margin-bottom: 25px;">
+                <div class="logo-icon" style="margin: 0 auto 15px;"><i class="fa-solid fa-lock"></i></div>
+                <h3 style="font-size: 22px;">Restricted Admin Portal</h3>
+                <p style="color: var(--text-muted); font-size: 14px;">Enter administrative key to unlock access.</p>
             </div>
-            <button class="btn-3d" onclick="verifyAdminPassword()" style="width: 100%;">Login Karein</button>
+
+            <div class="form-group">
+                <label>Admin Security Password</label>
+                <input type="password" id="adminPassInput" class="form-control" placeholder="Enter password...">
+            </div>
+            <button class="btn-3d" onclick="verifyAdminPassword()" style="width: 100%;">Verify & Open Dashboard</button>
         </div>
     </div>
 
-    <!-- Buy Service Modal (Step 1) -->
+    <!-- Order Placement Modal -->
     <div class="modal-overlay" id="buyModal">
         <div class="glass-card modal-content">
             <span class="modal-close" onclick="closeModal('buyModal')">&times;</span>
-            <h3>Order Mukammal Karein</h3>
-            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 15px;" id="buyServiceTitle"></p>
-            
+            <h3 style="font-size: 22px; margin-bottom: 5px;">Configure Order</h3>
+            <p style="color: var(--secondary-glow); font-size: 14px; font-weight: 600; margin-bottom: 20px;" id="modalServiceTitle"></p>
+
             <form id="orderForm">
                 <div class="form-group">
-                    <label>Aap Ka Poora Naam</label>
-                    <input type="text" id="custName" class="form-control" placeholder="Apna naam daalein" required>
-                </div>
-                <div class="form-group">
-                    <label>WhatsApp Number</label>
-                    <input type="tel" id="custPhone" class="form-control" placeholder="E.g. 923001234567" required>
-                </div>
-                <div class="form-group">
-                    <label>Kya Chahiye / Profile Link Details</label>
-                    <textarea id="custReq" class="form-control" rows="2" placeholder="Apni profile link ya details yahan likhein" required></textarea>
-                </div>
-                
-                <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; margin-bottom: 15px;">
-                    <div style="display: flex; justify-content: space-between;">
-                        <span>Total Amount:</span>
-                        <strong id="buyTotalAmount" style="color: var(--secondary); font-size: 18px;">Rs. 0</strong>
-                    </div>
+                    <label>Your Full Name</label>
+                    <input type="text" id="custName" class="form-control" placeholder="e.g. Alex Morgan" required>
                 </div>
 
                 <div class="form-group">
-                    <label>Payment Ka Screenshot Upload Karein</label>
+                    <label>WhatsApp Number (With Country Code)</label>
+                    <input type="tel" id="custPhone" class="form-control" placeholder="e.g. +1 555 123 4567" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Target Account / Link / Username</label>
+                    <input type="text" id="custReq" class="form-control" placeholder="e.g. https://instagram.com/your_username" required>
+                </div>
+
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass); padding: 15px; border-radius: var(--radius-sm); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 14px; color: var(--text-muted);">Total Payable:</span>
+                    <strong id="modalTotalAmount" style="font-family: 'Space Grotesk'; font-size: 24px; color: var(--secondary-glow);">$0.00</strong>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload Payment Proof (Screenshot)</label>
                     <input type="file" id="payScreenshot" class="form-control" accept="image/*" required>
                 </div>
 
-                <button type="submit" class="btn-3d" style="width: 100%;">Next (Aage Badhein) <i class="fa-solid fa-arrow-right"></i></button>
+                <button type="submit" class="btn-3d" style="width: 100%;">
+                    Submit & Generate Receipt <i class="fa-solid fa-receipt"></i>
+                </button>
             </form>
         </div>
     </div>
 
-    <!-- Printable Receipt Modal (Step 2) -->
+    <!-- Printable Receipt Modal -->
     <div class="modal-overlay" id="receiptModal">
-        <div class="glass-card modal-content" style="max-width: 450px;">
-            <div class="receipt-box" id="receiptContent">
-                <!-- Dynamic Receipt -->
+        <div class="glass-card modal-content" style="max-width: 460px;">
+            <div class="receipt-card" id="receiptContent">
+                <!-- Dynamically populated receipt content -->
             </div>
-            <div style="display: flex; gap: 10px;">
-                <button class="btn-3d" onclick="goHome()" style="flex: 1; background: #6c757d;">Go Home</button>
-                <button class="btn-3d" onclick="goToWhatsapp()" style="flex: 1; background: #25D366; color: #fff;"><i class="fa-brands fa-whatsapp"></i> Go to WhatsApp</button>
+            
+            <div style="display: flex; gap: 12px;">
+                <button class="btn-3d btn-secondary" onclick="goHome()" style="flex: 1; padding: 12px;">Close</button>
+                <button class="btn-3d" onclick="goToWhatsapp()" style="flex: 1.5; padding: 12px; background: linear-gradient(135deg, #25D366, #128C7E);"><i class="fa-brands fa-whatsapp"></i> Order On WhatsApp</button>
             </div>
         </div>
     </div>
 
-    <!-- Firebase SDK Scripts -->
+    <!-- Footer -->
+    <footer>
+        <div class="logo" style="justify-content: center; margin-bottom: 15px;">
+            <div class="logo-icon" style="width: 32px; height: 32px; font-size: 14px;"><i class="fa-solid fa-bolt"></i></div>
+            AMAR Social Hub
+        </div>
+        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Premium Social Media Growth Platform. High quality, automated delivery, guaranteed security.</p>
+        <p style="color: rgba(255,255,255,0.2); font-size: 13px;">&copy; 2026 AMAR Social Hub. All rights reserved.</p>
+    </footer>
+
+    <!-- Firebase SDK Integration -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <script>
-        // ================= AAP KI FIREBASE CONFIGURATION =================
+        // ================= FIREBASE CONFIGURATION =================
         const firebaseConfig = {
             apiKey: "AIzaSyBqkDPahbv24mCWZ6L62V5FxCwKNgApgNU",
             authDomain: "amar-social-18b48.firebaseapp.com",
@@ -558,41 +1145,95 @@
             appId: "1:562759285262:web:8996321fcf35a4d65b9a5f"
         };
 
-        // Firebase Initialization
         let db = null;
         try {
             if (!firebase.apps.length) {
                 firebase.initializeApp(firebaseConfig);
             }
             db = firebase.database();
-        } catch (err) {
-            console.log("Firebase initialized in fallback mode.");
+        } catch (e) {
+            console.log("Operating in local fallback mode.");
         }
 
-        // SHA-256 Hash for Admin Password (admin@12345)
+        // Security Hash for Admin Password: "admin@12345"
         const SECURE_ADMIN_HASH = "bc1d13db798b5ef8ee5a51016e7dd7f44d858eb8bdc9e2246b142436ddff3fb2";
 
-        // Local Memory State (Backup System)
-        let localServices = JSON.parse(localStorage.getItem('amar_services') || '[]');
-        let localOrders = JSON.parse(localStorage.getItem('amar_orders') || '[]');
-        let adminWhatsapp = localStorage.getItem('amar_admin_wa') || "923001234567";
+        // Pre-populated Initial Pro Services
+        const DEFAULT_SERVICES = [
+            {
+                id: "srv_1",
+                title: "1,000 Real Instagram Followers",
+                category: "instagram",
+                price: "3.99",
+                badge: "HOT",
+                speed: "0-15 Mins Instant",
+                icon: "fa-brands fa-instagram",
+                desc: "High quality real profile followers with 30-day auto refill warranty."
+            },
+            {
+                id: "srv_2",
+                title: "5,000 High-Retention YouTube Views",
+                category: "youtube",
+                price: "9.99",
+                badge: "POPULAR",
+                speed: "1-3 Hours natural",
+                icon: "fa-brands fa-youtube",
+                desc: "Real watch-time views boosting video search engine rank."
+            },
+            {
+                id: "srv_3",
+                title: "2,000 Viral TikTok Likes",
+                category: "tiktok",
+                price: "4.49",
+                badge: "INSTANT",
+                speed: "Instant Delivery",
+                icon: "fa-brands fa-tiktok",
+                desc: "Boost your TikTok videos onto the For You Page (FYP)."
+            },
+            {
+                id: "srv_4",
+                title: "1,000 Facebook Page Likes & Followers",
+                category: "facebook",
+                price: "5.99",
+                badge: "POPULAR",
+                speed: "10-30 Mins",
+                icon: "fa-brands fa-facebook",
+                desc: "Authentic Facebook business page growth package."
+            },
+            {
+                id: "srv_5",
+                title: "10,000 Organic Website Visitors",
+                category: "website",
+                price: "7.99",
+                badge: "HOT",
+                speed: "Daily Drip-feed",
+                icon: "fa-solid fa-globe",
+                desc: "Targeted web traffic from Google search and social networks."
+            }
+        ];
 
+        // System State
+        let localServices = JSON.parse(localStorage.getItem('amar_pro_services')) || DEFAULT_SERVICES;
+        let localOrders = JSON.parse(localStorage.getItem('amar_pro_orders')) || [];
+        let adminWhatsapp = localStorage.getItem('amar_pro_wa') || "923001234567";
+        let activeCategory = "all";
         let selectedService = null;
         let lastOrderData = null;
 
-        // SHA-256 Helper Function
+        // SHA-256 Hashing Helper
         async function sha256(str) {
             const buffer = new TextEncoder().encode(str);
             const digest = await crypto.subtle.digest('SHA-256', buffer);
             return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
-        // ================= ROUTING & ADMIN HIDDEN ACCESS =================
+        // ================= ROUTING & HIDDEN ADMIN ACCESS =================
         window.addEventListener('hashchange', handleRouting);
         window.addEventListener('load', () => {
             handleRouting();
             loadServices();
             loadWhatsappNumber();
+            calculateEstimate();
         });
 
         function handleRouting() {
@@ -619,7 +1260,7 @@
                 closeModal('adminAuthModal');
                 showAdminPage();
             } else {
-                alert('Ghalat Password! Baraye meharbani sahi Admin Password darj karein.');
+                alert('Invalid Admin Key. Please check password and try again.');
             }
         }
 
@@ -640,31 +1281,32 @@
             showUserPage();
         }
 
-        // ================= SERVICES MANAGEMENT (ADD & DISPLAY) =================
+        // ================= SERVICES MANAGEMENT =================
         document.getElementById('addServiceForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
+
             const serviceData = {
                 id: 'srv_' + Date.now(),
                 title: document.getElementById('srvTitle').value,
-                price: document.getElementById('srvPrice').value,
-                img: document.getElementById('srvImg').value,
+                category: document.getElementById('srvCategory').value,
+                price: parseFloat(document.getElementById('srvPrice').value).toFixed(2),
+                badge: document.getElementById('srvBadge').value,
+                speed: document.getElementById('srvSpeed').value,
+                icon: document.getElementById('srvIcon').value,
                 desc: document.getElementById('srvDesc').value,
                 createdAt: Date.now()
             };
 
-            // Save to LocalStorage Backup
-            localServices.push(serviceData);
-            localStorage.setItem('amar_services', JSON.stringify(localServices));
+            localServices.unshift(serviceData);
+            localStorage.setItem('amar_pro_services', JSON.stringify(localServices));
 
-            // Save to Firebase
             if (db) {
                 db.ref('services').push(serviceData);
             }
 
-            alert('Nayi Service kamyabi se add ho gayi hai!');
+            alert('New Service Published Successfully!');
             document.getElementById('addServiceForm').reset();
-            renderServicesList(localServices);
+            renderServices(localServices);
         });
 
         function loadServices() {
@@ -673,43 +1315,85 @@
                     const data = snapshot.val();
                     if (data) {
                         const servicesArr = Object.keys(data).map(k => data[k]);
-                        renderServicesList(servicesArr);
+                        localServices = servicesArr;
+                        renderServices(servicesArr);
                         return;
                     }
-                    renderServicesList(localServices);
+                    renderServices(localServices);
                 });
             } else {
-                renderServicesList(localServices);
+                renderServices(localServices);
             }
         }
 
-        function renderServicesList(servicesList) {
+        function filterCategory(cat, btn) {
+            activeCategory = cat;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderServices(localServices);
+        }
+
+        function renderServices(services) {
             const grid = document.getElementById('servicesGrid');
             grid.innerHTML = '';
 
-            if (!servicesList || servicesList.length === 0) {
-                grid.innerHTML = '<p style="color:var(--text-muted); grid-column: 1/-1; text-align:center;">Filhal koi service maujood nahi hai. Admin Panel se naya service add karein!</p>';
+            const filtered = activeCategory === 'all' 
+                ? services 
+                : services.filter(s => s.category === activeCategory);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<p style="color:var(--text-muted); grid-column: 1/-1; text-align:center;">No active services in this category yet.</p>`;
                 return;
             }
 
-            servicesList.forEach(srv => {
+            filtered.forEach(srv => {
+                const badgeClass = srv.badge === 'HOT' ? 'badge-hot' : (srv.badge === 'POPULAR' ? 'badge-popular' : 'badge-fast');
+                
                 grid.innerHTML += `
                     <div class="glass-card service-card">
-                        <img src="${srv.img}" alt="${srv.title}" class="service-img" onerror="this.src='https://via.placeholder.com/300x180?text=AMAR+Service'">
-                        <div class="service-title">${srv.title}</div>
-                        <div class="service-desc">${srv.desc}</div>
-                        <div class="service-price">Rs. ${srv.price}</div>
-                        <button class="btn-3d" onclick="openBuyModal('${srv.id}', '${srv.title}', '${srv.price}')">Buy Service (Khareedein)</button>
+                        <span class="service-badge ${badgeClass}">${srv.badge}</span>
+                        <div>
+                            <div class="service-icon-box">
+                                <i class="${srv.icon}"></i>
+                            </div>
+                            <h3 class="service-title">${srv.title}</h3>
+                            <p class="service-desc">${srv.desc}</p>
+                        </div>
+                        <div>
+                            <div class="service-meta">
+                                <div class="service-price">$${srv.price}</div>
+                                <div class="service-speed"><i class="fa-solid fa-bolt"></i> ${srv.speed}</div>
+                            </div>
+                            <button class="btn-3d" onclick="openBuyModal('${srv.id}', '${srv.title.replace(/'/g, "\\'")}', '${srv.price}')" style="width: 100%;">
+                                Buy Now <i class="fa-solid fa-cart-shopping"></i>
+                            </button>
+                        </div>
                     </div>
                 `;
             });
+
+            document.getElementById('admMetricServices').innerText = localServices.length;
+        }
+
+        // ================= CALCULATOR LOGIC =================
+        function calculateEstimate() {
+            const platform = document.getElementById('calcPlatform').value;
+            const qty = parseInt(document.getElementById('calcQuantity').value) || 0;
+            let ratePer1000 = 2.99;
+
+            if (platform === 'youtube') ratePer1000 = 8.99;
+            if (platform === 'tiktok') ratePer1000 = 3.49;
+            if (platform === 'facebook') ratePer1000 = 4.99;
+
+            const total = ((qty / 1000) * ratePer1000).toFixed(2);
+            document.getElementById('calcPriceDisplay').innerText = '$' + total;
         }
 
         // ================= ORDER PROCESSING =================
         function openBuyModal(id, title, price) {
             selectedService = { id, title, price };
-            document.getElementById('buyServiceTitle').innerText = title;
-            document.getElementById('buyTotalAmount').innerText = 'Rs. ' + price;
+            document.getElementById('modalServiceTitle').innerText = title;
+            document.getElementById('modalTotalAmount').innerText = '$' + price;
             document.getElementById('buyModal').style.display = 'flex';
         }
 
@@ -720,7 +1404,7 @@
             const file = fileInput.files[0];
 
             if (!file) {
-                alert('Baraye meharbani payment ka screenshot select karein.');
+                alert('Please attach payment screenshot proof.');
                 return;
             }
 
@@ -729,21 +1413,19 @@
                 const imgData = evt.target.result;
 
                 const orderPayload = {
+                    orderId: 'AMAR-' + Math.floor(100000 + Math.random() * 900000),
                     serviceTitle: selectedService.title,
                     amount: selectedService.price,
                     customerName: document.getElementById('custName').value,
                     customerPhone: document.getElementById('custPhone').value,
                     requirement: document.getElementById('custReq').value,
                     screenshot: imgData,
-                    orderId: 'AMAR-' + Math.floor(100000 + Math.random() * 900000),
                     timestamp: new Date().toLocaleString()
                 };
 
-                // Save Order Locally
                 localOrders.push(orderPayload);
-                localStorage.setItem('amar_orders', JSON.stringify(localOrders));
+                localStorage.setItem('amar_pro_orders', JSON.stringify(localOrders));
 
-                // Save Order to Firebase
                 if (db) {
                     db.ref('orders').push(orderPayload);
                 }
@@ -759,15 +1441,17 @@
         function showReceipt(order) {
             const html = `
                 <div class="receipt-header">
-                    <h2>AMAR Social Hub</h2>
-                    <p style="font-size:12px; color:#666;">Order Payment Receipt</p>
+                    <h2 style="font-family:'Space Grotesk'; color:var(--primary); font-size:24px;">AMAR Social Hub</h2>
+                    <p style="font-size:12px; color:#64748B;">Official Payment Invoice</p>
                 </div>
                 <div class="receipt-row"><span>Order ID:</span> <strong>${order.orderId}</strong></div>
-                <div class="receipt-row"><span>Tareekh:</span> <span>${order.timestamp}</span></div>
+                <div class="receipt-row"><span>Date & Time:</span> <span>${order.timestamp}</span></div>
                 <div class="receipt-row"><span>Customer:</span> <strong>${order.customerName}</strong></div>
-                <div class="receipt-row"><span>WhatsApp:</span> <span>${order.customerPhone}</span></div>
+                <div class="receipt-row"><span>Target Link:</span> <span style="font-size:12px; color:#2563EB;">${order.requirement}</span></div>
                 <div class="receipt-row"><span>Service:</span> <span>${order.serviceTitle}</span></div>
-                <div class="receipt-row" style="border-top:1px solid #eee; padding-top:8px;"><span>Total Amount:</span> <strong style="color:var(--primary); font-size:16px;">Rs. ${order.amount}</strong></div>
+                <div class="receipt-row" style="border-top:1px dashed #E2E8F0; padding-top:12px; margin-top:12px;">
+                    <span>Total Paid:</span> <strong style="color:#059669; font-size:20px;">$${order.amount}</strong>
+                </div>
             `;
             document.getElementById('receiptContent').innerHTML = html;
             document.getElementById('receiptModal').style.display = 'flex';
@@ -780,18 +1464,19 @@
 
         function goToWhatsapp() {
             if (!lastOrderData) return;
-            const message = `Assalam-o-Alaikum AMAR Social Hub! 👋\nMain ne abhi ek naya order place kiya hai:\n\n*Order ID:* ${lastOrderData.orderId}\n*Naam:* ${lastOrderData.customerName}\n*Service:* ${lastOrderData.serviceTitle}\n*Amount:* Rs. ${lastOrderData.amount}\n\nBaraye meharbani mera order confirm karein. Shukriya!`;
+            const message = `Hello AMAR Social Hub! 👋\nI placed an order:\n\n*Order ID:* ${lastOrderData.orderId}\n*Name:* ${lastOrderData.customerName}\n*Package:* ${lastOrderData.serviceTitle}\n*Link:* ${lastOrderData.requirement}\n*Total:* $${lastOrderData.amount}\n\nPlease confirm my order!`;
             const url = `https://wa.me/${adminWhatsapp}?text=${encodeURIComponent(message)}`;
             window.open(url, '_blank');
         }
 
-        // ================= ADMIN FETCH ORDERS & WHATSAPP SETTINGS =================
+        // ================= ADMIN ORDERS FETCH =================
         function loadOrders() {
             if (db) {
                 db.ref('orders').on('value', (snapshot) => {
                     const data = snapshot.val();
                     if (data) {
                         const ordersArr = Object.keys(data).map(k => data[k]);
+                        localOrders = ordersArr;
                         renderOrdersTable(ordersArr);
                         return;
                     }
@@ -802,41 +1487,48 @@
             }
         }
 
-        function renderOrdersTable(ordersArr) {
+        function renderOrdersTable(orders) {
             const tbody = document.getElementById('ordersTableBody');
             tbody.innerHTML = '';
 
-            if (!ordersArr || ordersArr.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5">Filhal koi order hasil nahi hua.</td></tr>';
+            let totalRev = 0;
+
+            if (!orders || orders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4">No order records found.</td></tr>';
+                document.getElementById('admMetricOrders').innerText = "0";
+                document.getElementById('admMetricRevenue').innerText = "$0.00";
                 return;
             }
 
-            ordersArr.reverse().forEach(ord => {
+            orders.slice().reverse().forEach(ord => {
+                totalRev += parseFloat(ord.amount || 0);
                 tbody.innerHTML += `
                     <tr>
-                        <td>${ord.customerName}</td>
-                        <td>${ord.customerPhone}</td>
+                        <td><strong>${ord.customerName}</strong><br><span style="font-size:11px; color:var(--text-muted);">${ord.customerPhone}</span></td>
                         <td>${ord.serviceTitle}</td>
-                        <td>Rs. ${ord.amount}</td>
+                        <td style="color:var(--secondary-glow); font-weight:700;">$${ord.amount}</td>
                         <td>
-                            <a href="${ord.screenshot}" target="_blank" style="color:var(--secondary);">
-                                Screenshot Dekhein
+                            <a href="${ord.screenshot}" target="_blank" style="color:var(--primary-glow); font-size:12px; text-decoration:underline;">
+                                View Proof
                             </a>
                         </td>
                     </tr>
                 `;
             });
+
+            document.getElementById('admMetricOrders').innerText = orders.length;
+            document.getElementById('admMetricRevenue').innerText = '$' + totalRev.toFixed(2);
         }
 
         function saveWhatsappNumber() {
             const num = document.getElementById('adminWhatsappInput').value.trim();
             if (num) {
                 adminWhatsapp = num;
-                localStorage.setItem('amar_admin_wa', num);
+                localStorage.setItem('amar_pro_wa', num);
                 if (db) {
                     db.ref('settings/whatsapp').set(num);
                 }
-                alert('WhatsApp number kamyabi se update ho gaya hai!');
+                alert('WhatsApp setting saved!');
             }
         }
 
@@ -853,9 +1545,15 @@
             }
         }
 
+        // FAQ Toggle
+        function toggleFaq(element) {
+            element.classList.toggle('active');
+        }
+
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
     </script>
 </body>
 </html>
+```
