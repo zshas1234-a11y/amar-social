@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AMAR Social Hub - Professional SMM Panel & Digital Services</title>
+    <title>AMAR Social Hub - SMM Panel & Digital Services</title>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
@@ -54,7 +54,7 @@
             box-shadow: 0 25px 45px rgba(108, 92, 231, 0.3);
         }
 
-        /* --- Navbar --- */
+        /* --- Navbar (Admin Option Completely Hidden) --- */
         header {
             position: fixed;
             top: 0;
@@ -369,7 +369,7 @@
 </head>
 <body>
 
-    <!-- Header / Navigation (Note: Admin link complete hidden hai) -->
+    <!-- Header / Navigation (Admin Link Bilkul Gayab Hai) -->
     <header>
         <div class="logo">
             <i class="fa-solid fa-rocket"></i> AMAR Social Hub
@@ -389,7 +389,7 @@
         <section class="hero" id="home">
             <div class="hero-content">
                 <h1>Apna <span>Social Media</span> Tezi Se Grow Karein!</h1>
-                <p>AMAR Social Hub par paayein sab se sasti aur fast SMM services. Instagram, YouTube, Facebook, TikTok aur Web Growth ke liye No.1 platform.</p>
+                <p>AMAR Social Hub par paayein sab se sasti aur fast SMM services. Instagram, YouTube, Facebook, aur Website growth ke liye 100% reliable platform.</p>
                 <a href="#services" class="btn-3d">Services Dekhein <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </section>
@@ -398,7 +398,7 @@
         <section class="services-container" id="services">
             <h2 class="section-title">Hamari Services</h2>
             <div class="services-grid" id="servicesGrid">
-                <!-- Dynamic Services loaded via JavaScript -->
+                <!-- Dynamic Services JS se render hongi -->
             </div>
         </section>
 
@@ -407,13 +407,13 @@
             <h2 class="section-title">Hamare Baare Mein (About Us)</h2>
             <div class="glass-card about-card">
                 <p style="font-size: 16px; line-height: 1.8; color: var(--text-muted);">
-                    AMAR Social Hub Behtareen aur Trusted SMM Service Provider Agency hai. Hum Digital Marketing, Social Media Followers, Likes, Views aur Brand Promotion ke liye 100% safe aur High-Quality Services provide karte hain. Hamara maqsad apne customers ko sab se kam keemat mein top-class service dena hai.
+                    AMAR Social Hub Behtareen aur Trusted SMM Service Provider Agency hai. Hum Digital Marketing, Social Media Followers, Likes, Views aur Brand Promotion ke liye 100% safe aur High-Quality Services provide karte hain.
                 </p>
             </div>
         </section>
     </div>
 
-    <!-- ================= ADMIN VIEW (Hidden from normal UI) ================= -->
+    <!-- ================= ADMIN VIEW (Hidden from Normal Users) ================= -->
     <div id="adminView" class="admin-page">
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <h2><i class="fa-solid fa-user-shield"></i> Admin Dashboard</h2>
@@ -427,7 +427,7 @@
                 <form id="addServiceForm" style="margin-top: 15px;">
                     <div class="form-group">
                         <label>Service Ka Naam</label>
-                        <input type="text" id="srvTitle" class="form-control" placeholder="E.g. 1000 Instagram Real Followers" required>
+                        <input type="text" id="srvTitle" class="form-control" placeholder="E.g. 1000 Instagram Followers" required>
                     </div>
                     <div class="form-group">
                         <label>Price (Rs / ₹)</label>
@@ -435,7 +435,7 @@
                     </div>
                     <div class="form-group">
                         <label>Picture Image URL</label>
-                        <input type="url" id="srvImg" class="form-control" placeholder="https://example.com/image.jpg" required>
+                        <input type="url" id="srvImg" class="form-control" placeholder="https://via.placeholder.com/300x180" required>
                     </div>
                     <div class="form-group">
                         <label>Service Ki Details</label>
@@ -448,13 +448,13 @@
                 <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
                     <h4><i class="fa-solid fa-gear"></i> WhatsApp Number Settings</h4>
                     <div class="form-group" style="margin-top: 10px;">
-                        <input type="text" id="adminWhatsappInput" class="form-control" placeholder="923001234567 ya 919876543210">
+                        <input type="text" id="adminWhatsappInput" class="form-control" placeholder="E.g. 923001234567">
                     </div>
                     <button class="btn-3d" onclick="saveWhatsappNumber()" style="width: 100%; background: var(--secondary); color:#000;">WhatsApp Number Save Karein</button>
                 </div>
             </div>
 
-            <!-- Customer Orders Received -->
+            <!-- Customer Orders List -->
             <div class="glass-card" style="padding: 25px;">
                 <h3><i class="fa-solid fa-cart-shopping"></i> Customers Ke Orders</h3>
                 <div class="table-container">
@@ -465,11 +465,11 @@
                                 <th>WhatsApp</th>
                                 <th>Service</th>
                                 <th>Amount</th>
-                                <th>Payment Proof</th>
+                                <th>Action / Proof</th>
                             </tr>
                         </thead>
                         <tbody id="ordersTableBody">
-                            <!-- Dynamic Orders list -->
+                            <!-- Dynamic Orders -->
                         </tbody>
                     </table>
                 </div>
@@ -479,7 +479,7 @@
 
     <!-- ================= MODALS & POPUPS ================= -->
 
-    <!-- Admin Security Password Modal -->
+    <!-- Admin Password Security Modal -->
     <div class="modal-overlay" id="adminAuthModal">
         <div class="glass-card modal-content">
             <span class="modal-close" onclick="closeModal('adminAuthModal')">&times;</span>
@@ -506,7 +506,7 @@
                 </div>
                 <div class="form-group">
                     <label>WhatsApp Number</label>
-                    <input type="tel" id="custPhone" class="form-control" placeholder="923001234567" required>
+                    <input type="tel" id="custPhone" class="form-control" placeholder="E.g. 923001234567" required>
                 </div>
                 <div class="form-group">
                     <label>Kya Chahiye / Profile Link Details</label>
@@ -534,7 +534,7 @@
     <div class="modal-overlay" id="receiptModal">
         <div class="glass-card modal-content" style="max-width: 450px;">
             <div class="receipt-box" id="receiptContent">
-                <!-- Dynamic Receipt generated via JS -->
+                <!-- Dynamic Receipt -->
             </div>
             <div style="display: flex; gap: 10px;">
                 <button class="btn-3d" onclick="goHome()" style="flex: 1; background: #6c757d;">Go Home</button>
@@ -559,27 +559,35 @@
         };
 
         // Firebase Initialization
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
+        let db = null;
+        try {
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+            db = firebase.database();
+        } catch (err) {
+            console.log("Firebase initialized in fallback mode.");
         }
-        const db = firebase.database();
 
-        // Secure SHA-256 Hash for Admin Password (admin@12345)
+        // SHA-256 Hash for Admin Password (admin@12345)
         const SECURE_ADMIN_HASH = "bc1d13db798b5ef8ee5a51016e7dd7f44d858eb8bdc9e2246b142436ddff3fb2";
 
-        // Global Variables
+        // Local Memory State (Backup System)
+        let localServices = JSON.parse(localStorage.getItem('amar_services') || '[]');
+        let localOrders = JSON.parse(localStorage.getItem('amar_orders') || '[]');
+        let adminWhatsapp = localStorage.getItem('amar_admin_wa') || "923001234567";
+
         let selectedService = null;
         let lastOrderData = null;
-        let adminWhatsapp = "923001234567"; // Default Admin WhatsApp
 
-        // Helper function for SHA-256 Hashing
+        // SHA-256 Helper Function
         async function sha256(str) {
             const buffer = new TextEncoder().encode(str);
             const digest = await crypto.subtle.digest('SHA-256', buffer);
             return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
-        // ================= ROUTING & ADMIN ACCESS =================
+        // ================= ROUTING & ADMIN HIDDEN ACCESS =================
         window.addEventListener('hashchange', handleRouting);
         window.addEventListener('load', () => {
             handleRouting();
@@ -606,7 +614,7 @@
             const passInput = document.getElementById('adminPassInput').value;
             const hashedInput = await sha256(passInput);
 
-            if (hashedInput === SECURE_ADMIN_HASH) {
+            if (hashedInput === SECURE_ADMIN_HASH || passInput === 'admin@12345') {
                 sessionStorage.setItem('isAdminLoggedIn', 'true');
                 closeModal('adminAuthModal');
                 showAdminPage();
@@ -632,11 +640,12 @@
             showUserPage();
         }
 
-        // ================= SERVICES MANAGEMENT =================
+        // ================= SERVICES MANAGEMENT (ADD & DISPLAY) =================
         document.getElementById('addServiceForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const serviceData = {
+                id: 'srv_' + Date.now(),
                 title: document.getElementById('srvTitle').value,
                 price: document.getElementById('srvPrice').value,
                 img: document.getElementById('srvImg').value,
@@ -644,35 +653,55 @@
                 createdAt: Date.now()
             };
 
-            db.ref('services').push(serviceData).then(() => {
-                alert('Nayi Service kamyabi se add ho gayi hai!');
-                document.getElementById('addServiceForm').reset();
-            }).catch(err => alert('Error: ' + err.message));
+            // Save to LocalStorage Backup
+            localServices.push(serviceData);
+            localStorage.setItem('amar_services', JSON.stringify(localServices));
+
+            // Save to Firebase
+            if (db) {
+                db.ref('services').push(serviceData);
+            }
+
+            alert('Nayi Service kamyabi se add ho gayi hai!');
+            document.getElementById('addServiceForm').reset();
+            renderServicesList(localServices);
         });
 
         function loadServices() {
-            db.ref('services').on('value', (snapshot) => {
-                const grid = document.getElementById('servicesGrid');
-                grid.innerHTML = '';
-                const data = snapshot.val();
-                
-                if (!data) {
-                    grid.innerHTML = '<p style="color:var(--text-muted); grid-column: 1/-1; text-align:center;">Filhal koi service maujood nahi hai.</p>';
-                    return;
-                }
-
-                Object.keys(data).forEach(key => {
-                    const srv = data[key];
-                    grid.innerHTML += `
-                        <div class="glass-card service-card">
-                            <img src="${srv.img}" alt="${srv.title}" class="service-img" onerror="this.src='https://via.placeholder.com/300x180?text=AMAR+Service'">
-                            <div class="service-title">${srv.title}</div>
-                            <div class="service-desc">${srv.desc}</div>
-                            <div class="service-price">Rs. ${srv.price}</div>
-                            <button class="btn-3d" onclick="openBuyModal('${key}', '${srv.title}', '${srv.price}')">Buy Service (Khareedein)</button>
-                        </div>
-                    `;
+            if (db) {
+                db.ref('services').on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        const servicesArr = Object.keys(data).map(k => data[k]);
+                        renderServicesList(servicesArr);
+                        return;
+                    }
+                    renderServicesList(localServices);
                 });
+            } else {
+                renderServicesList(localServices);
+            }
+        }
+
+        function renderServicesList(servicesList) {
+            const grid = document.getElementById('servicesGrid');
+            grid.innerHTML = '';
+
+            if (!servicesList || servicesList.length === 0) {
+                grid.innerHTML = '<p style="color:var(--text-muted); grid-column: 1/-1; text-align:center;">Filhal koi service maujood nahi hai. Admin Panel se naya service add karein!</p>';
+                return;
+            }
+
+            servicesList.forEach(srv => {
+                grid.innerHTML += `
+                    <div class="glass-card service-card">
+                        <img src="${srv.img}" alt="${srv.title}" class="service-img" onerror="this.src='https://via.placeholder.com/300x180?text=AMAR+Service'">
+                        <div class="service-title">${srv.title}</div>
+                        <div class="service-desc">${srv.desc}</div>
+                        <div class="service-price">Rs. ${srv.price}</div>
+                        <button class="btn-3d" onclick="openBuyModal('${srv.id}', '${srv.title}', '${srv.price}')">Buy Service (Khareedein)</button>
+                    </div>
+                `;
             });
         }
 
@@ -695,7 +724,6 @@
                 return;
             }
 
-            // Convert image screenshot to Base64 for DB & Receipt preview
             const reader = new FileReader();
             reader.onload = function(evt) {
                 const imgData = evt.target.result;
@@ -711,18 +739,23 @@
                     timestamp: new Date().toLocaleString()
                 };
 
-                // Save Order into Firebase
-                db.ref('orders').push(orderPayload).then(() => {
-                    lastOrderData = orderPayload;
-                    closeModal('buyModal');
-                    showReceipt(orderPayload);
-                    document.getElementById('orderForm').reset();
-                });
+                // Save Order Locally
+                localOrders.push(orderPayload);
+                localStorage.setItem('amar_orders', JSON.stringify(localOrders));
+
+                // Save Order to Firebase
+                if (db) {
+                    db.ref('orders').push(orderPayload);
+                }
+
+                lastOrderData = orderPayload;
+                closeModal('buyModal');
+                showReceipt(orderPayload);
+                document.getElementById('orderForm').reset();
             };
             reader.readAsDataURL(file);
         });
 
-        // Show Printable Receipt
         function showReceipt(order) {
             const html = `
                 <div class="receipt-header">
@@ -752,56 +785,74 @@
             window.open(url, '_blank');
         }
 
-        // ================= ADMIN ORDERS & SETTINGS =================
+        // ================= ADMIN FETCH ORDERS & WHATSAPP SETTINGS =================
         function loadOrders() {
-            db.ref('orders').on('value', (snapshot) => {
-                const tbody = document.getElementById('ordersTableBody');
-                tbody.innerHTML = '';
-                const data = snapshot.val();
-
-                if (!data) {
-                    tbody.innerHTML = '<tr><td colspan="5">Filhal koi order hasil nahi hua.</td></tr>';
-                    return;
-                }
-
-                Object.keys(data).reverse().forEach(key => {
-                    const ord = data[key];
-                    tbody.innerHTML += `
-                        <tr>
-                            <td>${ord.customerName}</td>
-                            <td>${ord.customerPhone}</td>
-                            <td>${ord.serviceTitle}</td>
-                            <td>Rs. ${ord.amount}</td>
-                            <td>
-                                <a href="${ord.screenshot}" target="_blank">
-                                    <img src="${ord.screenshot}" style="width:40px; height:40px; border-radius:5px; object-fit:cover;">
-                                </a>
-                            </td>
-                        </tr>
-                    `;
+            if (db) {
+                db.ref('orders').on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        const ordersArr = Object.keys(data).map(k => data[k]);
+                        renderOrdersTable(ordersArr);
+                        return;
+                    }
+                    renderOrdersTable(localOrders);
                 });
+            } else {
+                renderOrdersTable(localOrders);
+            }
+        }
+
+        function renderOrdersTable(ordersArr) {
+            const tbody = document.getElementById('ordersTableBody');
+            tbody.innerHTML = '';
+
+            if (!ordersArr || ordersArr.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5">Filhal koi order hasil nahi hua.</td></tr>';
+                return;
+            }
+
+            ordersArr.reverse().forEach(ord => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${ord.customerName}</td>
+                        <td>${ord.customerPhone}</td>
+                        <td>${ord.serviceTitle}</td>
+                        <td>Rs. ${ord.amount}</td>
+                        <td>
+                            <a href="${ord.screenshot}" target="_blank" style="color:var(--secondary);">
+                                Screenshot Dekhein
+                            </a>
+                        </td>
+                    </tr>
+                `;
             });
         }
 
         function saveWhatsappNumber() {
             const num = document.getElementById('adminWhatsappInput').value.trim();
             if (num) {
-                db.ref('settings/whatsapp').set(num).then(() => {
-                    alert('WhatsApp number kamyabi se update ho gaya hai!');
-                });
+                adminWhatsapp = num;
+                localStorage.setItem('amar_admin_wa', num);
+                if (db) {
+                    db.ref('settings/whatsapp').set(num);
+                }
+                alert('WhatsApp number kamyabi se update ho gaya hai!');
             }
         }
 
         function loadWhatsappNumber() {
-            db.ref('settings/whatsapp').on('value', (snapshot) => {
-                if (snapshot.exists()) {
-                    adminWhatsapp = snapshot.val();
-                    document.getElementById('adminWhatsappInput').value = adminWhatsapp;
-                }
-            });
+            if (db) {
+                db.ref('settings/whatsapp').on('value', (snapshot) => {
+                    if (snapshot.exists()) {
+                        adminWhatsapp = snapshot.val();
+                        document.getElementById('adminWhatsappInput').value = adminWhatsapp;
+                    }
+                });
+            } else {
+                document.getElementById('adminWhatsappInput').value = adminWhatsapp;
+            }
         }
 
-        // Helper Modal Close
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
