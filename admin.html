@@ -31,7 +31,7 @@
             <button onclick="logout()" class="bg-red-500/20 text-red-400 px-4 py-2 rounded-xl text-xs font-orbitron hover:bg-red-500/30">Logout</button>
         </div>
 
-        <!-- Add Service Box (No native form submit to prevent blocking) -->
+        <!-- Add Service Box -->
         <div class="glass-card p-6 rounded-2xl">
             <h2 class="font-orbitron text-lg font-bold mb-4 text-white">Add New Service</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -57,7 +57,6 @@
                 </div>
                 <div class="md:col-span-2 flex items-center justify-between pt-2">
                     <label class="text-sm text-gray-300"><input type="checkbox" id="serviceAvailable" checked class="mr-2"> Show on Website</label>
-                    <!-- Direct onclick trigger -->
                     <button id="saveBtn" class="bg-cyan-500 hover:bg-cyan-400 text-black font-bold px-8 py-3 rounded-xl font-orbitron cursor-pointer">Save Service</button>
                 </div>
             </div>
@@ -69,7 +68,7 @@
                 <span>Live Status Log:</span>
                 <button onclick="document.getElementById('statusLog').innerHTML=''" class="text-gray-500 hover:text-white text-[10px]">Clear Log</button>
             </h3>
-            <div id="statusLog" class="text-xs text-cyan-300 font-mono bg-gray-950 p-3 rounded-xl h-28 overflow-y-auto">System ready. Waiting for user action...</div>
+            <div id="statusLog" class="text-xs text-cyan-300 font-mono bg-gray-950 p-3 rounded-xl h-28 overflow-y-auto">System ready. Waiting for action...</div>
         </div>
 
         <!-- Catalog List -->
@@ -81,7 +80,7 @@
         </div>
     </div>
 
-    <!-- Firebase Script Engine -->
+    <!-- Firebase Script Engine with Timeout Protection -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, getDocs, addDoc, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -120,7 +119,7 @@
                 sessionStorage.setItem("auth", "true");
                 document.getElementById('loginSection').classList.add('hidden');
                 document.getElementById('dashboardSection').classList.remove('hidden');
-                logStatus("Admin logged in successfully.");
+                logStatus("Admin logged in.");
                 loadServices();
             } else {
                 document.getElementById('loginError').textContent = "Galat Password!";
@@ -142,7 +141,7 @@
         async function loadServices() {
             const list = document.getElementById('servicesList');
             try {
-                logStatus("Fetching services from Firestore...");
+                logStatus("Fetching services...");
                 const snap = await getDocs(collection(db, "services"));
                 list.innerHTML = '';
                 if(snap.empty) {
@@ -163,31 +162,30 @@
                     `;
                     list.appendChild(div);
                 });
-                logStatus(`Loaded ${snap.size} services successfully.`);
+                logStatus(`Loaded ${snap.size} services.`);
             } catch(e) {
-                logStatus("ERROR loading services -> " + e.message);
+                logStatus("ERROR loading -> " + e.message);
             }
         }
 
         window.removeService = async function(id) {
-            if(confirm("Kya aap is service ko delete karna chahte hain?")) {
+            if(confirm("Delete karna chahte hain?")) {
                 try {
-                    logStatus("Deleting service ID: " + id);
+                    logStatus("Deleting ID: " + id);
                     await deleteDoc(doc(db, "services", id));
-                    logStatus("Service deleted successfully.");
+                    logStatus("Deleted successfully.");
                     loadServices();
                 } catch(err) {
-                    logStatus("ERROR deleting service -> " + err.message);
+                    logStatus("Delete error -> " + err.message);
                 }
             }
         }
 
-        // Attach event listener via JS securely
         document.addEventListener("DOMContentLoaded", () => {
             const saveBtn = document.getElementById('saveBtn');
             if(saveBtn) {
                 saveBtn.addEventListener('click', async () => {
-                    logStatus("Save Service button clicked!");
+                    logStatus("Save button clicked!");
                     
                     const name = document.getElementById('serviceName').value.trim();
                     const price = document.getElementById('servicePrice').value.trim();
@@ -197,36 +195,30 @@
                     const available = document.getElementById('serviceAvailable').checked;
 
                     if(!name || !price || !description) {
-                        alert("Please Title, Price aur Description zaroor bharein!");
-                        logStatus("WARNING: Missing required input fields.");
-                        return;
-                    }
-
-                    if(!db) {
-                        alert("Firebase connection error! Database not ready.");
-                        logStatus("ERROR: Database instance is null.");
+                        alert("Title, Price aur Description zaroor bharein!");
+                        logStatus("WARNING: Fields empty.");
                         return;
                     }
 
                     try {
                         saveBtn.disabled = true;
                         saveBtn.textContent = "Saving...";
-                        logStatus(`Attempting to save service: "${name}"...`);
+                        logStatus(`Writing to Firestore: "${name}"...`);
 
-                        await addDoc(collection(db, "services"), {
-                            name: name,
-                            price: price,
-                            description: description,
-                            icon: icon,
-                            imageUrl: imageUrl,
-                            available: available,
-                            createdAt: new Date()
+                        // Timeout safety wrapper (8 seconds)
+                        const savePromise = addDoc(collection(db, "services"), {
+                            name, price, description, icon, imageUrl, available, createdAt: new Date()
                         });
 
-                        logStatus("SUCCESS: Service saved to Firestore!");
+                        const timeoutPromise = new Promise((_, reject) => 
+                            setTimeout(() => reject(new Error("Network timeout! Firebase connect nahi ho saka.")), 8000)
+                        );
+
+                        await Promise.race([savePromise, savePromise, timeoutPromise]);
+
+                        logStatus("SUCCESS: Saved to database!");
                         alert("Service successfully save ho gayi hai!");
 
-                        // Clear inputs
                         document.getElementById('serviceName').value = '';
                         document.getElementById('servicePrice').value = '';
                         document.getElementById('serviceDesc').value = '';
@@ -234,8 +226,8 @@
 
                         loadServices();
                     } catch(err) {
-                        logStatus("CRITICAL ERROR saving to Firestore -> " + err.message);
-                        alert("Save fail ho gaya: " + err.message);
+                        logStatus("FAILED -> " + err.message);
+                        alert("Error: " + err.message);
                     } finally {
                         saveBtn.disabled = false;
                         saveBtn.textContent = "Save Service";
