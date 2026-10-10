@@ -14,12 +14,6 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between p-4">
 
-    <!-- Notification Alert -->
-    <div id="toast" class="hidden fixed bottom-5 right-5 z-50 glass-card px-6 py-4 rounded-xl border-cyan-500 text-cyan-400 font-bold shadow-2xl flex items-center space-x-3">
-        <i class="fa-solid fa-circle-check text-xl"></i>
-        <span id="toastMsg">Success</span>
-    </div>
-
     <!-- Login Form -->
     <div id="loginSection" class="flex-grow flex items-center justify-center">
         <div class="glass-card rounded-2xl p-8 max-w-md w-full text-center">
@@ -39,9 +33,8 @@
 
         <!-- Add Service Box -->
         <div class="glass-card p-6 rounded-2xl">
-            <h2 class="font-orbitron text-lg font-bold mb-4 text-white">Add / Edit Service</h2>
+            <h2 class="font-orbitron text-lg font-bold mb-4 text-white">Add New Service</h2>
             <form id="serviceForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input type="hidden" id="serviceId">
                 <div>
                     <label class="text-xs text-gray-400 block mb-1">Service Title</label>
                     <input type="text" id="serviceName" required placeholder="e.g. YouTube Views" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-sm text-white focus:border-cyan-500 outline-none">
@@ -55,7 +48,7 @@
                     <textarea id="serviceDesc" rows="3" required placeholder="Service details..." class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-sm text-white focus:border-cyan-500 outline-none"></textarea>
                 </div>
                 <div>
-                    <label class="text-xs text-gray-400 block mb-1">Icon Class (FontAwesome)</label>
+                    <label class="text-xs text-gray-400 block mb-1">Icon Class</label>
                     <input type="text" id="serviceIcon" value="fa-solid fa-rocket" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-sm text-white focus:border-cyan-500 outline-none">
                 </div>
                 <div>
@@ -63,10 +56,16 @@
                     <input type="url" id="serviceImage" placeholder="https://..." class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-sm text-white focus:border-cyan-500 outline-none">
                 </div>
                 <div class="md:col-span-2 flex items-center justify-between">
-                    <label class="text-sm text-gray-300"><input type="checkbox" id="serviceAvailable" checked class="mr-2"> Show on Public Website</label>
-                    <button type="submit" id="saveBtn" class="bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-bold px-8 py-3 rounded-xl font-orbitron hover:opacity-95 cursor-pointer">Save Service</button>
+                    <label class="text-sm text-gray-300"><input type="checkbox" id="serviceAvailable" checked class="mr-2"> Show on Website</label>
+                    <button type="button" onclick="addNewServiceDirect()" id="saveBtn" class="bg-cyan-500 hover:bg-cyan-400 text-black font-bold px-8 py-3 rounded-xl font-orbitron">Save Service</button>
                 </div>
             </form>
+        </div>
+
+        <!-- Live Status / Debug Log Box -->
+        <div class="glass-card p-4 rounded-2xl bg-black/40">
+            <h3 class="text-xs font-orbitron text-cyan-400 mb-2 uppercase">Live Status Log:</h3>
+            <div id="statusLog" class="text-xs text-gray-400 font-mono bg-gray-950 p-3 rounded-xl h-24 overflow-y-auto">System ready. Awaiting actions...</div>
         </div>
 
         <!-- Catalog List -->
@@ -92,8 +91,23 @@
             appId: "1:761406989668:web:d26bb2ee84ac257a150671"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        function logStatus(msg) {
+            const box = document.getElementById('statusLog');
+            if(box) {
+                box.innerHTML += `> ${msg}<br>`;
+                box.scrollTop = box.scrollHeight;
+            }
+            console.log(msg);
+        }
+
+        let db = null;
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            logStatus("Firebase successfully initialized!");
+        } catch(err) {
+            logStatus("Firebase init error: " + err.message);
+        }
 
         window.checkAdminPassword = function() {
             const p = document.getElementById('adminPasswordInput').value;
@@ -103,9 +117,8 @@
                 document.getElementById('dashboardSection').classList.remove('hidden');
                 loadServices();
             } else {
-                const err = document.getElementById('loginError');
-                err.textContent = "Incorrect Password! Try again.";
-                err.classList.remove('hidden');
+                document.getElementById('loginError').textContent = "Galat Password!";
+                document.getElementById('loginError').classList.remove('hidden');
             }
         };
 
@@ -117,23 +130,18 @@
         if(sessionStorage.getItem("auth") === "true") {
             document.getElementById('loginSection').classList.add('hidden');
             document.getElementById('dashboardSection').classList.remove('hidden');
-            loadServices();
-        }
-
-        function notify(msg) {
-            const t = document.getElementById('toast');
-            document.getElementById('toastMsg').textContent = msg;
-            t.classList.remove('hidden');
-            setTimeout(() => t.classList.add('hidden'), 3000);
+            setTimeout(loadServices, 500);
         }
 
         async function loadServices() {
             const list = document.getElementById('servicesList');
             try {
+                logStatus("Fetching services from Firestore...");
                 const snap = await getDocs(collection(db, "services"));
                 list.innerHTML = '';
                 if(snap.empty) {
-                    list.innerHTML = `<p class="text-gray-500 text-sm">No services in database yet.</p>`;
+                    list.innerHTML = `<p class="text-gray-500 text-sm">Koi service database mein nahi hai.</p>`;
+                    logStatus("Database is empty.");
                     return;
                 }
                 snap.forEach(docSnap => {
@@ -145,34 +153,31 @@
                             <span class="font-bold text-white">${data.name}</span>
                             <span class="text-cyan-400 font-orbitron ml-3">${data.price}</span>
                         </div>
-                        <button onclick="removeService('${docSnap.id}')" class="text-red-400 text-xs hover:underline cursor-pointer">Delete</button>
+                        <button onclick="removeService('${docSnap.id}')" class="text-red-400 text-xs hover:underline">Delete</button>
                     `;
                     list.appendChild(div);
                 });
+                logStatus("Services loaded successfully.");
             } catch(e) {
-                console.error("Load error:", e);
+                logStatus("Load error: " + e.message);
             }
         }
 
         window.removeService = async function(id) {
-            if(confirm("Delete this service?")) {
+            if(confirm("Kya aap delete karna chahte hain?")) {
                 try {
                     await deleteDoc(doc(db, "services", id));
-                    notify("Service Deleted!");
+                    logStatus("Service deleted: " + id);
                     loadServices();
                 } catch(err) {
-                    alert("Delete failed: " + err.message);
+                    logStatus("Delete error: " + err.message);
                 }
             }
         }
 
-        // Form Submit Handler with full error catch
-        document.getElementById('serviceForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('saveBtn');
-            btn.textContent = "Saving...";
-            btn.disabled = true;
-
+        // Direct click function for button
+        window.addNewServiceDirect = async function() {
+            logStatus("Save button clicked!");
             const name = document.getElementById('serviceName').value.trim();
             const price = document.getElementById('servicePrice').value.trim();
             const description = document.getElementById('serviceDesc').value.trim();
@@ -180,27 +185,26 @@
             const imageUrl = document.getElementById('serviceImage').value.trim();
             const available = document.getElementById('serviceAvailable').checked;
 
+            if(!name || !price || !description) {
+                alert("Please sabhi zaroori fields bharein!");
+                logStatus("Validation failed: fields are empty.");
+                return;
+            }
+
             try {
+                logStatus("Saving to Firestore collection 'services'...");
                 await addDoc(collection(db, "services"), {
-                    name, 
-                    price, 
-                    description, 
-                    icon, 
-                    imageUrl, 
-                    available
+                    name, price, description, icon, imageUrl, available
                 });
-                notify("Service Added Successfully!");
+                logStatus("Service saved successfully!");
+                alert("Service successfully save ho gayi hai!");
                 document.getElementById('serviceForm').reset();
-                document.getElementById('serviceIcon').value = "fa-solid fa-rocket";
                 loadServices();
             } catch(err) {
-                console.error("Firebase Add Error:", err);
-                alert("Failed to save service: " + err.message);
-            } finally {
-                btn.textContent = "Save Service";
-                btn.disabled = false;
+                logStatus("Firestore save error: " + err.message);
+                alert("Save fail ho gaya: " + err.message);
             }
-        });
+        };
     </script>
 </body>
 </html>
