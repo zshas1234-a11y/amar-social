@@ -80,10 +80,10 @@
         </div>
     </div>
 
-    <!-- Firebase Script Engine with Timeout Protection -->
+    <!-- Firebase Script Engine with Custom Database ID 'default' -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, addDoc, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { initializeFirestore, collection, getDocs, addDoc, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCrrUQLMes8TcRXbEk1I1a8D6vnhAFaLNvI",
@@ -107,8 +107,9 @@
         let db = null;
         try {
             const app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            logStatus("SUCCESS: Firebase initialized.");
+            // Explicitly linking to database ID 'default' as seen in Firebase console
+            db = initializeFirestore(app, {}, 'default');
+            logStatus("SUCCESS: Firebase initialized with database 'default'.");
         } catch(err) {
             logStatus("ERROR: Firebase init failed -> " + err.message);
         }
@@ -203,18 +204,11 @@
                     try {
                         saveBtn.disabled = true;
                         saveBtn.textContent = "Saving...";
-                        logStatus(`Writing to Firestore: "${name}"...`);
+                        logStatus(`Writing to database 'default': "${name}"...`);
 
-                        // Timeout safety wrapper (8 seconds)
-                        const savePromise = addDoc(collection(db, "services"), {
+                        await addDoc(collection(db, "services"), {
                             name, price, description, icon, imageUrl, available, createdAt: new Date()
                         });
-
-                        const timeoutPromise = new Promise((_, reject) => 
-                            setTimeout(() => reject(new Error("Network timeout! Firebase connect nahi ho saka.")), 8000)
-                        );
-
-                        await Promise.race([savePromise, savePromise, timeoutPromise]);
 
                         logStatus("SUCCESS: Saved to database!");
                         alert("Service successfully save ho gayi hai!");
