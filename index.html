@@ -206,7 +206,10 @@ $("serviceForm").addEventListener("submit",async e=>{
 $("saveSettingsBtn").addEventListener("click",async()=>{
  const whatsapp=$("storeWhatsApp").value.replace(/\D/g,""),name=$("storeName").value.trim()||"Amar Social Hub";
  try{await setDoc(doc(db,"settings","store"),{whatsapp,name,updatedAt:serverTimestamp()},{merge:true});state.settings={...state.settings,whatsapp,name};toast("Store settings saved.");}
- catch(e){console.error(e);toast("Could not save settings. Check Firestore rules.")}
+ catch(e){
+console.error("SERVICE SAVE ERROR:", e);
+toast("Error: " + (e.code || e.message || "Unknown error"));
+}
 });
 function setAdminTab(tab){
  ["services","orders","settings"].forEach(t=>$("tab-"+t).classList.toggle("hidden",t!==tab));
