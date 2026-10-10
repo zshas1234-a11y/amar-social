@@ -19,7 +19,7 @@
         <div class="glass-card rounded-2xl p-8 max-w-md w-full text-center">
             <h1 class="font-orbitron font-extrabold text-2xl mb-4 text-cyan-400">ADMIN LOGIN</h1>
             <input type="password" id="adminPasswordInput" placeholder="Password (admin10)" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 text-sm mb-4 text-white focus:outline-none focus:border-cyan-500">
-            <button onclick="checkAdminPassword()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-bold py-3 rounded-xl font-orbitron transition-all">Login</button>
+            <button onclick="checkAdminPassword()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-bold py-3 rounded-xl font-orbitron transition-all cursor-pointer">Login</button>
             <p id="loginError" class="text-red-400 text-xs mt-3 hidden"></p>
         </div>
     </div>
@@ -28,7 +28,23 @@
     <div id="dashboardSection" class="hidden max-w-6xl mx-auto w-full py-8 space-y-8">
         <div class="flex justify-between items-center border-b border-gray-800 pb-4">
             <h1 class="font-orbitron text-2xl font-bold text-cyan-400">AMAR HUB ADMIN</h1>
-            <button onclick="logout()" class="bg-red-500/20 text-red-400 px-4 py-2 rounded-xl text-xs font-orbitron hover:bg-red-500/30">Logout</button>
+            <button onclick="logout()" class="bg-red-500/20 text-red-400 px-4 py-2 rounded-xl text-xs font-orbitron hover:bg-red-500/30 cursor-pointer">Logout</button>
+        </div>
+
+        <!-- WhatsApp Configuration Box -->
+        <div class="glass-card p-6 rounded-2xl">
+            <h2 class="font-orbitron text-lg font-bold mb-2 text-white flex items-center space-x-2">
+                <i class="fa-brands fa-whatsapp text-green-400 text-xl"></i>
+                <span>WhatsApp Number Settings</span>
+            </h2>
+            <p class="text-gray-400 text-xs mb-4">Enter your WhatsApp number with country code (e.g. 923001234567) so customers can order directly.</p>
+            <form id="settingsForm" class="flex flex-col sm:flex-row gap-3">
+                <input type="text" id="whatsappInput" placeholder="e.g. 923001234567" required 
+                    class="flex-grow bg-gray-900 border border-gray-800 rounded-xl p-3 text-sm text-white focus:border-cyan-500 outline-none">
+                <button type="submit" id="saveWhatsAppBtn" class="bg-green-500 hover:bg-green-400 text-black font-bold px-6 py-3 rounded-xl font-orbitron text-sm cursor-pointer transition-all">
+                    Save WhatsApp
+                </button>
+            </form>
         </div>
 
         <!-- Add Service Box -->
@@ -66,7 +82,7 @@
         <div class="glass-card p-4 rounded-2xl bg-black/40">
             <h3 class="text-xs font-orbitron text-cyan-400 mb-2 uppercase flex justify-between">
                 <span>Live Status Log:</span>
-                <button onclick="document.getElementById('statusLog').innerHTML=''" class="text-gray-500 hover:text-white text-[10px]">Clear Log</button>
+                <button onclick="document.getElementById('statusLog').innerHTML=''" class="text-gray-500 hover:text-white text-[10px] cursor-pointer">Clear Log</button>
             </h3>
             <div id="statusLog" class="text-xs text-cyan-300 font-mono bg-gray-950 p-3 rounded-xl h-28 overflow-y-auto">System ready. Waiting for action...</div>
         </div>
@@ -80,10 +96,10 @@
         </div>
     </div>
 
-    <!-- Firebase Script Engine with Custom Database ID 'default' -->
+    <!-- Firebase Script Engine -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { initializeFirestore, collection, getDocs, addDoc, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { initializeFirestore, collection, getDocs, addDoc, doc, deleteDoc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCrrUQLMes8TcRXbEk1I1a8D6vnhAFaLNvI",
@@ -107,7 +123,6 @@
         let db = null;
         try {
             const app = initializeApp(firebaseConfig);
-            // Explicitly linking to database ID 'default' as seen in Firebase console
             db = initializeFirestore(app, {}, 'default');
             logStatus("SUCCESS: Firebase initialized with database 'default'.");
         } catch(err) {
@@ -121,6 +136,7 @@
                 document.getElementById('loginSection').classList.add('hidden');
                 document.getElementById('dashboardSection').classList.remove('hidden');
                 logStatus("Admin logged in.");
+                loadSettings();
                 loadServices();
             } else {
                 document.getElementById('loginError').textContent = "Galat Password!";
@@ -136,8 +152,48 @@
         if(sessionStorage.getItem("auth") === "true") {
             document.getElementById('loginSection').classList.add('hidden');
             document.getElementById('dashboardSection').classList.remove('hidden');
-            setTimeout(loadServices, 500);
+            setTimeout(() => {
+                loadSettings();
+                loadServices();
+            }, 500);
         }
+
+        async function loadSettings() {
+            try {
+                const docRef = doc(db, "settings", "public");
+                const docSnap = await getDoc(docRef);
+                if(docSnap.exists() && docSnap.data().whatsappNumber) {
+                    document.getElementById('whatsappInput').value = docSnap.data().whatsappNumber;
+                    logStatus("WhatsApp number loaded from database.");
+                }
+            } catch(err) {
+                logStatus("Error loading settings: " + err.message);
+            }
+        }
+
+        document.getElementById('settingsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const whatsappNum = document.getElementById('whatsappInput').value.trim();
+            const btn = document.getElementById('saveWhatsAppBtn');
+            try {
+                btn.disabled = true;
+                btn.textContent = "Saving...";
+                logStatus("Saving WhatsApp number...");
+                
+                await setDoc(doc(db, "settings", "public"), {
+                    whatsappNumber: whatsappNum
+                }, { merge: true });
+
+                logStatus("WhatsApp number saved successfully!");
+                alert("WhatsApp number successfully update ho gaya hai!");
+            } catch(err) {
+                logStatus("Error saving WhatsApp: " + err.message);
+                alert("Error: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Save WhatsApp";
+            }
+        });
 
         async function loadServices() {
             const list = document.getElementById('servicesList');
@@ -182,51 +238,47 @@
             }
         }
 
-        document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById('saveBtn').addEventListener('click', async () => {
+            logStatus("Save Service button clicked!");
+            
+            const name = document.getElementById('serviceName').value.trim();
+            const price = document.getElementById('servicePrice').value.trim();
+            const description = document.getElementById('serviceDesc').value.trim();
+            const icon = document.getElementById('serviceIcon').value.trim() || "fa-solid fa-rocket";
+            const imageUrl = document.getElementById('serviceImage').value.trim();
+            const available = document.getElementById('serviceAvailable').checked;
+
+            if(!name || !price || !description) {
+                alert("Title, Price aur Description zaroor bharein!");
+                logStatus("WARNING: Fields empty.");
+                return;
+            }
+
             const saveBtn = document.getElementById('saveBtn');
-            if(saveBtn) {
-                saveBtn.addEventListener('click', async () => {
-                    logStatus("Save button clicked!");
-                    
-                    const name = document.getElementById('serviceName').value.trim();
-                    const price = document.getElementById('servicePrice').value.trim();
-                    const description = document.getElementById('serviceDesc').value.trim();
-                    const icon = document.getElementById('serviceIcon').value.trim() || "fa-solid fa-rocket";
-                    const imageUrl = document.getElementById('serviceImage').value.trim();
-                    const available = document.getElementById('serviceAvailable').checked;
+            try {
+                saveBtn.disabled = true;
+                saveBtn.textContent = "Saving...";
+                logStatus(`Writing service "${name}" to database...`);
 
-                    if(!name || !price || !description) {
-                        alert("Title, Price aur Description zaroor bharein!");
-                        logStatus("WARNING: Fields empty.");
-                        return;
-                    }
-
-                    try {
-                        saveBtn.disabled = true;
-                        saveBtn.textContent = "Saving...";
-                        logStatus(`Writing to database 'default': "${name}"...`);
-
-                        await addDoc(collection(db, "services"), {
-                            name, price, description, icon, imageUrl, available, createdAt: new Date()
-                        });
-
-                        logStatus("SUCCESS: Saved to database!");
-                        alert("Service successfully save ho gayi hai!");
-
-                        document.getElementById('serviceName').value = '';
-                        document.getElementById('servicePrice').value = '';
-                        document.getElementById('serviceDesc').value = '';
-                        document.getElementById('serviceImage').value = '';
-
-                        loadServices();
-                    } catch(err) {
-                        logStatus("FAILED -> " + err.message);
-                        alert("Error: " + err.message);
-                    } finally {
-                        saveBtn.disabled = false;
-                        saveBtn.textContent = "Save Service";
-                    }
+                await addDoc(collection(db, "services"), {
+                    name, price, description, icon, imageUrl, available, createdAt: new Date()
                 });
+
+                logStatus("SUCCESS: Service saved!");
+                alert("Service successfully save ho gayi hai!");
+
+                document.getElementById('serviceName').value = '';
+                document.getElementById('servicePrice').value = '';
+                document.getElementById('serviceDesc').value = '';
+                document.getElementById('serviceImage').value = '';
+
+                loadServices();
+            } catch(err) {
+                logStatus("FAILED -> " + err.message);
+                alert("Error: " + err.message);
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.textContent = "Save Service";
             }
         });
     </script>
