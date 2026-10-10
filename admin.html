@@ -37,11 +37,10 @@
                 <i class="fa-brands fa-whatsapp text-green-400 text-xl"></i>
                 <span>WhatsApp Number Settings</span>
             </h2>
-            <p class="text-gray-400 text-xs mb-4">Enter your WhatsApp number with country code (e.g. 923001234567) so customers can order directly.</p>
             <form id="settingsForm" class="flex flex-col sm:flex-row gap-3">
                 <input type="text" id="whatsappInput" placeholder="e.g. 923001234567" required 
                     class="flex-grow bg-gray-900 border border-gray-800 rounded-xl p-3 text-sm text-white focus:border-cyan-500 outline-none">
-                <button type="submit" id="saveWhatsAppBtn" class="bg-green-500 hover:bg-green-400 text-black font-bold px-6 py-3 rounded-xl font-orbitron text-sm cursor-pointer transition-all">
+                <button type="submit" id="saveWhatsAppBtn" class="bg-green-500 hover:bg-green-400 text-black font-bold px-6 py-3 rounded-xl font-orbitron text-sm cursor-pointer">
                     Save WhatsApp
                 </button>
             </form>
@@ -57,20 +56,24 @@
                 </div>
                 <div>
                     <label class="text-xs text-gray-400 block mb-1">Price</label>
-                    <input type="text" id="servicePrice" placeholder="e.g. $10 or Rs. 1500" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-sm text-white focus:border-cyan-500 outline-none">
+                    <input type="text" id="servicePrice" placeholder="e.g. 500" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-sm text-white focus:border-cyan-500 outline-none">
                 </div>
                 <div class="md:col-span-2">
                     <label class="text-xs text-gray-400 block mb-1">Description</label>
                     <textarea id="serviceDesc" rows="3" placeholder="Service details..." class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-sm text-white focus:border-cyan-500 outline-none"></textarea>
                 </div>
+
+                <!-- Direct File Upload Field -->
                 <div>
-                    <label class="text-xs text-gray-400 block mb-1">Icon Class</label>
-                    <input type="text" id="serviceIcon" value="fa-solid fa-rocket" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-sm text-white focus:border-cyan-500 outline-none">
+                    <label class="text-xs text-cyan-400 block mb-1 font-bold">Upload Image File (Gallery se photo chunen)</label>
+                    <input type="file" id="serviceFileInput" accept="image/*" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-2 text-xs text-gray-300 focus:border-cyan-500 outline-none cursor-pointer">
                 </div>
+
                 <div>
-                    <label class="text-xs text-gray-400 block mb-1">Image URL (Optional)</label>
+                    <label class="text-xs text-gray-400 block mb-1">Ya Image Link (URL)</label>
                     <input type="url" id="serviceImage" placeholder="https://..." class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-sm text-white focus:border-cyan-500 outline-none">
                 </div>
+
                 <div class="md:col-span-2 flex items-center justify-between pt-2">
                     <label class="text-sm text-gray-300"><input type="checkbox" id="serviceAvailable" checked class="mr-2"> Show on Website</label>
                     <button id="saveBtn" class="bg-cyan-500 hover:bg-cyan-400 text-black font-bold px-8 py-3 rounded-xl font-orbitron cursor-pointer">Save Service</button>
@@ -124,9 +127,9 @@
         try {
             const app = initializeApp(firebaseConfig);
             db = initializeFirestore(app, {}, 'default');
-            logStatus("SUCCESS: Firebase initialized with database 'default'.");
+            logStatus("SUCCESS: Firebase initialized.");
         } catch(err) {
-            logStatus("ERROR: Firebase init failed -> " + err.message);
+            logStatus("ERROR: " + err.message);
         }
 
         window.checkAdminPassword = function() {
@@ -135,7 +138,6 @@
                 sessionStorage.setItem("auth", "true");
                 document.getElementById('loginSection').classList.add('hidden');
                 document.getElementById('dashboardSection').classList.remove('hidden');
-                logStatus("Admin logged in.");
                 loadSettings();
                 loadServices();
             } else {
@@ -152,58 +154,34 @@
         if(sessionStorage.getItem("auth") === "true") {
             document.getElementById('loginSection').classList.add('hidden');
             document.getElementById('dashboardSection').classList.remove('hidden');
-            setTimeout(() => {
-                loadSettings();
-                loadServices();
-            }, 500);
+            setTimeout(() => { loadSettings(); loadServices(); }, 500);
         }
 
         async function loadSettings() {
             try {
-                const docRef = doc(db, "settings", "public");
-                const docSnap = await getDoc(docRef);
+                const docSnap = await getDoc(doc(db, "settings", "public"));
                 if(docSnap.exists() && docSnap.data().whatsappNumber) {
                     document.getElementById('whatsappInput').value = docSnap.data().whatsappNumber;
-                    logStatus("WhatsApp number loaded from database.");
                 }
-            } catch(err) {
-                logStatus("Error loading settings: " + err.message);
-            }
+            } catch(err) { console.error(err); }
         }
 
         document.getElementById('settingsForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const whatsappNum = document.getElementById('whatsappInput').value.trim();
-            const btn = document.getElementById('saveWhatsAppBtn');
             try {
-                btn.disabled = true;
-                btn.textContent = "Saving...";
-                logStatus("Saving WhatsApp number...");
-                
-                await setDoc(doc(db, "settings", "public"), {
-                    whatsappNumber: whatsappNum
-                }, { merge: true });
-
-                logStatus("WhatsApp number saved successfully!");
-                alert("WhatsApp number successfully update ho gaya hai!");
-            } catch(err) {
-                logStatus("Error saving WhatsApp: " + err.message);
-                alert("Error: " + err.message);
-            } finally {
-                btn.disabled = false;
-                btn.textContent = "Save WhatsApp";
-            }
+                await setDoc(doc(db, "settings", "public"), { whatsappNumber: whatsappNum }, { merge: true });
+                alert("WhatsApp number save ho gaya!");
+            } catch(err) { alert("Error: " + err.message); }
         });
 
         async function loadServices() {
             const list = document.getElementById('servicesList');
             try {
-                logStatus("Fetching services...");
                 const snap = await getDocs(collection(db, "services"));
                 list.innerHTML = '';
                 if(snap.empty) {
                     list.innerHTML = `<p class="text-gray-500 text-sm">Koi service database mein nahi hai.</p>`;
-                    logStatus("Database collection 'services' is empty.");
                     return;
                 }
                 snap.forEach(docSnap => {
@@ -211,46 +189,49 @@
                     const div = document.createElement('div');
                     div.className = "flex items-center justify-between p-4 bg-gray-900/60 rounded-xl border border-gray-800";
                     div.innerHTML = `
-                        <div>
-                            <span class="font-bold text-white">${data.name}</span>
-                            <span class="text-cyan-400 font-orbitron ml-3">${data.price}</span>
+                        <div class="flex items-center space-x-3">
+                            ${data.imageUrl ? `<img src="${data.imageUrl}" class="w-10 h-10 rounded-lg object-cover">` : ''}
+                            <div>
+                                <span class="font-bold text-white">${data.name}</span>
+                                <span class="text-cyan-400 font-orbitron ml-3">${data.price}</span>
+                            </div>
                         </div>
                         <button onclick="removeService('${docSnap.id}')" class="text-red-400 text-xs hover:underline cursor-pointer">Delete</button>
                     `;
                     list.appendChild(div);
                 });
-                logStatus(`Loaded ${snap.size} services.`);
-            } catch(e) {
-                logStatus("ERROR loading -> " + e.message);
-            }
+            } catch(e) { logStatus("ERROR loading -> " + e.message); }
         }
 
         window.removeService = async function(id) {
             if(confirm("Delete karna chahte hain?")) {
                 try {
-                    logStatus("Deleting ID: " + id);
                     await deleteDoc(doc(db, "services", id));
-                    logStatus("Deleted successfully.");
                     loadServices();
-                } catch(err) {
-                    logStatus("Delete error -> " + err.message);
-                }
+                } catch(err) { alert(err.message); }
             }
         }
 
+        // Convert selected image file to Base64 String
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            });
+        }
+
         document.getElementById('saveBtn').addEventListener('click', async () => {
-            logStatus("Save Service button clicked!");
-            
             const name = document.getElementById('serviceName').value.trim();
             const price = document.getElementById('servicePrice').value.trim();
             const description = document.getElementById('serviceDesc').value.trim();
-            const icon = document.getElementById('serviceIcon').value.trim() || "fa-solid fa-rocket";
-            const imageUrl = document.getElementById('serviceImage').value.trim();
             const available = document.getElementById('serviceAvailable').checked;
+            const fileInput = document.getElementById('serviceFileInput');
+            let imageUrl = document.getElementById('serviceImage').value.trim();
 
             if(!name || !price || !description) {
                 alert("Title, Price aur Description zaroor bharein!");
-                logStatus("WARNING: Fields empty.");
                 return;
             }
 
@@ -258,19 +239,26 @@
             try {
                 saveBtn.disabled = true;
                 saveBtn.textContent = "Saving...";
-                logStatus(`Writing service "${name}" to database...`);
 
+                // Process uploaded file if selected
+                if(fileInput.files && fileInput.files[0]) {
+                    logStatus("Processing image file...");
+                    imageUrl = await fileToBase64(fileInput.files[0]);
+                }
+
+                logStatus("Writing to database...");
                 await addDoc(collection(db, "services"), {
-                    name, price, description, icon, imageUrl, available, createdAt: new Date()
+                    name, price, description, imageUrl, available, createdAt: new Date()
                 });
 
-                logStatus("SUCCESS: Service saved!");
-                alert("Service successfully save ho gayi hai!");
+                logStatus("SUCCESS: Service saved with image!");
+                alert("Service picture ke sath save ho gayi hai!");
 
                 document.getElementById('serviceName').value = '';
                 document.getElementById('servicePrice').value = '';
                 document.getElementById('serviceDesc').value = '';
                 document.getElementById('serviceImage').value = '';
+                fileInput.value = '';
 
                 loadServices();
             } catch(err) {
