@@ -7,35 +7,28 @@
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome 6 Pro/Free Icons -->
+    <!-- FontAwesome 6 Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Three.js for 3D Cyber Engine -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
                         darkBg: '#020617',
-                        cyberDark: '#070d1e',
                         cardBg: 'rgba(15, 23, 42, 0.75)',
                         neonCyan: '#06b6d4',
                         neonBlue: '#3b82f6',
-                        neonPurple: '#a855f7',
-                        neonPink: '#ec4899',
-                        goldAccent: '#f59e0b'
+                        neonPurple: '#a855f7'
                     },
                     fontFamily: {
                         orbitron: ['Orbitron', 'sans-serif'],
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        grotesk: ['Space Grotesk', 'sans-serif']
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
                     }
                 }
             }
@@ -49,259 +42,144 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
         }
-
         #bg3dCanvas {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            pointer-events: none;
+            top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none;
         }
-
-        .glow-text-cyan {
-            text-shadow: 0 0 20px rgba(6, 182, 212, 0.6), 0 0 40px rgba(6, 182, 212, 0.3);
+        .glow-text {
+            text-shadow: 0 0 20px rgba(6, 182, 212, 0.6), 0 0 40px rgba(168, 85, 247, 0.4);
         }
-        
-        .glow-text-purple {
-            text-shadow: 0 0 20px rgba(168, 85, 247, 0.6), 0 0 40px rgba(168, 85, 247, 0.3);
-        }
-
         .glass-card {
             background: rgba(15, 23, 42, 0.75);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-
         .glass-card:hover {
             transform: translateY(-8px) scale(1.015);
             border-color: rgba(6, 182, 212, 0.5);
-            box-shadow: 0 30px 60px rgba(6, 182, 212, 0.25), 0 0 30px rgba(168, 85, 247, 0.2);
+            box-shadow: 0 30px 60px rgba(6, 182, 212, 0.25);
         }
-
         .bg-grid {
             background-size: 50px 50px;
             background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
                               linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
         }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-12px) rotate(1deg); }
-        }
-        .floating {
-            animation: float 5s ease-in-out infinite;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #020617;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #1e293b;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #06b6d4;
-        }
     </style>
 </head>
 <body class="bg-grid min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-black">
 
-    <!-- 3D Canvas Background -->
     <canvas id="bg3dCanvas"></canvas>
 
-    <!-- Top Ambient Lights -->
-    <div class="fixed top-0 left-1/4 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-to-r from-cyan-500/20 via-blue-600/20 to-purple-600/20 blur-[140px] pointer-events-none rounded-full"></div>
-    <div class="fixed bottom-0 right-1/4 w-[500px] h-[300px] bg-gradient-to-r from-purple-600/15 to-pink-600/15 blur-[140px] pointer-events-none rounded-full"></div>
-
-    <!-- Navigation Bar -->
-    <nav class="sticky top-0 z-50 backdrop-blur-2xl bg-darkBg/80 border-b border-gray-800/80 transition-all duration-300">
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 backdrop-blur-2xl bg-darkBg/80 border-b border-gray-800/80">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            
-            <!-- Logo -->
-            <a href="#" class="flex items-center space-x-3 group">
-                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-purple-600 p-[1px] shadow-lg shadow-cyan-500/20 group-hover:shadow-cyan-500/40 transition-all duration-300">
+            <a href="#" class="flex items-center space-x-3">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-cyan-500 to-purple-600 p-[1px] shadow-lg shadow-cyan-500/20">
                     <div class="w-full h-full bg-darkBg rounded-[15px] flex items-center justify-center">
-                        <i class="fa-solid fa-cubes-stacked text-cyan-400 text-xl group-hover:scale-110 transition-transform"></i>
+                        <i class="fa-solid fa-cubes-stacked text-cyan-400 text-xl"></i>
                     </div>
                 </div>
-                <div>
-                    <span class="font-orbitron font-extrabold text-xl sm:text-2xl tracking-wider bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
-                        AMAR HUB
-                    </span>
-                    <span class="ml-2 text-[10px] font-orbitron font-bold px-2 py-0.5 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/40 text-cyan-300 uppercase tracking-widest align-middle">
-                        PRO
-                    </span>
-                </div>
+                <span class="font-orbitron font-extrabold text-xl sm:text-2xl tracking-wider bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+                    AMAR HUB <span class="text-xs px-2 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-sans tracking-normal align-middle">PRO</span>
+                </span>
             </a>
-
-            <!-- Search Bar (Desktop) -->
-            <div class="hidden md:flex items-center space-x-4">
-                <div class="relative">
+            <div class="flex items-center space-x-4">
+                <div class="relative hidden sm:block">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-500">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </span>
-                    <input type="text" id="searchInput" placeholder="Search digital services..." 
-                        class="bg-gray-900/90 border border-gray-800 text-sm rounded-xl pl-11 pr-4 py-2.5 focus:outline-none focus:border-cyan-500 text-gray-200 w-72 transition-all shadow-inner font-sans">
+                    <input type="text" id="searchInput" placeholder="Search elite services..." 
+                        class="bg-gray-900/90 border border-gray-800 text-sm rounded-xl pl-11 pr-4 py-2.5 focus:outline-none focus:border-cyan-500 text-gray-200 w-72">
                 </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="flex items-center space-x-4">
-                <a href="#servicesSection" class="bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-black font-orbitron font-bold px-6 py-2.5 rounded-xl shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/50 hover:scale-105 transition-all duration-300 text-xs sm:text-sm flex items-center space-x-2">
-                    <i class="fa-solid fa-rocket"></i>
-                    <span>Explore Market</span>
-                </a>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero Header -->
     <header class="relative pt-16 pb-12 px-4 text-center max-w-5xl mx-auto">
-        <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-orbitron font-medium tracking-wider uppercase mb-6 floating shadow-lg shadow-cyan-500/10">
-            <i class="fa-solid fa-sparkles text-cyan-400"></i>
-            <span>Premier Digital Growth Marketplace</span>
+        <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-orbitron uppercase mb-6 shadow-lg">
+            <i class="fa-solid fa-bolt text-cyan-400"></i>
+            <span>Next-Generation Digital Marketplace</span>
         </div>
-        
         <h1 class="font-orbitron text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight mb-6 leading-tight">
-            Scale Your Digital Empire <br>
-            <span class="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 bg-clip-text text-transparent glow-text-cyan">
-                With Elite Services
-            </span>
+            Elevate Your Brand With <span class="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 bg-clip-text text-transparent glow-text">Elite Services</span>
         </h1>
-        
         <p class="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto mb-10 font-sans leading-relaxed">
-            High-speed SMM, automated growth solutions, and premium digital agency services powered by direct WhatsApp instant dispatch.
+            Discover cutting-edge digital growth solutions powered by high speed, premium quality, and instant WhatsApp integration.
         </p>
 
-        <!-- Stats Counter Bar -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-12">
-            <div class="glass-card rounded-2xl p-4 text-center border-gray-800">
-                <div class="font-orbitron font-bold text-2xl text-cyan-400 mb-1">99.9%</div>
-                <div class="text-xs text-gray-400 font-sans">Success Rate</div>
-            </div>
-            <div class="glass-card rounded-2xl p-4 text-center border-gray-800">
-                <div class="font-orbitron font-bold text-2xl text-blue-400 mb-1">Instant</div>
-                <div class="text-xs text-gray-400 font-sans">WhatsApp Setup</div>
-            </div>
-            <div class="glass-card rounded-2xl p-4 text-center border-gray-800">
-                <div class="font-orbitron font-bold text-2xl text-purple-400 mb-1">24/7</div>
-                <div class="text-xs text-gray-400 font-sans">Direct Support</div>
-            </div>
-            <div class="glass-card rounded-2xl p-4 text-center border-gray-800">
-                <div class="font-orbitron font-bold text-2xl text-pink-400 mb-1">100%</div>
-                <div class="text-xs text-gray-400 font-sans">Secure Checkout</div>
-            </div>
-        </div>
-
-        <!-- Mobile Search Input -->
-        <div class="md:hidden max-w-md mx-auto mb-6">
+        <!-- Mobile Search -->
+        <div class="sm:hidden max-w-md mx-auto mb-6 px-4">
             <div class="relative">
                 <span class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-500">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </span>
                 <input type="text" id="mobileSearchInput" placeholder="Search services..." 
-                    class="bg-gray-900 border border-gray-800 text-sm rounded-xl pl-11 pr-4 py-3 focus:outline-none focus:border-cyan-500 text-gray-200 w-full font-sans">
+                    class="bg-gray-900 border border-gray-800 text-sm rounded-xl pl-11 pr-4 py-3 focus:outline-none focus:border-cyan-500 text-gray-200 w-full">
             </div>
         </div>
     </header>
 
-    <!-- Main Catalog Section -->
-    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full" id="servicesSection">
-        
-        <!-- Filter Header -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4 border-b border-gray-800/80 pb-6">
+    <!-- Services Catalog Section -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full" id="services">
+        <div class="flex items-center justify-between mb-10 border-b border-gray-800/80 pb-6">
             <div>
-                <h2 class="font-orbitron text-2xl sm:text-3xl font-extrabold tracking-wide flex items-center space-x-3">
-                    <i class="fa-solid fa-layer-group text-cyan-400"></i>
-                    <span>All Digital Services</span>
-                </h2>
-                <p class="text-gray-400 text-xs sm:text-sm mt-1">Browse active services and place your order directly via WhatsApp.</p>
+                <h2 class="font-orbitron text-2xl sm:text-3xl font-extrabold tracking-wide">All Services</h2>
+                <p class="text-gray-400 text-sm mt-1">Select any professional service to order instantly via WhatsApp.</p>
             </div>
-            
-            <div class="flex items-center space-x-3">
-                <div id="serviceCountBadge" class="text-xs font-orbitron font-semibold px-4 py-2 rounded-xl bg-gray-900/90 border border-gray-800 text-cyan-400">
-                    Loading Catalog...
-                </div>
+            <div id="serviceCount" class="text-xs font-orbitron px-4 py-2 rounded-xl bg-gray-900 border border-gray-800 text-cyan-400">
+                Loading...
             </div>
         </div>
 
-        <!-- Loading Skeleton -->
-        <div id="loadingState" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div class="glass-card rounded-2xl p-6 h-96 animate-pulse flex flex-col justify-between">
-                <div class="w-full h-44 bg-gray-800/60 rounded-xl mb-4"></div>
+        <!-- Loading State -->
+        <div id="loadingState" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="glass-card rounded-2xl p-6 h-80 animate-pulse flex flex-col justify-between">
+                <div class="w-12 h-12 bg-gray-800 rounded-xl"></div>
                 <div class="space-y-3">
-                    <div class="h-6 bg-gray-800/60 rounded w-3/4"></div>
-                    <div class="h-4 bg-gray-800/60 rounded w-full"></div>
+                    <div class="h-6 bg-gray-800 rounded w-3/4"></div>
+                    <div class="h-4 bg-gray-800 rounded w-full"></div>
                 </div>
-                <div class="h-12 bg-gray-800/60 rounded-xl w-full mt-4"></div>
-            </div>
-            <div class="glass-card rounded-2xl p-6 h-96 animate-pulse flex flex-col justify-between">
-                <div class="w-full h-44 bg-gray-800/60 rounded-xl mb-4"></div>
-                <div class="space-y-3">
-                    <div class="h-6 bg-gray-800/60 rounded w-3/4"></div>
-                    <div class="h-4 bg-gray-800/60 rounded w-full"></div>
-                </div>
-                <div class="h-12 bg-gray-800/60 rounded-xl w-full mt-4"></div>
-            </div>
-            <div class="glass-card rounded-2xl p-6 h-96 animate-pulse flex flex-col justify-between">
-                <div class="w-full h-44 bg-gray-800/60 rounded-xl mb-4"></div>
-                <div class="space-y-3">
-                    <div class="h-6 bg-gray-800/60 rounded w-3/4"></div>
-                    <div class="h-4 bg-gray-800/60 rounded w-full"></div>
-                </div>
-                <div class="h-12 bg-gray-800/60 rounded-xl w-full mt-4"></div>
+                <div class="h-10 bg-gray-800 rounded-xl w-full"></div>
             </div>
         </div>
 
         <!-- Empty State -->
         <div id="emptyState" class="hidden text-center py-20">
-            <div class="w-24 h-24 bg-gray-900/80 border border-gray-800 rounded-3xl flex items-center justify-center mx-auto mb-6 text-cyan-400 text-4xl shadow-2xl">
+            <div class="w-20 h-20 bg-gray-900 border border-gray-800 rounded-2xl flex items-center justify-center mx-auto mb-4 text-cyan-400 text-3xl shadow-xl">
                 <i class="fa-solid fa-box-open"></i>
             </div>
-            <h3 class="font-orbitron text-2xl font-bold mb-2">No Active Services Found</h3>
-            <p class="text-gray-400 text-sm max-w-md mx-auto">There are no services matching your query right now. Please check back later or update your search terms.</p>
+            <h3 class="font-orbitron text-xl font-bold mb-2">No Services Available</h3>
+            <p class="text-gray-400 text-sm max-w-md mx-auto">No published services found in database right now. Please add services from the admin panel.</p>
         </div>
 
-        <!-- Dynamic Grid -->
-        <div id="servicesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        <!-- Services Grid -->
+        <div id="servicesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-gray-800/80 bg-darkBg/95 backdrop-blur-2xl mt-24">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col md:flex-row items-center justify-between gap-6">
+    <footer class="border-t border-gray-800/80 bg-darkBg/90 backdrop-blur-2xl mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="flex items-center space-x-3">
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center shadow-md">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center">
                     <i class="fa-solid fa-cubes-stacked text-black text-sm font-black"></i>
                 </div>
                 <span class="font-orbitron font-bold text-lg bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
                     AMAR SOCIAL HUB PRO
                 </span>
             </div>
-
-            <p class="text-gray-500 text-xs text-center font-sans">
-                &copy; 2026 Amar Social Hub Pro. All rights reserved. High-Performance Digital Marketplace Engine.
+            <p class="text-gray-500 text-sm text-center">
+                &copy; 2026 Amar Social Hub Pro. All rights reserved.
             </p>
-
-            <div class="flex items-center space-x-4 text-gray-400">
-                <a href="#" class="hover:text-cyan-400 transition-colors"><i class="fa-solid fa-globe"></i></a>
-                <a href="https://wa.me/" id="footerWhatsApp" target="_blank" class="hover:text-green-400 transition-colors"><i class="fa-brands fa-whatsapp text-xl"></i></a>
-            </div>
         </div>
     </footer>
 
-    <!-- Firebase Modular SDK & Engine Script -->
+    <!-- Firebase SDKs with custom database ID 'default' -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { initializeFirestore, collection, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCrrUQLMes8TcRXbEk1I1a8D6vnhAFaLNvI",
@@ -313,101 +191,79 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        // Linking to database ID 'default'
+        const db = initializeFirestore(app, {}, 'default');
 
         let allServices = [];
         let globalWhatsAppNumber = "923000000000";
 
-        // Three.js Dynamic Cyber Mesh Background
-        function init3DBackground() {
+        // Three.js Background
+        function init3D() {
             const canvas = document.getElementById('bg3dCanvas');
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-
             renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-            // Particles Geometry
-            const particleCount = 120;
             const geometry = new THREE.BufferGeometry();
-            const positions = new Float32Array(particleCount * 3);
-
-            for (let i = 0; i < particleCount * 3; i++) {
-                positions[i] = (Math.random() - 0.5) * 15;
-            }
-
+            const count = 100;
+            const positions = new Float32Array(count * 3);
+            for (let i = 0; i < count * 3; i++) positions[i] = (Math.random() - 0.5) * 15;
             geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
-            const material = new THREE.PointsMaterial({
-                color: 0x06b6d4,
-                size: 0.04,
-                transparent: true,
-                opacity: 0.6
-            });
-
+            const material = new THREE.PointsMaterial({ color: 0x06b6d4, size: 0.04, transparent: true, opacity: 0.5 });
             const particles = new THREE.Points(geometry, material);
             scene.add(particles);
-
             camera.position.z = 5;
 
             function animate() {
                 requestAnimationFrame(animate);
                 particles.rotation.y += 0.001;
-                particles.rotation.x += 0.0005;
                 renderer.render(scene, camera);
             }
-
             animate();
-
-            window.addEventListener('resize', () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            });
         }
 
-        // Load Public Firestore Data
         async function loadPublicData() {
             const loadingState = document.getElementById('loadingState');
             const emptyState = document.getElementById('emptyState');
-            const serviceCountBadge = document.getElementById('serviceCountBadge');
+            const servicesGrid = document.getElementById('servicesGrid');
+            const serviceCount = document.getElementById('serviceCount');
 
             try {
-                // Fetch WhatsApp Settings
+                // Fetch Settings
                 const settingsSnap = await getDocs(collection(db, "settings"));
-                settingsSnap.forEach(docSnap => {
-                    const data = docSnap.data();
-                    if(data.whatsappNumber) {
-                        globalWhatsAppNumber = data.whatsappNumber;
-                        const cleanNum = globalWhatsAppNumber.replace(/\D/g, '');
-                        document.getElementById('footerWhatsApp').href = `https://wa.me/${cleanNum}`;
-                    }
+                settingsSnap.forEach(doc => {
+                    const data = doc.data();
+                    if(data.whatsappNumber) globalWhatsAppNumber = data.whatsappNumber;
                 });
 
-                // Fetch Active Services
+                // Fetch Services from database 'default'
                 const querySnapshot = await getDocs(collection(db, "services"));
                 allServices = [];
-                querySnapshot.forEach((docSnap) => {
-                    const data = docSnap.data();
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    // Include service if available is true or undefined
                     if (data.available !== false) {
-                        allServices.push({ id: docSnap.id, ...data });
+                        allServices.push({ id: doc.id, ...data });
                     }
                 });
 
                 loadingState.style.display = 'none';
-                serviceCountBadge.textContent = `${allServices.length} Active Services`;
+                serviceCount.textContent = `${allServices.length} Services Active`;
 
                 if (allServices.length === 0) {
                     emptyState.style.display = 'block';
+                    servicesGrid.innerHTML = '';
                     return;
                 }
 
+                emptyState.style.display = 'none';
                 renderServices(allServices);
 
             } catch (error) {
-                console.error("Error loading services:", error);
-                loadingState.innerHTML = `<div class="col-span-3 text-center text-red-400 py-12 font-orbitron">Failed to connect to catalog database. Please check your network.</div>`;
+                console.error("Error loading public services:", error);
+                loadingState.innerHTML = `<div class="col-span-3 text-center text-red-400 py-10 font-orbitron">Failed to load services from database.</div>`;
             }
         }
 
@@ -418,26 +274,17 @@
             services.forEach(service => {
                 const card = document.createElement('div');
                 card.className = "glass-card rounded-2xl p-6 flex flex-col justify-between group relative overflow-hidden";
-
+                
                 let mediaHtml = '';
                 if(service.imageUrl && service.imageUrl.trim() !== '') {
-                    mediaHtml = `
-                        <div class="w-full h-48 rounded-xl overflow-hidden mb-5 border border-gray-800 bg-gray-900/50 relative">
-                            <img src="${service.imageUrl}" alt="${service.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div class="absolute inset-0 bg-gradient-to-t from-darkBg/90 via-transparent to-transparent"></div>
-                        </div>
-                    `;
+                    mediaHtml = `<div class="w-full h-44 rounded-xl overflow-hidden mb-5 border border-gray-800 bg-gray-900/50"><img src="${service.imageUrl}" alt="${service.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>`;
                 } else {
-                    mediaHtml = `
-                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-3xl mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                            <i class="${service.icon || 'fa-solid fa-bolt'}"></i>
-                        </div>
-                    `;
+                    mediaHtml = `<div class="w-14 h-14 rounded-xl bg-gradient-to-tr from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-2xl mb-5 shadow-lg"><i class="${service.icon || 'fa-solid fa-rocket'}"></i></div>`;
                 }
 
                 const cleanNum = globalWhatsAppNumber.replace(/\D/g, '');
-                const textMessage = encodeURIComponent(`Hello Amar Social Hub Pro! I am interested in ordering the service: "${service.name}" priced at ${service.price}. Please provide payment & order details.`);
-                const whatsappUrl = `https://wa.me/${cleanNum}?text=${textMessage}`;
+                const message = encodeURIComponent(`Hello, I want to order the service: "${service.name}" priced at ${service.price}. Please guide me further.`);
+                const whatsappLink = `https://wa.me/${cleanNum}?text=${message}`;
 
                 card.innerHTML = `
                     <div>
@@ -445,14 +292,14 @@
                         <h3 class="font-orbitron font-bold text-xl text-white mb-2 group-hover:text-cyan-400 transition-colors">${service.name}</h3>
                         <p class="text-gray-400 text-sm mb-6 leading-relaxed line-clamp-3">${service.description}</p>
                     </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-gray-800/80 mt-auto">
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-800/80">
                         <div>
-                            <span class="text-[10px] text-gray-500 block uppercase font-orbitron tracking-widest">Price</span>
-                            <span class="font-orbitron font-black text-2xl text-cyan-400">${service.price}</span>
+                            <span class="text-xs text-gray-500 block uppercase font-orbitron tracking-wider">Price</span>
+                            <span class="font-orbitron font-black text-xl text-cyan-400">${service.price}</span>
                         </div>
-                        <button onclick="handleOrder('${service.name}', '${service.price}', '${whatsappUrl}')" class="bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-black font-orbitron font-bold px-5 py-3 rounded-xl text-xs sm:text-sm shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 hover:scale-105 transition-all flex items-center space-x-2">
+                        <button onclick="handleOrder('${service.name}', '${service.price}', '${whatsappLink}')" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black font-orbitron font-bold px-4 py-2.5 rounded-xl text-sm shadow-lg shadow-cyan-500/20 transition-all flex items-center space-x-2 cursor-pointer">
                             <i class="fa-brands fa-whatsapp text-lg"></i>
-                            <span>Order Now</span>
+                            <span>Order</span>
                         </button>
                     </div>
                 `;
@@ -460,7 +307,6 @@
             });
         }
 
-        // Global Order Handler (Logs Order to Firestore & Opens WhatsApp)
         window.handleOrder = async function(serviceName, servicePrice, whatsappUrl) {
             try {
                 await addDoc(collection(db, "orders"), {
@@ -475,7 +321,7 @@
             window.open(whatsappUrl, '_blank');
         };
 
-        // Real-Time Search Filter
+        // Search Filter
         function filterServices() {
             const query = (document.getElementById('searchInput').value || document.getElementById('mobileSearchInput').value || '').toLowerCase();
             const filtered = allServices.filter(s => s.name.toLowerCase().includes(query) || s.description.toLowerCase().includes(query));
@@ -486,7 +332,7 @@
         document.getElementById('mobileSearchInput').addEventListener('input', filterServices);
 
         window.addEventListener('DOMContentLoaded', () => {
-            init3DBackground();
+            init3D();
             loadPublicData();
         });
     </script>
