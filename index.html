@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AMAR SOCIAL HUB PRO - Ultimate Digital & Social Growth Services</title>
+    <title id="page-meta-title">AMAR SOCIAL HUB PRO - Ultimate Digital & Social Growth Services</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -34,9 +34,8 @@
             color: #f3f4f6;
             overflow-x: hidden;
         }
-        /* Glassmorphism & Neon Glows */
         .glass-card {
-            background: rgba(11, 15, 25, 0.7);
+            background: rgba(11, 15, 25, 0.75);
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
@@ -49,11 +48,6 @@
             border-color: rgba(0, 242, 254, 0.4);
             box-shadow: 0 12px 40px rgba(0, 242, 254, 0.15);
         }
-        .neon-border {
-            border: 1px solid transparent;
-            background: linear-gradient(#0b0f19, #0b0f19) padding-box,
-                        linear-gradient(135deg, #00f2fe, #7928ca) border-box;
-        }
         .neon-glow-btn {
             background: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #7928ca 100%);
             transition: all 0.3s ease;
@@ -63,7 +57,6 @@
             box-shadow: 0 0 30px rgba(0, 242, 254, 0.8), 0 0 50px rgba(121, 40, 202, 0.5);
             transform: translateY(-2px);
         }
-        /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -78,8 +71,8 @@
             background: #374151;
         }
         @keyframes pulseGlow {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 0.8; }
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
         }
         .bg-glow-blob {
             animation: pulseGlow 8s infinite ease-in-out;
@@ -88,11 +81,11 @@
 </head>
 <body class="min-h-screen flex flex-col relative selection:bg-neonblue selection:text-black">
 
-    <div class="fixed top-0 left-1/4 w-96 h-96 bg-neonblue/10 rounded-full blur-3xl pointer-events-none bg-glow-blob"></div>
-    <div class="fixed bottom-1/3 right-1/4 w-96 h-96 bg-neonpurple/10 rounded-full blur-3xl pointer-events-none bg-glow-blob" style="animation-delay: 4s;"></div>
+    <div class="fixed top-0 left-1/4 w-[500px] h-[500px] bg-neonblue/10 rounded-full blur-[120px] pointer-events-none bg-glow-blob"></div>
+    <div class="fixed bottom-1/3 right-1/4 w-[500px] h-[500px] bg-neonpurple/10 rounded-full blur-[120px] pointer-events-none bg-glow-blob" style="animation-delay: 4s;"></div>
 
     <nav class="sticky top-0 z-50 glass-card border-b border-white/10 px-4 lg:px-12 py-4 flex items-center justify-between">
-        <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('public')">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
             <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-neonblue to-neonpurple flex items-center justify-center shadow-lg shadow-neonblue/30">
                 <i class="fa-solid fa-bolt text-black text-lg font-bold"></i>
             </div>
@@ -102,340 +95,124 @@
             </div>
         </div>
 
-        <div class="hidden md:flex items-center space-x-6">
-            <button onclick="switchView('public')" class="text-sm font-medium text-gray-300 hover:text-neonblue transition-colors">Home</button>
-            <a href="#services" class="text-sm font-medium text-gray-300 hover:text-neonblue transition-colors">Services</a>
-            <a href="#features" class="text-sm font-medium text-gray-300 hover:text-neonblue transition-colors">Why Us</a>
-            <button onclick="openInstructionsModal()" class="text-sm font-medium text-gray-300 hover:text-neonblue transition-colors flex items-center gap-1.5">
-                <i class="fa-solid fa-book text-xs"></i> Setup Guide
-            </button>
+        <div class="hidden md:flex items-center space-x-8">
+            <a href="#services-section" class="text-sm font-medium text-gray-300 hover:text-neonblue transition-colors">Services</a>
+            <a href="#features-section" class="text-sm font-medium text-gray-300 hover:text-neonblue transition-colors">Why Choose Us</a>
+            <a href="#stats-section" class="text-sm font-medium text-gray-300 hover:text-neonblue transition-colors">Statistics</a>
         </div>
 
         <div class="flex items-center space-x-3">
-            <button id="nav-admin-btn" onclick="openAdminPortal()" class="px-4 py-2 rounded-xl text-xs font-semibold glass-card border border-neonblue/40 text-neonblue hover:bg-neonblue/10 transition-all flex items-center gap-2">
-                <i class="fa-solid fa-shield-halved"></i> <span id="admin-btn-text">Admin Portal</span>
-            </button>
+            <a href="admin.html" class="px-4 py-2 rounded-xl text-xs font-semibold glass-card border border-neonblue/30 text-neonblue hover:bg-neonblue/10 transition-all flex items-center gap-2">
+                <i class="fa-solid fa-shield-halved"></i> <span>Admin Panel</span>
+            </a>
         </div>
     </nav>
 
     <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col space-y-2 pointer-events-none"></div>
 
-    <main class="flex-grow">
-        <!-- ================= PUBLIC WEBSITE VIEW ================= -->
-        <div id="view-public" class="space-y-20 pb-20">
-            <!-- Hero Section -->
-            <section class="relative pt-20 pb-16 px-4 lg:px-12 text-center max-w-5xl mx-auto">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-neonblue/30 text-xs text-neonblue font-semibold mb-6 shadow-inner">
-                    <span class="w-2 h-2 rounded-full bg-neonblue animate-ping"></span>
-                    Next-Gen Social Media Growth & Marketing Hub
-                </div>
-                <h1 id="hero-title" class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight mb-6">
-                    Supercharge Your <span class="bg-gradient-to-r from-neonblue via-cyan-300 to-neonpurple bg-clip-text text-transparent">Digital Presence</span>
-                </h1>
-                <p id="hero-subtitle" class="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto mb-10">
-                    Accelerate your brand growth with elite engagement services, lightning-fast delivery, and premium 24/7 support.
-                </p>
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <a href="#services" class="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-black neon-glow-btn flex items-center justify-center gap-3">
-                        <i class="fa-solid fa-rocket"></i> Explore Services
-                    </a>
-                    <button onclick="openInstructionsModal()" class="w-full sm:w-auto px-8 py-4 rounded-xl font-semibold glass-card border border-white/10 hover:border-neonpurple/50 transition-all flex items-center justify-center gap-3 text-white">
-                        <i class="fa-solid fa-code text-neonpurple"></i> Deployment Guide
-                    </button>
-                </div>
-            </section>
+    <main class="flex-grow space-y-24 pb-24">
+        <!-- Hero Section -->
+        <section class="relative pt-24 pb-16 px-4 lg:px-12 text-center max-w-5xl mx-auto">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-neonblue/30 text-xs text-neonblue font-semibold mb-6 shadow-inner">
+                <span class="w-2 h-2 rounded-full bg-neonblue animate-ping"></span>
+                Next-Gen Social Media Growth & Marketing Hub
+            </div>
+            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight mb-6">
+                Supercharge Your <span class="bg-gradient-to-r from-neonblue via-cyan-300 to-neonpurple bg-clip-text text-transparent">Digital Presence</span>
+            </h1>
+            <p class="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto mb-10">
+                Accelerate your brand growth with elite engagement services, lightning-fast delivery, and professional 24/7 WhatsApp support.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#services-section" class="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-black neon-glow-btn flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-rocket"></i> Explore Services Catalog
+                </a>
+            </div>
+        </section>
 
-            <!-- Stats Bar -->
-            <section class="px-4 lg:px-12 max-w-6xl mx-auto">
-                <div class="glass-card rounded-2xl p-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                    <div>
-                        <div class="text-3xl font-extrabold text-neonblue">99.9%</div>
-                        <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Success Rate</div>
-                    </div>
-                    <div>
-                        <div class="text-3xl font-extrabold text-cyan-400">24/7</div>
-                        <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Instant Support</div>
-                    </div>
-                    <div>
-                        <div class="text-3xl font-extrabold text-purple-400">50K+</div>
-                        <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Orders Completed</div>
-                    </div>
-                    <div>
-                        <div class="text-3xl font-extrabold text-pink-400">100%</div>
-                        <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Secure & Trusted</div>
-                    </div>
+        <!-- Stats Bar -->
+        <section id="stats-section" class="px-4 lg:px-12 max-w-6xl mx-auto">
+            <div class="glass-card rounded-2xl p-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div>
+                    <div class="text-3xl font-extrabold text-neonblue">99.9%</div>
+                    <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Success Rate</div>
                 </div>
-            </section>
-
-            <!-- Services Section -->
-            <section id="services" class="px-4 lg:px-12 max-w-7xl mx-auto">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl sm:text-4xl font-extrabold mb-3">Available Services</h2>
-                    <p class="text-gray-400 max-w-md mx-auto">Choose from our curated collection of professional social growth packages.</p>
+                <div>
+                    <div class="text-3xl font-extrabold text-cyan-400">24/7</div>
+                    <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Instant Support</div>
                 </div>
-
-                <!-- Category/Search Filters -->
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
-                    <div id="category-filters" class="flex flex-wrap gap-2 justify-center sm:justify-start">
-                        <button onclick="filterServices('all')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-neonblue text-black transition-all">All Services</button>
-                    </div>
-                    <div class="w-full sm:w-72 relative">
-                        <i class="fa-solid fa-search absolute left-4 top-3.5 text-gray-400 text-sm"></i>
-                        <input type="text" id="service-search" oninput="renderServices()" placeholder="Search services..." class="w-full pl-11 pr-4 py-2.5 rounded-xl glass-card border border-white/10 text-sm focus:outline-none focus:border-neonblue text-white placeholder-gray-500">
-                    </div>
+                <div>
+                    <div class="text-3xl font-extrabold text-purple-400">50K+</div>
+                    <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Orders Completed</div>
                 </div>
-
-                <!-- Services Grid -->
-                <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Dynamic Service Cards loaded via JS -->
-                    <div class="glass-card rounded-2xl p-8 text-center col-span-full py-16 text-gray-400">
-                        <i class="fa-solid fa-spinner fa-spin text-3xl text-neonblue mb-3"></i>
-                        <p>Loading catalog from Firebase...</p>
-                    </div>
+                <div>
+                    <div class="text-3xl font-extrabold text-pink-400">100%</div>
+                    <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider">Secure & Trusted</div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- Why Choose Us -->
-            <section id="features" class="px-4 lg:px-12 max-w-7xl mx-auto">
-                <div class="glass-card rounded-3xl p-8 sm:p-12 relative overflow-hidden">
-                    <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-neonblue/10 rounded-full blur-3xl pointer-events-none"></div>
-                    <div class="text-center max-w-2xl mx-auto mb-12">
-                        <h2 class="text-3xl font-extrabold mb-3">Why AMAR SOCIAL HUB PRO?</h2>
-                        <p class="text-gray-400">Engineered for creators, influencers, and businesses aiming for rapid dominance.</p>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div class="glass-card p-6 rounded-2xl border border-white/5">
-                            <div class="w-12 h-12 rounded-xl bg-neonblue/10 text-neonblue flex items-center justify-center text-xl mb-4 font-bold">
-                                <i class="fa-solid fa-bolt"></i>
-                            </div>
-                            <h3 class="text-lg font-bold mb-2">Lightning Fast Delivery</h3>
-                            <p class="text-gray-400 text-sm">Orders begin processing instantly upon verification with guaranteed fulfillment times.</p>
-                        </div>
-                        <div class="glass-card p-6 rounded-2xl border border-white/5">
-                            <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl mb-4 font-bold">
-                                <i class="fa-solid fa-shield-halved"></i>
-                            </div>
-                            <h3 class="text-lg font-bold mb-2">100% Safe & Secure</h3>
-                            <p class="text-gray-400 text-sm">No account passwords or sensitive tokens required. Fully compliant safety protocols.</p>
-                        </div>
-                        <div class="glass-card p-6 rounded-2xl border border-white/5">
-                            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-xl mb-4 font-bold">
-                                <i class="fa-solid fa-headset"></i>
-                            </div>
-                            <h3 class="text-lg font-bold mb-2">Direct WhatsApp Support</h3>
-                            <p class="text-gray-400 text-sm">Instant human assistance via WhatsApp with seamless pre-filled order summaries.</p>
-                        </div>
-                    </div>
+        <!-- Services Section -->
+        <section id="services-section" class="px-4 lg:px-12 max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-extrabold mb-3">Available Services</h2>
+                <p class="text-gray-400 max-w-md mx-auto">Choose from our curated collection of professional social growth packages.</p>
+            </div>
+
+            <!-- Category Filters & Search -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+                <div id="category-filters" class="flex flex-wrap gap-2 justify-center sm:justify-start">
+                    <button onclick="filterServices('all')" class="px-4 py-2 rounded-xl text-xs font-semibold bg-neonblue text-black transition-all">All Services</button>
                 </div>
-            </section>
-        </div>
-
-        <!-- ================= ADMIN PANEL VIEW ================= -->
-        <div id="view-admin" class="hidden px-4 lg:px-12 py-10 max-w-7xl mx-auto space-y-8">
-            <!-- Login State / Dashboard Toggle -->
-            <div id="admin-auth-container" class="max-w-md mx-auto pt-16">
-                <div class="glass-card rounded-3xl p-8 border border-neonblue/30 shadow-2xl">
-                    <div class="text-center mb-8">
-                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-neonblue to-neonpurple mx-auto flex items-center justify-center shadow-lg shadow-neonblue/30 mb-4">
-                            <i class="fa-solid fa-lock text-black text-2xl font-bold"></i>
-                        </div>
-                        <h2 class="text-2xl font-extrabold">Admin Authentication</h2>
-                        <p class="text-xs text-gray-400 mt-1">Authorized access for <span class="text-neonblue font-semibold">zainbalochkhan00@gmail.com</span></p>
-                    </div>
-                    <form id="login-form" onsubmit="handleAdminLogin(event)" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-400 mb-1 uppercase tracking-wider">Admin Email</label>
-                            <input type="email" id="login-email" value="zainbalochkhan00@gmail.com" required class="w-full px-4 py-3 rounded-xl glass-card border border-white/10 text-sm focus:outline-none focus:border-neonblue text-white">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-400 mb-1 uppercase tracking-wider">Password</label>
-                            <input type="password" id="login-password" placeholder="••••••••••••" required class="w-full px-4 py-3 rounded-xl glass-card border border-white/10 text-sm focus:outline-none focus:border-neonblue text-white">
-                        </div>
-                        <button type="submit" class="w-full py-3.5 rounded-xl font-bold text-black neon-glow-btn flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-right-to-bracket"></i> Secure Login
-                        </button>
-                    </form>
+                <div class="w-full sm:w-72 relative">
+                    <i class="fa-solid fa-search absolute left-4 top-3.5 text-gray-400 text-sm"></i>
+                    <input type="text" id="service-search" oninput="renderServicesCatalog()" placeholder="Search services..." class="w-full pl-11 pr-4 py-2.5 rounded-xl glass-card border border-white/10 text-sm focus:outline-none focus:border-neonblue text-white placeholder-gray-500">
                 </div>
             </div>
 
-            <!-- Dashboard Content (Hidden until logged in) -->
-            <div id="admin-dashboard" class="hidden space-y-8">
-                <!-- Dashboard Header -->
-                <div class="glass-card rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div>
-                        <h2 class="text-2xl font-extrabold flex items-center gap-2">
-                            <i class="fa-solid fa-gauge-high text-neonblue"></i> Admin Dashboard
-                        </h2>
-                        <p class="text-xs text-gray-400 mt-1">Manage services, global WhatsApp number, and platform branding.</p>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <button onclick="openServiceModal('add')" class="px-4 py-2.5 rounded-xl text-xs font-bold text-black neon-glow-btn flex items-center gap-2">
-                            <i class="fa-solid fa-plus"></i> Add New Service
-                        </button>
-                        <button onclick="handleAdminLogout()" class="px-4 py-2.5 rounded-xl text-xs font-semibold glass-card border border-red-500/40 text-red-400 hover:bg-red-500/10 transition-all flex items-center gap-2">
-                            <i class="fa-solid fa-right-from-bracket"></i> Logout
-                        </button>
-                    </div>
+            <!-- Services Grid -->
+            <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="glass-card rounded-2xl p-12 text-center col-span-full py-16 text-gray-400">
+                    <i class="fa-solid fa-spinner fa-spin text-3xl text-neonblue mb-3"></i>
+                    <p>Loading live services from Firebase...</p>
                 </div>
+            </div>
+        </section>
 
-                <!-- Settings Card -->
-                <div class="glass-card rounded-2xl p-6">
-                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-gear text-neonpurple"></i> Global Platform Settings
-                    </h3>
-                    <form id="settings-form" onsubmit="saveGlobalSettings(event)" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-400 mb-1 uppercase tracking-wider">WhatsApp Number (e.g. 923001234567)</label>
-                            <input type="text" id="setting-whatsapp" required class="w-full px-4 py-2.5 rounded-xl glass-card border border-white/10 text-sm focus:outline-none focus:border-neonblue text-white" placeholder="923001234567">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-400 mb-1 uppercase tracking-wider">Website Title</label>
-                            <input type="text" id="setting-title" required class="w-full px-4 py-2.5 rounded-xl glass-card border border-white/10 text-sm focus:outline-none focus:border-neonblue text-white">
-                        </div>
-                        <div class="flex items-end">
-                            <button type="submit" class="w-full py-2.5 rounded-xl text-xs font-bold text-black neon-glow-btn">
-                                Save Settings
-                            </button>
-                        </div>
-                    </form>
+        <!-- Why Choose Us -->
+        <section id="features-section" class="px-4 lg:px-12 max-w-7xl mx-auto">
+            <div class="glass-card rounded-3xl p-8 sm:p-12 relative overflow-hidden">
+                <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-neonblue/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <h2 class="text-3xl font-extrabold mb-3">Why AMAR SOCIAL HUB PRO?</h2>
+                    <p class="text-gray-400">Engineered for creators, influencers, and businesses aiming for rapid dominance.</p>
                 </div>
-
-                <!-- Services Management Table -->
-                <div class="glass-card rounded-2xl p-6">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-lg font-bold flex items-center gap-2">
-                            <i class="fa-solid fa-list-check text-cyan-400"></i> Service Catalog Management
-                        </h3>
-                        <span id="admin-services-count" class="text-xs px-3 py-1 rounded-full glass-card border border-white/10 text-gray-300">0 services</span>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="glass-card p-6 rounded-2xl border border-white/5">
+                        <div class="w-12 h-12 rounded-xl bg-neonblue/10 text-neonblue flex items-center justify-center text-xl mb-4 font-bold">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">Lightning Fast Delivery</h3>
+                        <p class="text-gray-400 text-sm">Orders begin processing instantly upon verification with guaranteed fulfillment times.</p>
                     </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm text-gray-300">
-                            <thead class="text-xs uppercase text-gray-400 border-b border-white/10">
-                                <tr>
-                                    <th class="py-3 px-4">Service</th>
-                                    <th class="py-3 px-4">Category</th>
-                                    <th class="py-3 px-4">Price</th>
-                                    <th class="py-3 px-4">Status</th>
-                                    <th class="py-3 px-4 text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="admin-services-tbody">
-                                <!-- Populated dynamically -->
-                            </tbody>
-                        </table>
+                    <div class="glass-card p-6 rounded-2xl border border-white/5">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl mb-4 font-bold">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">100% Safe & Secure</h3>
+                        <p class="text-gray-400 text-sm">No account passwords or sensitive tokens required. Fully compliant safety protocols.</p>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl border border-white/5">
+                        <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-xl mb-4 font-bold">
+                            <i class="fa-solid fa-headset"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">Direct WhatsApp Support</h3>
+                        <p class="text-gray-400 text-sm">Instant human assistance via WhatsApp with seamless pre-filled order summaries.</p>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     </main>
-
-    <div id="service-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden p-4">
-        <div class="glass-card rounded-3xl p-8 max-w-lg w-full border border-neonblue/30 relative">
-            <button onclick="closeServiceModal()" class="absolute top-6 right-6 text-gray-400 hover:text-white text-lg">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <h3 id="modal-title" class="text-xl font-extrabold mb-6">Add New Service</h3>
-            <form id="service-form" onsubmit="handleServiceFormSubmit(event)" class="space-y-4">
-                <input type="hidden" id="service-edit-id">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 mb-1 uppercase tracking-wider">Service Name</label>
-                    <input type="text" id="modal-name" required class="w-full px-4 py-2.5 rounded-xl glass-card border border-white/10 text-sm focus:outline-none focus:border-neonblue text-white" placeholder="Instagram 1k Followers">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-400 mb-1 uppercase tracking-wider">Category</label>
-                        <input type="text" id="modal-category" required class="w-full px-4 py-2.5 rounded-xl glass-card border border-white/10 text-sm focus:outline-none focus:border-neonblue text-white" placeholder="Instagram">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-400 mb-1 uppercase tracking-wider">Price (e.g. $5.00)</label>
-                        <input type="text" id="modal-price" required class="w-full px-4 py-2.5 rounded-xl glass-card border border-white/10 text-sm focus:outline-none focus:border-neonblue text-white" placeholder="$5.00">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 mb-1 uppercase tracking-wider">FontAwesome Icon Class or Image URL</label>
-                    <input type="text" id="modal-icon" required class="w-full px-4 py-2.5 rounded-xl glass-card border border-white/10 text-sm focus:outline-none focus:border-neonblue text-white" value="fa-brands fa-instagram" placeholder="fa-brands fa-instagram">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 mb-1 uppercase tracking-wider">Description</label>
-                    <textarea id="modal-description" rows="3" required class="w-full px-4 py-2.5 rounded-xl glass-card border border-white/10 text-sm focus:outline-none focus:border-neonblue text-white" placeholder="High quality organic followers with 30 days refill guarantee..."></textarea>
-                </div>
-                <div class="flex items-center gap-3 pt-2">
-                    <input type="checkbox" id="modal-status" checked class="w-4 h-4 accent-neonblue rounded cursor-pointer">
-                    <label for="modal-status" class="text-sm font-medium text-gray-300 cursor-pointer">Service Available & Active</label>
-                </div>
-                <div class="flex items-center justify-end gap-3 pt-4">
-                    <button type="button" onclick="closeServiceModal()" class="px-5 py-2.5 rounded-xl text-xs font-semibold glass-card border border-white/10 text-gray-300 hover:bg-white/5">Cancel</button>
-                    <button type="submit" class="px-6 py-2.5 rounded-xl text-xs font-bold text-black neon-glow-btn">Save Service</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div id="instructions-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden p-4">
-        <div class="glass-card rounded-3xl p-8 max-w-2xl w-full border border-neonpurple/40 relative max-h-[90vh] overflow-y-auto">
-            <button onclick="closeInstructionsModal()" class="absolute top-6 right-6 text-gray-400 hover:text-white text-lg">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <div class="flex items-center gap-3 mb-6">
-                <div class="w-10 h-10 rounded-xl bg-neonpurple/20 text-neonpurple flex items-center justify-center text-lg font-bold">
-                    <i class="fa-solid fa-book"></i>
-                </div>
-                <div>
-                    <h3 class="text-xl font-extrabold">Firebase & Vercel Setup Guide</h3>
-                    <p class="text-xs text-gray-400">Step-by-step instructions for AMAR SOCIAL HUB PRO</p>
-                </div>
-            </div>
-
-            <div class="space-y-6 text-sm text-gray-300">
-                <div class="glass-card p-5 rounded-2xl border border-white/5 space-y-2">
-                    <h4 class="font-bold text-neonblue flex items-center gap-2">
-                        <i class="fa-solid fa-1"></i> Firebase Authentication Setup
-                    </h4>
-                    <p class="text-xs text-gray-400 leading-relaxed">
-                        1. Go to the <a href="https://console.firebase.google.com/" target="_blank" class="text-neonblue underline">Firebase Console</a> for project <strong>amar-d755e</strong>.<br>
-                        2. Navigate to <strong>Build > Authentication</strong> &gt; Click <strong>Get Started</strong>.<br>
-                        3. Enable the <strong>Email/Password</strong> provider.<br>
-                        4. Go to <strong>Users</strong> tab &gt; Click <strong>Add User</strong> &gt; Create admin user with email <code class="text-neonblue">zainbalochkhan00@gmail.com</code> and your secure password.
-                    </p>
-                </div>
-
-                <div class="glass-card p-5 rounded-2xl border border-white/5 space-y-2">
-                    <h4 class="font-bold text-cyan-400 flex items-center gap-2">
-                        <i class="fa-solid fa-2"></i> Firestore Database & Security Rules
-                    </h4>
-                    <p class="text-xs text-gray-400 leading-relaxed">
-                        1. Go to <strong>Build > Firestore Database</strong> &gt; Click <strong>Create Database</strong>.<br>
-                        2. Set rules in the <strong>Rules</strong> tab to allow public read and authenticated write:
-                    </p>
-                    <pre class="bg-black/60 p-3 rounded-xl text-xs text-cyan-300 font-mono overflow-x-auto"><code>rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /services/{document} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-    match /settings/{document} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-  }
-}</code></pre>
-                </div>
-
-                <div class="glass-card p-5 rounded-2xl border border-white/5 space-y-2">
-                    <h4 class="font-bold text-purple-400 flex items-center gap-2">
-                        <i class="fa-solid fa-3"></i> Deploying to Vercel
-                    </h4>
-                    <p class="text-xs text-gray-400 leading-relaxed">
-                        1. Save this single-file HTML code as <code class="text-neonblue">index.html</code>.<br>
-                        2. Create a GitHub repository and upload <code class="text-neonblue">index.html</code> (along with a basic <code class="text-neonblue">vercel.json</code> if needed).<br>
-                        3. Go to <a href="https://vercel.com" target="_blank" class="text-neonpurple underline">Vercel Dashboard</a> &gt; Click <strong>Add New > Project</strong> &gt; Import your repository.<br>
-                        4. Click <strong>Deploy</strong>. Vercel will instantly host your static single-page app!
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <footer class="glass-card border-t border-white/10 py-10 px-4 lg:px-12 mt-auto text-center text-xs text-gray-400">
         <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -443,22 +220,19 @@ service cloud.firestore {
                 <div class="w-6 h-6 rounded-lg bg-gradient-to-tr from-neonblue to-neonpurple flex items-center justify-center text-black font-bold">
                     <i class="fa-solid fa-bolt text-xs"></i>
                 </div>
-                <span class="font-bold text-white tracking-wider">AMAR SOCIAL HUB PRO</span>
+                <span class="font-bold text-white tracking-wider" id="footer-brand-title">AMAR SOCIAL HUB PRO</span>
             </div>
             <div>&copy; 2026 AMAR SOCIAL HUB PRO. All rights reserved.</div>
             <div class="flex items-center space-x-4">
-                <button onclick="openInstructionsModal()" class="hover:text-neonblue transition-colors">Documentation</button>
-                <button onclick="openAdminPortal()" class="hover:text-neonblue transition-colors">Admin Access</button>
+                <a href="admin.html" class="hover:text-neonblue transition-colors">Admin Panel</a>
             </div>
         </div>
     </footer>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, getDocs, doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, getDoc, setDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Exact Firebase configuration provided
         const firebaseConfig = {
             apiKey: "AIzaSyCrrUQLMes8TcRXbEk1I1a8D6vnhAFaLNvI",
             authDomain: "amar-d755e.firebaseapp.com",
@@ -469,10 +243,8 @@ service cloud.firestore {
         };
 
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Global State
         window.globalSettings = {
             whatsappNumber: "923001234567",
             siteTitle: "AMAR SOCIAL HUB PRO"
@@ -480,7 +252,6 @@ service cloud.firestore {
         window.servicesList = [];
         window.currentCategoryFilter = "all";
 
-        // Toast Notification Helper
         window.showToast = function(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -489,39 +260,32 @@ service cloud.firestore {
             }`;
             toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check text-neonblue' : 'fa-circle-exclamation text-red-400'} text-base"></i><span>${message}</span>`;
             container.appendChild(toast);
-            setTimeout(() => {
-                toast.classList.remove('translate-y-2', 'opacity-0');
-            }, 10);
+            setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
             setTimeout(() => {
                 toast.classList.add('translate-y-2', 'opacity-0');
                 setTimeout(() => toast.remove(), 300);
             }, 3500);
         };
 
-        // Fetch Global Settings and Services from Firestore
-        async function loadAppData() {
+        async function loadPublicData() {
             try {
-                // Fetch settings
                 const settingsRef = doc(db, 'settings', 'public');
                 const settingsSnap = await getDoc(settingsRef);
                 if (settingsSnap.exists()) {
                     window.globalSettings = settingsSnap.data();
                     document.getElementById('nav-brand-title').innerText = window.globalSettings.siteTitle || "AMAR SOCIAL HUB PRO";
-                    document.getElementById('setting-whatsapp').value = window.globalSettings.whatsappNumber || "923001234567";
-                    document.getElementById('setting-title').value = window.globalSettings.siteTitle || "AMAR SOCIAL HUB PRO";
+                    document.getElementById('footer-brand-title').innerText = window.globalSettings.siteTitle || "AMAR SOCIAL HUB PRO";
+                    document.getElementById('page-meta-title').innerText = (window.globalSettings.siteTitle || "AMAR SOCIAL HUB PRO") + " - Ultimate Digital & Social Growth Services";
                 } else {
-                    // Initialize default settings if missing
                     await setDoc(settingsRef, window.globalSettings);
                 }
 
-                // Fetch services
                 const servicesSnap = await getDocs(collection(db, 'services'));
                 window.servicesList = [];
                 servicesSnap.forEach((docSnap) => {
                     window.servicesList.push({ id: docSnap.id, ...docSnap.data() });
                 });
 
-                // If no services exist, seed initial sample services
                 if (window.servicesList.length === 0) {
                     const sampleServices = [
                         { name: "Instagram 1,000 Followers", category: "Instagram", price: "$4.99", icon: "fa-brands fa-instagram", description: "High quality profile followers with gradual delivery and 30-day refill guarantee.", active: true },
@@ -536,15 +300,13 @@ service cloud.firestore {
                 }
 
                 renderCategoryFilters();
-                renderServices();
-                renderAdminServicesTable();
+                renderServicesCatalog();
             } catch (err) {
-                console.error("Error loading app data:", err);
-                window.showToast("Failed to load data from Firebase. Check Firestore rules.", "error");
+                console.error("Error loading data:", err);
+                window.showToast("Failed to load catalog from Firebase.", "error");
             }
         }
 
-        // Render Category Filter buttons
         function renderCategoryFilters() {
             const categories = ['all', ...new Set(window.servicesList.map(s => s.category))];
             const container = document.getElementById('category-filters');
@@ -558,11 +320,10 @@ service cloud.firestore {
         window.filterServices = function(category) {
             window.currentCategoryFilter = category;
             renderCategoryFilters();
-            renderServices();
+            renderServicesCatalog();
         }
 
-        // Render Public Services Catalog
-        window.renderServices = function() {
+        window.renderServicesCatalog = function() {
             const searchQuery = document.getElementById('service-search').value.toLowerCase();
             const grid = document.getElementById('services-grid');
             
@@ -608,218 +369,14 @@ service cloud.firestore {
             `).join('');
         }
 
-        // WhatsApp Order Dispatcher
         window.orderViaWhatsApp = function(serviceName, price) {
             const phone = window.globalSettings.whatsappNumber || "923001234567";
             const message = encodeURIComponent(`Hello AMAR SOCIAL HUB PRO! 👋\nI would like to order the following service:\n\n• Service: ${serviceName}\n• Price: ${price}\n\nPlease guide me with the payment & processing details.`);
             window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
         }
 
-        // Admin Auth State Listener
-        onAuthStateChanged(auth, (user) => {
-            const adminBtnText = document.getElementById('admin-btn-text');
-            if (user) {
-                adminBtnText.innerText = "Admin Dashboard";
-                document.getElementById('admin-auth-container').classList.add('hidden');
-                document.getElementById('admin-dashboard').classList.remove('hidden');
-                renderAdminServicesTable();
-            } else {
-                adminBtnText.innerText = "Admin Portal";
-                document.getElementById('admin-dashboard').classList.add('hidden');
-                document.getElementById('admin-auth-container').classList.remove('hidden');
-            }
-        });
-
-        // View Switcher (Public vs Admin)
-        window.switchView = function(viewName) {
-            const publicView = document.getElementById('view-public');
-            const adminView = document.getElementById('view-admin');
-            if (viewName === 'public') {
-                publicView.classList.remove('hidden');
-                adminView.classList.add('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else {
-                publicView.classList.add('hidden');
-                adminView.classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }
-
-        window.openAdminPortal = function() {
-            switchView('admin');
-        }
-
-        // Admin Login Handler
-        window.handleAdminLogin = async function(e) {
-            e.preventDefault();
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                window.showToast("Admin login successful!", "success");
-                switchView('admin');
-            } catch (err) {
-                console.error("Login error:", err);
-                window.showToast("Login failed: " + err.message, "error");
-            }
-        }
-
-        window.handleAdminLogout = async function() {
-            try {
-                await signOut(auth);
-                window.showToast("Logged out successfully", "success");
-                switchView('public');
-            } catch (err) {
-                console.error("Logout error:", err);
-            }
-        }
-
-        // Save Global Settings
-        window.saveGlobalSettings = async function(e) {
-            e.preventDefault();
-            const whatsappNumber = document.getElementById('setting-whatsapp').value.trim();
-            const siteTitle = document.getElementById('setting-title').value.trim();
-            try {
-                const settingsRef = doc(db, 'settings', 'public');
-                await setDoc(settingsRef, { whatsappNumber, siteTitle });
-                window.globalSettings = { whatsappNumber, siteTitle };
-                document.getElementById('nav-brand-title').innerText = siteTitle;
-                window.showToast("Global settings updated successfully!", "success");
-            } catch (err) {
-                console.error("Error saving settings:", err);
-                window.showToast("Failed to save settings: " + err.message, "error");
-            }
-        }
-
-        // Render Admin Services Table
-        function renderAdminServicesTable() {
-            const tbody = document.getElementById('admin-services-tbody');
-            document.getElementById('admin-services-count').innerText = `${window.servicesList.length} services`;
-            
-            if (window.servicesList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-gray-500">No services found. Add your first service!</td></tr>`;
-                return;
-            }
-
-            tbody.innerHTML = window.servicesList.map(s => `
-                <tr class="border-b border-white/5 hover:bg-white/[0.02] transition-all">
-                    <td class="py-4 px-4 flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-neonblue/10 text-neonblue flex items-center justify-center">
-                            <i class="${s.icon || 'fa-solid fa-bolt'}"></i>
-                        </div>
-                        <div>
-                            <div class="font-bold text-white">${s.name}</div>
-                            <div class="text-xs text-gray-400 truncate max-w-xs">${s.description}</div>
-                        </div>
-                    </td>
-                    <td class="py-4 px-4">
-                        <span class="text-xs px-2.5 py-1 rounded-full glass-card border border-white/10 text-gray-300">${s.category}</span>
-                    </td>
-                    <td class="py-4 px-4 font-bold text-neonblue">${s.price}</td>
-                    <td class="py-4 px-4">
-                        <span class="text-xs px-2.5 py-1 rounded-full ${s.active ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30' : 'bg-red-500/10 text-red-400 border border-red-500/30'}">
-                            ${s.active ? 'Active' : 'Inactive'}
-                        </span>
-                    </td>
-                    <td class="py-4 px-4 text-right space-x-2">
-                        <button onclick="openServiceModal('edit', '${s.id}')" class="px-3 py-1.5 rounded-lg text-xs font-semibold glass-card border border-white/10 hover:border-neonblue text-neonblue transition-all">
-                            <i class="fa-solid fa-pen"></i>
-                        </button>
-                        <button onclick="deleteService('${s.id}')" class="px-3 py-1.5 rounded-lg text-xs font-semibold glass-card border border-red-500/30 hover:bg-red-500/10 text-red-400 transition-all">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        // Service Modal Handlers
-        window.openServiceModal = function(mode, id = null) {
-            const modal = document.getElementById('service-modal');
-            const title = document.getElementById('modal-title');
-            modal.classList.remove('hidden');
-
-            if (mode === 'add') {
-                title.innerText = "Add New Service";
-                document.getElementById('service-edit-id').value = "";
-                document.getElementById('modal-name').value = "";
-                document.getElementById('modal-category').value = "";
-                document.getElementById('modal-price').value = "";
-                document.getElementById('modal-icon').value = "fa-brands fa-instagram";
-                document.getElementById('modal-description').value = "";
-                document.getElementById('modal-status').checked = true;
-            } else {
-                title.innerText = "Edit Service";
-                const service = window.servicesList.find(s => s.id === id);
-                if (service) {
-                    document.getElementById('service-edit-id').value = service.id;
-                    document.getElementById('modal-name').value = service.name;
-                    document.getElementById('modal-category').value = service.category;
-                    document.getElementById('modal-price').value = service.price;
-                    document.getElementById('modal-icon').value = service.icon || "fa-solid fa-bolt";
-                    document.getElementById('modal-description').value = service.description;
-                    document.getElementById('modal-status').checked = service.active;
-                }
-            }
-        }
-
-        window.closeServiceModal = function() {
-            document.getElementById('service-modal').classList.add('hidden');
-        }
-
-        window.handleServiceFormSubmit = async function(e) {
-            e.preventDefault();
-            const id = document.getElementById('service-edit-id').value;
-            const name = document.getElementById('modal-name').value.trim();
-            const category = document.getElementById('modal-category').value.trim();
-            const price = document.getElementById('modal-price').value.trim();
-            const icon = document.getElementById('modal-icon').value.trim();
-            const description = document.getElementById('modal-description').value.trim();
-            const active = document.getElementById('modal-status').checked;
-
-            const serviceData = { name, category, price, icon, description, active };
-
-            try {
-                if (id) {
-                    // Update existing
-                    await updateDoc(doc(db, 'services', id), serviceData);
-                    window.showToast("Service updated successfully!", "success");
-                } else {
-                    // Create new
-                    await addDoc(collection(db, 'services'), serviceData);
-                    window.showToast("Service added successfully!", "success");
-                }
-                closeServiceModal();
-                loadAppData();
-            } catch (err) {
-                console.error("Error saving service:", err);
-                window.showToast("Operation failed: " + err.message, "error");
-            }
-        }
-
-        window.deleteService = async function(id) {
-            if (!confirm("Are you sure you want to delete this service?")) return;
-            try {
-                await deleteDoc(doc(db, 'services', id));
-                window.showToast("Service deleted successfully", "success");
-                loadAppData();
-            } catch (err) {
-                console.error("Error deleting service:", err);
-                window.showToast("Failed to delete service: " + err.message, "error");
-            }
-        }
-
-        // Instructions Modal Handlers
-        window.openInstructionsModal = function() {
-            document.getElementById('instructions-modal').classList.remove('hidden');
-        }
-        window.closeInstructionsModal = function() {
-            document.getElementById('instructions-modal').classList.add('hidden');
-        }
-
-        // Initialize on load
         window.addEventListener('DOMContentLoaded', () => {
-            loadAppData();
+            loadPublicData();
         });
     </script>
 </body>
