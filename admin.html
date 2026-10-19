@@ -31,7 +31,7 @@
             <button onclick="logout()" class="bg-red-500/20 text-red-400 px-4 py-2 rounded-xl text-xs font-orbitron hover:bg-red-500/30 cursor-pointer">Logout</button>
         </div>
 
-        <!-- CUSTOMER ORDERS STREAM (Yahan users ke saare orders show honge) -->
+        <!-- CUSTOMER ORDERS STREAM -->
         <div class="glass-card p-6 rounded-2xl border-cyan-500/30">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="font-orbitron text-lg font-bold text-cyan-400 flex items-center space-x-2">
@@ -160,7 +160,7 @@
         }
 
         // Load Customer Orders Stream
-        async function loadOrders() {
+        window.loadOrders = async function() {
             const tableBody = document.getElementById('ordersTableBody');
             try {
                 const snap = await getDocs(collection(db, "orders"));
@@ -187,7 +187,7 @@
             } catch(err) {
                 console.error("Error loading orders:", err);
             }
-        }
+        };
 
         async function loadSettings() {
             try {
@@ -242,7 +242,7 @@
                     loadServices();
                 } catch(err) { alert(err.message); }
             }
-        }
+        };
 
         function fileToBase64(file) {
             return new Promise((resolve, reject) => {
@@ -257,7 +257,7 @@
             const name = document.getElementById('serviceName').value.trim();
             const price = document.getElementById('servicePrice').value.trim();
             const description = document.getElementById('serviceDesc').value.trim();
-            const available = document.getElementById('serviceAvailable')->checked;
+            const available = document.getElementById('serviceAvailable').checked;
             const fileInput = document.getElementById('serviceFileInput');
             let imageUrl = document.getElementById('serviceImage').value.trim();
 
@@ -276,7 +276,7 @@
                 }
 
                 await addDoc(collection(db, "services"), {
-                    name, price, description, imageUrl, available: true, createdAt: new Date()
+                    name, price, description, imageUrl, available, createdAt: new Date()
                 });
 
                 alert("Service successfully save ho gayi hai!");
